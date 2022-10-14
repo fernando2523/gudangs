@@ -10,9 +10,8 @@ class Product extends Model
     use HasFactory;
 
     protected $table = "products";
-
-    public function variation()
+    public function product_variation()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(variation::class, 'id_produk', 'id_produk')->orderBy('size');
     }
 }

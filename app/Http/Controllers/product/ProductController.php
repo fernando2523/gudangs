@@ -4,6 +4,7 @@ namespace App\Http\Controllers\product;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\variation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
@@ -26,16 +27,25 @@ class ProductController extends Controller
         ));
     }
 
+    public function product_test()
+    {
+        $product = Product::with('product_variation')->get();
+        return view('product.product_test', ['products' => $product]);
+    }
+
     public function tableproduct(Request $request)
     {
         if ($request->ajax()) {
-            $data = DB::table('products')->leftJoinWhere('variations', 'variations.id_produk', '=', 'products.id_produk' and 'variations', 'variations.id_ware', '=', 'products.id_ware')
-                ->select(['products.id_produk', 'products.id_ware', 'products.id_brand', 'products.produk', 'products.category', 'products.quality', 'products.n_price', 'products.r_price', 'products.g_price', 'products.m_price', 'products.img', 'variations.size', 'variations.qty'])
-                ->get();
-            return DataTables::of($data)
+            // $data = DB::table('products')->leftJoinWhere('variations', 'variations.id_produk', '=', 'products.id_produk' and 'variations', 'variations.id_ware', '=', 'products.id_ware')
+            //     ->select(['products.id_produk', 'products.id_ware', 'products.id_brand', 'products.produk', 'products.category', 'products.quality', 'products.n_price', 'products.r_price', 'products.g_price', 'products.m_price', 'products.img', 'variations.size', 'variations.qty'])
+            //     ->get();
+
+            $product = Product::with('product_variation')->get();
+            return DataTables::of($product)
                 ->addIndexColumn()
                 ->addColumn('action', function () {
                 })
+
                 ->rawColumns(['action'])
                 ->make(true);
         }

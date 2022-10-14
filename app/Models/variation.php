@@ -10,9 +10,4 @@ class variation extends Model
     use HasFactory;
 
     protected $table = "variations";
-
-    public function product()
-    {
-        return $this->belongsTo(variation::class);
-    }
 }

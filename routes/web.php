@@ -85,4 +85,5 @@ route::any('/category/destroy/{id}', [CategoryController::class, 'destroy'])->mi
 route::any('/category/destroysub/{id}', [CategoryController::class, 'destroysub'])->middleware('auth');
 
 route::get('/product/products', [ProductController::class, 'product'])->middleware('auth');
+route::get('/product/products_test', [ProductController::class, 'product_test'])->middleware('auth');
 route::any('/tableproduct', [ProductController::class, 'tableproduct'])->middleware('auth');
