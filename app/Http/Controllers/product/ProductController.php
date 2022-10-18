@@ -54,15 +54,15 @@ class ProductController extends Controller
         }
     }
 
-    public function load_variation (Request $request)
+    public function load_variation(Request $request)
     {
         if ($request->ajax()) {
             $search = $_POST['variasi'];
-        }
 
-        return view('load/load_variation', compact(
-            'search'
-        ));
+            return view('load/load_variation', compact(
+                'search'
+            ));
+        }
     }
 
     /**
