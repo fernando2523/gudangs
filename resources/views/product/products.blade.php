@@ -206,25 +206,7 @@
                                             </table> --}}
 
                                         <div id="hasil_variation" style="text-align: center;"></div>
-                                        <script>
-                                            function addpo() {
-                                                var tbody = document.getElementById('tbody_item');
-                                                var row = tbody.insertRow(1);
-                                                var size = row.insertCell(0);
-                                                var qty = row.insertCell(1);
-                                                var aksi = row.insertCell(2);
 
-                                                size.innerHTML = "<input class='form-control' type='text' name='size[]' style='width: 100%;height:100%;'>";
-                                                qty.innerHTML =
-                                                    "<input class='form-control' onkeypress='return isNumberKey(event)' type='text' name='qty[]' style='width: 100%;height:100%;'>";
-                                                aksi.innerHTML = '<button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">X</button>';
-                                            }
-
-                                            function deleteRow(r) {
-                                                var i = r.parentNode.parentNode.rowIndex;
-                                                document.getElementById("variations").deleteRow(i);
-                                            }
-                                        </script>
                                     </div>
                                 </div>
                             </div>

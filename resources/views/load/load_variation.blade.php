@@ -8,14 +8,20 @@
     </thead>
 
     <tbody id="tbody_item">
-        <tr>
-            <td style="width: 10%;">
-                <input class="form-control text-center text-dark" type="text" name="size[]" value="35" readonly style="width: 100%;height: 15px;">
+        @php
+        $i = 0;
+        $size = 35;
+        @endphp
+        @while($i<11) <tr>
+            <td>
+                <input class="form-control text-center" type="text" name="size[]" value="{{$size+$i}}" readonly style="width: 100%;height: 15px;">
             </td>
-            <td style="width: 10%;">
-                <input class="form-control text-center text-info" type="text" name="qty[]" value="0" onkeypress="return isNumberKey(event)" style="width: 100%;height: 15px;font-weight: bold;" autocomplete="off">
+            <td>
+                <input class="form-control text-center" type="text" name="qty[]" value="0" onkeypress="return isNumberKey(event)" style="width: 100%;height: 15px;font-weight: bold;" autocomplete="off">
             </td>
-        </tr>
+            </tr>
+            @php $i++; @endphp
+            @endwhile
     </tbody>
 </table>
 @else
@@ -29,13 +35,33 @@
 
     <tbody id="tbody_item">
         <tr>
-            <td style="width: 10%;">
-                <input class="form-control text-center text-dark" type="text" name="size[]" value="35" readonly style="width: 100%;height: 15px;">
+            <td>
+                <input class="form-control text-center" type="text" name="size[]" value="" style="width: 100%">
             </td>
-            <td style="width: 10%;">
-                <input class="form-control text-center text-info" type="text" name="qty[]" value="0" onkeypress="return isNumberKey(event)" style="width: 100%;height: 15px;font-weight: bold;" autocomplete="off">
+            <td>
+                <input class="form-control text-center text-info" type="text" name="qty[]" value="0" onkeypress="return isNumberKey(event)" style="width: 100%;font-weight: bold;" autocomplete="off">
             </td>
         </tr>
     </tbody>
 </table>
+<button type="button" class="btn btn-success btn-sm" onclick="addtable()">Add</button>
+<script>
+    function addtable() {
+        var tbody = document.getElementById('tbody_item');
+        var row = tbody.insertRow(-1);
+        var size = row.insertCell(0);
+        var qty = row.insertCell(1);
+        var aksi = row.insertCell(2);
+
+        size.innerHTML = "<input class='form-control' type='text' name='size[]' style='width: 100%'>";
+        qty.innerHTML =
+            "<input class='form-control' onkeypress='return isNumberKey(event)' type='text' name='qty[]' style='width: 100%'>";
+        aksi.innerHTML = '<td style="width: 11px;"><button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">X</button></td>';
+    }
+
+    function deleteRow(r) {
+        var i = r.parentNode.parentNode.rowIndex;
+        document.getElementById("variations").deleteRow(i);
+    }
+</script>
 @endif
