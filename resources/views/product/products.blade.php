@@ -57,8 +57,16 @@
                                         </div>
                                         <div class="col-8 mt-2 form-group position-relative mb-2 profile-img"
                                             align="center">
-                                            <img class="mb-2" id="e_img" width="200px">
-                                            <input type="file" class="form-control" id="file" name="file">
+                                            <script type="text/javascript">
+                                                var loadeditFile = function(event) {
+                                                    var previewimg = document.getElementById('previewimg');
+                                                    previewimg.src = URL.createObjectURL(event.target.files[0]);
+                                                };
+                                            </script>
+                                            <img class="mb-2" id="previewimg" width="200px"
+                                                src="/product/defaultimg.png">
+                                            <input type="file" class="form-control" id="file" name="file"
+                                                onchange="loadeditFile(event)">
                                         </div>
                                         <div class="card-arrow">
                                             <div class="card-arrow-top-left"></div>
@@ -173,6 +181,41 @@
                                                 Select a valid Supplier.
                                             </div>
                                         </div>
+
+                                        <div class="col-12 form-group position-relative mb-3">
+                                            <label class="form-label">Variation</label>
+                                            <select class="form-select form-select-sm text-theme fs-12px"
+                                                id="type_variasi" name="type_variasi" required>
+                                                <option value="" disabled selected>Choose Variation</option>
+                                                <option value="SNEAKERS UNISEX">Sneakers Unisex</option>
+                                                <option value="CUSTOM">Custom</option>
+                                            </select>
+                                            <div class="invalid-tooltip">
+                                                Select a valid Supplier.
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div id="hasil_variation" style="text-align: center;"></div>
+                                            <script>
+                                                function addpo() {
+                                                    var tbody = document.getElementById('tbody_item');
+                                                    var row = tbody.insertRow(1);
+                                                    var size = row.insertCell(0);
+                                                    var qty = row.insertCell(1);
+                                                    var aksi = row.insertCell(2);
+
+                                                    size.innerHTML = "<input class='form-control' type='text' name='size[]' style='width: 100%;height:100%;'>";
+                                                    qty.innerHTML =
+                                                        "<input class='form-control' onkeypress='return isNumberKey(event)' type='text' name='qty[]' style='width: 100%;height:100%;'>";
+                                                    aksi.innerHTML = '<button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">X</button>';
+                                                }
+
+                                                function deleteRow(r) {
+                                                    var i = r.parentNode.parentNode.rowIndex;
+                                                    document.getElementById("variations").deleteRow(i);
+                                                }
+                                            </script>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -184,6 +227,52 @@
                 </div>
             </div>
         </div>
+
+        <script type="text/javascript">
+            $('#file').change(function() {
+
+                if (file === "") {
+                    document.getElementById("previewimg").src = '/product/defaultimg.png';
+                } else {
+                    let reader = new FileReader();
+                    reader.onload = (e) => {
+                        $('#previewimg').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+                variation();
+
+                function variation(variasi) {
+                    $.ajax({
+                        url: 'load/load_variations.php',
+                        type: 'POST',
+                        cache: false,
+                        data: {
+                            variasi: variasi
+                        },
+                        success: function(data) {
+                            $("#hasil_variation").html(data);
+                        }
+                    });
+                }
+
+                $('#type_variasi').change(function() {
+                    var variasi = $(this).val();
+                    if (variasi != '') {
+                        variation(variasi);
+                    } else {
+                        variation();
+                    }
+                });
+            });
+        </script>
 
         <div class="row">
             <!-- DATA ASSSET -->

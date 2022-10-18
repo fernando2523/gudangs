@@ -87,3 +87,4 @@ route::any('/category/destroysub/{id}', [CategoryController::class, 'destroysub'
 route::get('/product/products', [ProductController::class, 'product'])->middleware('auth');
 route::get('/product/products_test', [ProductController::class, 'product_test'])->middleware('auth');
 route::any('/tableproduct', [ProductController::class, 'tableproduct'])->middleware('auth');
+route::any('/load/load_variation', [App\Http\Controllers\barging\ProductController::class, 'load_variation']);
