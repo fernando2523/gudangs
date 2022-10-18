@@ -194,7 +194,34 @@
                                                 Select a valid Supplier.
                                             </div>
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-12 mt-4">
+                                            {{-- <table class="table table-bordered table-sm" id="variations"
+                                                id="hasil_variation">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center text-dark" style="height: 10px;">Size</th>
+                                                        <th class="text-center text-dark" style="height: 10px;">Qty</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody id="tbody_item">
+                                                    <tr>
+                                                        <td style="width: 10%;">
+                                                            <input class="form-control text-center text-dark"
+                                                                type="text" name="size[]" value="35" readonly
+                                                                style="width: 100%;height: 15px;">
+                                                        </td>
+                                                        <td style="width: 10%;">
+                                                            <input class="form-control text-center text-info"
+                                                                type="text" name="qty[]" value="0"
+                                                                onkeypress="return isNumberKey(event)"
+                                                                style="width: 100%;height: 15px;font-weight: bold;"
+                                                                autocomplete="off">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table> --}}
+
                                             <div id="hasil_variation" style="text-align: center;"></div>
                                             <script>
                                                 function addpo() {

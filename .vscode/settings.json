@@ -1,0 +1,5 @@
+{
+  "[markdown]": {
+    "editor.find.autoFindInSelection": "always"
+  }
+}
