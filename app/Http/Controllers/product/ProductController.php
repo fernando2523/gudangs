@@ -54,6 +54,17 @@ class ProductController extends Controller
         }
     }
 
+    public function load_variation (Request $request)
+    {
+        if ($request->ajax()) {
+            $search = $_POST['variasi'];
+        }
+
+        return view('load/load_variation', compact(
+            'search'
+        ));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
