@@ -4,6 +4,10 @@ namespace App\Http\Controllers\product;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\brand;
+use App\Models\Sub_category;
+use App\Models\Warehouse;
+use App\Models\Supplier;
 use App\Models\variation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,8 +26,17 @@ class ProductController extends Controller
     {
         $title = "Products";
 
+        $getbrand = brand::all();
+        $getcategory = Sub_category::all();
+        $getware = Warehouse::all();
+        $getsupplier = Supplier::all();
+
         return view('product.products', compact(
-            'title'
+            'title',
+            'getbrand',
+            'getcategory',
+            'getware',
+            'getsupplier'
         ));
     }
 
