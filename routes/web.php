@@ -11,6 +11,7 @@ use App\Http\Controllers\store\StoreController;
 use App\Http\Controllers\brand\BrandController;
 use App\Http\Controllers\category\CategoryController;
 use App\Http\Controllers\product\ProductController;
+use App\Http\Controllers\storeequipmentcost\StoreEquipmentCostController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -88,3 +89,5 @@ route::get('/product/products', [ProductController::class, 'product'])->middlewa
 route::get('/product/products_test', [ProductController::class, 'product_test'])->middleware('auth');
 route::any('/tableproduct', [ProductController::class, 'tableproduct'])->middleware('auth');
 Route::any('/load_variation', [ProductController::class, 'load_variation']);
+
+// route::get('/store_expense/store_expenses',[StoreEquipmentCostController::class,'store_expense'])->middleware('auth');

@@ -120,8 +120,8 @@
                     <span class="menu-text">Sales</span>
                 </a>
             </div>
-            <div class="menu-item {{ Request::is('employee/employees') ? 'active' : '' }}">
-                <a href="/employee/employees" class="menu-link">
+            <div class="menu-item {{ Request::is('store_expense/store_expenses') ? 'active' : '' }}">
+                <a href="/store_expense/store_expenses" class="menu-link">
                     <span class="menu-icon"><i class="bi bi-cash-coin text-theme"></i></span>
                     <span class="menu-text">Store Expenditure</span>
                 </a>
