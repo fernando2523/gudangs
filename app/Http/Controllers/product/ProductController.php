@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use PHPUnit\Framework\Constraint\Count;
 
 class ProductController extends Controller
 {
@@ -135,23 +136,18 @@ class ProductController extends Controller
         // $data->users = $getuser;
         // $data->save();
 
-        $data2 = new variation();
-        $data2->tanggal = $tanggalskrg;
-        $data2->id_produk = $idproduk;
-        $data2->id_ware = $request->id_ware;
-
-        // $sizes = variation::get('size');
-        $data2_get = array();
-
-        foreach ($request->size as $sizes2) {
-            $data2_get[] = new variation(array(
-                'size' => $sizes2['size'],
-                'qty' => $sizes2['qty'],
-            ));
+        //Data Update Tian
+        for ($i = 0; $i < Count($request->size); $i++) {
+            $data2 = new variation();
+            $data2->tanggal = $tanggalskrg;
+            $data2->id_produk = $idproduk;
+            $data2->id_ware = '1';
+            $data2->users = $getuser;
+            $data2->size = $request->size[$i];
+            $data2->qty = $request->qty[$i];
+            $data2->save();
         }
-        $data2->users = $getuser;
-        $data2->saveMany();
-        // $data2->sizes()->saveMany($data2_get);
+        //End Data Update Tian
 
         return redirect('product/products');
     }
