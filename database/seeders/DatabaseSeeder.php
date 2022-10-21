@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         Product::create([
             'id_produk' => '1321081971',
             'id_ware' => 'WARE-2',
-            'id_brand' => 'BRN-1',
+            'brand' => 'VANS',
             'tanggal' => '2022-10-14',
             'produk' => 'Vans Slip On Side Wall Checkerboard',
             'desc' => NULL,
@@ -37,7 +37,6 @@ class DatabaseSeeder extends Seeder
             'n_price' => '300000',
             'r_price' => '300000',
             'g_price' => '300000',
-            'm_price' => '300000',
             'm_price' => '300000',
             'img' => 'img-1.png',
             'users' => 'ADMIN',

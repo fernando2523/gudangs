@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('id_produk');
             $table->string('id_ware');
-            $table->string('id_brand');
+            $table->string('brand');
             $table->string('tanggal');
             $table->string('produk');
             $table->string('desc')->nullable(true);

@@ -89,5 +89,6 @@ route::get('/product/products', [ProductController::class, 'product'])->middlewa
 route::get('/product/products_test', [ProductController::class, 'product_test'])->middleware('auth');
 route::any('/tableproduct', [ProductController::class, 'tableproduct'])->middleware('auth');
 Route::any('/load_variation', [ProductController::class, 'load_variation']);
+route::any('/product/products/store', [ProductController::class, 'store'])->middleware('auth');
 
 // route::get('/store_expense/store_expenses',[StoreEquipmentCostController::class,'store_expense'])->middleware('auth');

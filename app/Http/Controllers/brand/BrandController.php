@@ -70,9 +70,20 @@ class BrandController extends Controller
             $idbrn = 'BRN-' . $cek3;
         }
 
+        $ceks = Brand::count();
+        if ($ceks === 0) {
+            $urut2 = 10;
+            $codes = $urut2;
+        } else {
+            $ambildata = Brand::all()->max('code');
+            $ceks2 = $ambildata + 1;
+            $codes = $ceks2;
+        }
+
         $data = new Brand();
         $data->id_brand = $idbrn;
         $data->brand = $request->brand;
+        $data->code = $codes;
 
         if (empty($_FILES['file']['name'][0])) {
             $data->img = "";

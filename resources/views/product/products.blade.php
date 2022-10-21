@@ -45,12 +45,13 @@
                         <h5 class="modal-title text-theme">ADD PRODUCTS</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <form class="was-validated" method="POST" action="{{ url('/store/stores/storeadd') }}">
+                    <form class="was-validated" method="POST" enctype="multipart/form-data"
+                        action="{{ url('/product/products/store') }}">
                         @csrf
                         <div class="modal-body">
 
                             <div class="row form-group">
-                                <div class="col-6">
+                                {{-- <div class="col-6">
                                     <div class="row form-group">
 
                                         <div class="col-2 mt-2">
@@ -80,7 +81,7 @@
                                         <div class="col-12 form-group mb-3">
                                             <label class="form-label">Nama Produk</label>
                                             <input class="form-control form-control-sm text-theme is-invalid" type="text"
-                                                name="store" required placeholder="Please provide a name product"
+                                                name="produk" required placeholder="Please provide a name product"
                                                 autocomplete="OFF">
                                         </div>
 
@@ -137,12 +138,6 @@
                                                 Select a valid Warehouse.
                                             </div>
                                         </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="col-6">
-                                    <div class="row form-group">
                                         <div class="col-6 form-group mb-3 mt-1">
                                             <label class="form-label">Modal</label>
                                             <input class="form-control form-control-sm text-theme is-invalid" type="number"
@@ -167,8 +162,14 @@
                                                 type="number" name="g_price" required placeholder="0"
                                                 autocomplete="OFF">
                                         </div>
+                                    </div>
 
-                                        <div class="col-12 form-group position-relative mb-3">
+
+                                </div> --}}
+
+                                <div class="col-6">
+                                    <div class="row form-group">
+                                        {{-- <div class="col-12 form-group position-relative mb-3">
                                             <label class="form-label">Supplier</label>
                                             <select class="form-select form-select-sm text-theme fs-12px" name="supplier"
                                                 required>
@@ -180,12 +181,12 @@
                                             <div class="invalid-tooltip">
                                                 Select a valid Supplier.
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="col-12 form-group position-relative mb-3">
                                             <label class="form-label">Variation</label>
-                                            <select class="form-select form-select-sm text-theme fs-12px"
-                                                id="type_variasi" name="type_variasi" required>
+                                            <select class="form-select form-select-sm text-theme fs-12px" id="type_variasi"
+                                                name="type_variasi" required>
                                                 <option value="" disabled selected>Choose Variation</option>
                                                 <option value="SNEAKERS UNISEX">Sneakers Unisex</option>
                                                 <option value="CUSTOM">Custom</option>
@@ -194,34 +195,8 @@
                                                 Select a valid Supplier.
                                             </div>
                                         </div>
+
                                         <div class="col-12 mt-4">
-                                            {{-- <table class="table table-bordered table-sm" id="variations"
-                                                id="hasil_variation">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center text-dark" style="height: 10px;">Size</th>
-                                                        <th class="text-center text-dark" style="height: 10px;">Qty</th>
-                                                    </tr>
-                                                </thead>
-
-                                                <tbody id="tbody_item">
-                                                    <tr>
-                                                        <td style="width: 10%;">
-                                                            <input class="form-control text-center text-dark"
-                                                                type="text" name="size[]" value="35" readonly
-                                                                style="width: 100%;height: 15px;">
-                                                        </td>
-                                                        <td style="width: 10%;">
-                                                            <input class="form-control text-center text-info"
-                                                                type="text" name="qty[]" value="0"
-                                                                onkeypress="return isNumberKey(event)"
-                                                                style="width: 100%;height: 15px;font-weight: bold;"
-                                                                autocomplete="off">
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table> --}}
-
                                             <div id="hasil_variation" style="text-align: center;"></div>
                                             <script>
                                                 function addpo() {

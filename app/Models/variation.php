@@ -10,4 +10,9 @@ class variation extends Model
     use HasFactory;
 
     protected $table = "variations";
+
+    protected $fillable = [
+        'size',
+        'qty',
+    ];
 }
