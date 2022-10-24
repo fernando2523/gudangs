@@ -35,6 +35,7 @@ class ProductController extends Controller
         $getware = Warehouse::all();
         $getsupplier = Supplier::all();
 
+
         return view('product.products', compact(
             'title',
             'getbrand',
@@ -116,10 +117,11 @@ class ProductController extends Controller
             $idproduk = '1' . $get_brand3 . $thn . sprintf("%05s", + ($cek2));
         }
 
-        $nilaiwares = Warehouse::all();
+        $nilaiwares = Warehouse::count('id_ware');
+        // $dataware = Warehouse::all();
 
-        while ($rows = $nilaiwares) {
-            $idwarehouse = $rows->id_ware;
+        for ($i = 0; $i < $nilaiwares; $i++) {
+            $idwarehouse = $i;
             // DB PRODUCT
             $data = new Product();
             $data->id_produk = $idproduk;
@@ -154,8 +156,9 @@ class ProductController extends Controller
             //////////////////////////
 
             //DB VARIATION
+            $qtys = 0;
             if ($idwarehouse == $request->id_ware) {
-                $qtys = 0;
+
                 for ($i = 0; $i < Count($request->size); $i++) {
                     $data2 = new variation();
                     $data2->tanggal = $tanggalskrg;
