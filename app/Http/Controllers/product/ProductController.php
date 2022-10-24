@@ -8,6 +8,8 @@ use App\Models\brand;
 use App\Models\Sub_category;
 use App\Models\Warehouse;
 use App\Models\Supplier;
+use App\Models\Supplier_order;
+use App\Models\Supplier_variation;
 use App\Models\variation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +17,7 @@ use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use PHPUnit\Framework\Constraint\Count;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -37,7 +40,7 @@ class ProductController extends Controller
             'getbrand',
             'getcategory',
             'getware',
-            'getsupplier'
+            'getsupplier',
         ));
     }
 
@@ -94,6 +97,12 @@ class ProductController extends Controller
         $get_brand2 = $get_brand->toArray();
         $get_brand3 = implode(" ", $get_brand2);
 
+        $get_brands = DB::table('brands')
+            ->where('id_brand', '=', $getbrand)
+            ->pluck('brand');
+        $get_brands2 = $get_brands->toArray();
+        $get_brands3 = implode(" ", $get_brands2);
+
         $cek = Product::count();
 
         $now = Carbon::now('Asia/Bangkok');
@@ -102,52 +111,110 @@ class ProductController extends Controller
             $urut = 1;
             $idproduk = '1' . $get_brand3 . $thn . sprintf("%05s", ($urut));
         } else {
-            $ambildata = Product::all()->max('id_produk');
-            $cek2 = (int)substr($ambildata, -5) + 1;
+            $ambildata = Product::all()->last();
+            $cek2 = (int)substr($ambildata->id_produk, -5) + 1;
             $idproduk = '1' . $get_brand3 . $thn . sprintf("%05s", + ($cek2));
         }
 
-        // $data = new Product();
-        // $data->id_produk = $idproduk;
-        // $data->id_ware = $request->id_ware;
-        // $data->brand = $get_brand3;
-        // $data->tanggal = $tanggalskrg;
-        // $data->produk = $request->produk;
-        // $data->desc = null;
-        // $data->category = $request->category;
-        // $data->quality = $request->quality;
-        // $data->n_price = $request->n_price;
-        // $data->r_price = $request->r_price;
-        // $data->g_price = $request->g_price;
-        // $data->m_price = $request->m_price;
+        $nilaiwares = Warehouse::all();
 
-        // if (empty($_FILES['file']['name'][0])) {
-        //     $data->img = "";
-        // } else {
-        //     // get file
-        //     $request->validate([
-        //         'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
-        //     ]);
-        //     $fileName = time() . '.' . $request->file->extension();
-        //     $request->file->move(public_path('product'), $fileName);
-        //     // end get files
-        //     $data->img = $fileName;
-        // }
-        // $data->users = $getuser;
-        // $data->save();
+        while ($rows = $nilaiwares) {
+            $idwarehouse = $rows->id_ware;
+            // DB PRODUCT
+            $data = new Product();
+            $data->id_produk = $idproduk;
+            $data->id_ware = $request->id_ware;
+            $data->brand = $get_brands3;
+            $data->tanggal = $tanggalskrg;
+            $data->produk = Str::headline($request->produk);
+            $data->desc = null;
+            $data->category = $request->category;
+            $data->quality = $request->quality;
+            $data->n_price = $request->n_price;
+            $data->r_price = $request->r_price;
+            $data->g_price = $request->g_price;
+            $data->m_price = $request->m_price;
 
-        //Data Update Tian
-        for ($i = 0; $i < Count($request->size); $i++) {
-            $data2 = new variation();
-            $data2->tanggal = $tanggalskrg;
-            $data2->id_produk = $idproduk;
-            $data2->id_ware = '1';
-            $data2->users = $getuser;
-            $data2->size = $request->size[$i];
-            $data2->qty = $request->qty[$i];
-            $data2->save();
+            if (empty($_FILES['file']['name'][0])) {
+                $data->img = "";
+            } else {
+                // get file
+                $request->validate([
+                    'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
+                ]);
+                $fileName = time() . '.' . $request->file->extension();
+                $request->file->move(public_path('product'), $fileName);
+                // end get files
+                $data->img = $fileName;
+            }
+            $data->users = $getuser;
+            $data->save();
+            // END DB PRODUCT
+
+            //////////////////////////
+
+            //DB VARIATION
+            if ($idwarehouse == $request->id_ware) {
+                $qtys = 0;
+                for ($i = 0; $i < Count($request->size); $i++) {
+                    $data2 = new variation();
+                    $data2->tanggal = $tanggalskrg;
+                    $data2->id_produk = $idproduk;
+                    $data2->id_ware = $request->id_ware;
+                    $data2->users = $getuser;
+                    $data2->size = $request->size[$i];
+                    $data2->qty = $request->qty[$i];
+                    $data2->save();
+
+                    $qtys =  $qtys + $request->qty[$i];
+                }
+            } else {
+                for ($i = 0; $i < Count($request->size); $i++) {
+                    $data2 = new variation();
+                    $data2->tanggal = $tanggalskrg;
+                    $data2->id_produk = $idproduk;
+                    $data2->id_ware = $request->id_ware;
+                    $data2->users = $getuser;
+                    $data2->size = $request->size[$i];
+                    $data2->qty = "0";
+                    $data2->save();
+                }
+            }
+            //End DB VARIATION
         }
-        //End Data Update Tian
+
+        //////////////////////////
+        //DB SUPPLIER ORDER
+        $thn_bln = $now->format('ym');
+        $ceks = Supplier_order::count();
+        if ($ceks === 0) {
+            $urut2 = 1;
+            $get_idpo = $thn_bln . sprintf("%04s", ($urut2));
+        } else {
+            $ambildatas = Supplier_order::all()->last();
+            $ceks2 = (int)substr($ambildatas->idpo, -4) + 1;
+            $get_idpo = $thn_bln . sprintf("%04s", + ($ceks2));
+        }
+
+        $data3 = new Supplier_order();
+        $data3->idpo = $get_idpo;
+        $data3->id_sup = $request->id_sup;
+        $data3->id_produk = $idproduk;
+        $data3->id_ware = $request->id_ware;
+        $data3->brand = $get_brands3;
+        $data3->tanggal = $tanggalskrg;
+        $data3->produk = Str::headline($request->produk);
+        $data3->qty = $qtys;
+        $data3->m_price = $request->m_price;
+        $data3->subtotal = $request->m_price * $qtys;
+        $data3->tipe_order = "RELEASE";
+        $data3->users = $getuser;
+        $data3->save();
+        //END DB SUPPLIER ORDER
+        //////////////////////////
+
+        //////////////////////////
+        //////////////////////////
 
         return redirect('product/products');
     }

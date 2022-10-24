@@ -51,7 +51,7 @@
                         <div class="modal-body">
 
                             <div class="row form-group">
-                                {{-- <div class="col-6">
+                                <div class="col-6">
                                     <div class="row form-group">
 
                                         <div class="col-2 mt-2">
@@ -165,28 +165,28 @@
                                     </div>
 
 
-                                </div> --}}
+                                </div>
 
                                 <div class="col-6">
                                     <div class="row form-group">
-                                        {{-- <div class="col-12 form-group position-relative mb-3">
+                                        <div class="col-12 form-group position-relative mb-3">
                                             <label class="form-label">Supplier</label>
-                                            <select class="form-select form-select-sm text-theme fs-12px" name="supplier"
+                                            <select class="form-select form-select-sm text-theme fs-12px" name="id_sup"
                                                 required>
                                                 <option value="" disabled selected>Choose Supplier</option>
                                                 @foreach ($getsupplier as $gets)
-                                                    <option value="{{ $gets->id_supplier }}">{{ $gets->supplier }}</option>
+                                                    <option value="{{ $gets->id_sup }}">{{ $gets->supplier }}</option>
                                                 @endforeach
                                             </select>
                                             <div class="invalid-tooltip">
                                                 Select a valid Supplier.
                                             </div>
-                                        </div> --}}
+                                        </div>
 
                                         <div class="col-12 form-group position-relative mb-3">
                                             <label class="form-label">Variation</label>
-                                            <select class="form-select form-select-sm text-theme fs-12px" id="type_variasi"
-                                                name="type_variasi" required>
+                                            <select class="form-select form-select-sm text-theme fs-12px"
+                                                id="type_variasi" name="type_variasi" required>
                                                 <option value="" disabled selected>Choose Variation</option>
                                                 <option value="SNEAKERS UNISEX">Sneakers Unisex</option>
                                                 <option value="CUSTOM">Custom</option>
@@ -373,7 +373,7 @@
 
             <div class="col-xl-12">
                 <div class="card">
-                    <div class="card-body p-3" style="height: 490px;">
+                    <div class="card-body p-3" style="height: auto;">
                         <!-- BEGIN input-group -->
                         <div class="d-flex fw-bold small mb-3">
                             <span class="flex-grow-1">SEARCH PRODUCTS</span>
@@ -398,11 +398,10 @@
                                 <tr>
                                     <th class="text-center" width="2%" style="color: #a8b6bc !important;">NO
                                     </th>
-                                    <th class="text-center" width="10%" style="color: #a8b6bc !important;">IMAGE
+                                    <th class="text-center" width="2%" style="color: #a8b6bc !important;">IMAGE
                                     </th>
-                                    <th class="text-center" width="40%" style="color: #a8b6bc !important;">NAME
+                                    <th class="text-center" width="50%" style="color: #a8b6bc !important;">NAME
                                     </th>
-                                    <th class="text-center" width="10%" style="color: #a8b6bc !important;">DETAIL
                                     </th>
                                     <th class="text-center" width="20%" style="color: #a8b6bc !important;">SIZE
                                     </th>
@@ -457,90 +456,103 @@
                     serverSide: true,
                     ajax: "/tableproduct",
                     columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'id',
-                        class: 'text-center fw-bold',
-                        searchable: false
-                    }, {
-                        data: 'img',
-                        name: 'img',
-                        class: 'text-center',
-                        "render": function(data, type, row) {
-                            if (row.img === "") {
-                                return '<span><img src="/product/defaultimg.png" alt="" width="75" height="75" class="rounded"></span>';
-                            } else {
-                                return '<span><img src="/product/' + row.img +
-                                    '" alt="" width="75"  height="75" class="rounded"></span>';
-                            }
-                        },
-                    }, {
-                        data: 'produk',
-                        name: 'produk',
-                        class: 'text-left',
-                        searchable: true,
-                        "render": function(data, type, row, meta) {
+                            data: 'DT_RowIndex',
+                            name: 'id',
+                            class: 'text-center fw-bold',
+                            searchable: false
+                        }, {
+                            data: 'img',
+                            name: 'img',
+                            class: 'text-center',
+                            "render": function(data, type, row) {
+                                if (row.img === "") {
+                                    return '<span><img src="/product/defaultimg.png" alt="" width="75" height="75" class="rounded"></span><span class="fw-bold"><br>' +
+                                        row
+                                        .id_produk + '</span>';
+                                } else {
+                                    return '<span><img src="/product/' + row.img +
+                                        '" alt="" width="75"  height="75" class="rounded"></span><span class="fw-bold"><br>' +
+                                        row
+                                        .id_produk + '</span>';
+                                }
+                            },
+                        }, {
+                            data: 'produk',
+                            name: 'produk',
+                            class: 'text-left',
+                            searchable: true,
+                            "render": function(data, type, row, meta) {
 
-                            return '<span class="fw-bold text-theme">' + row.produk +
-                                '</span> | <span>' + row
-                                .id_produk +
-                                '</span><br><span class="fw-bold text-success">Cost &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ' +
-                                row
-                                .m_price +
-                                '</span><br><span class="fw-bold text-white">Normal &nbsp;&nbsp;: ' +
-                                row
-                                .n_price +
-                                '</span><br><span class="fw-bold text-danger">Reseller : ' +
-                                row.r_price +
-                                '</span><br><span class="fw-bold text-info">Grosir &nbsp;&nbsp;&nbsp;&nbsp;: ' +
-                                row.g_price + '</span>';
-                        },
-                    }, {
-                        data: 'id_ware',
-                        name: 'id_ware',
-                        class: 'text-center',
-                        searchable: true,
-                        "render": function(data, type, row) {
+                                return '<span class="fw-bold fs-14px">' + row.produk +
+                                    '</span><br><span class="fw-bold text-indigo">' + row
+                                    .id_ware +
+                                    '</span><br><span class="fw-bold">' + row
+                                    .quality +
+                                    '</span> | <span class="fw-bold">' + row.category +
+                                    '</span> <br><span class="badge border border-success text-success fw-bold" style="width: 125px;padding-right: 10px;font-size: 11px;" >Cost : ' +
+                                    row
+                                    .m_price +
+                                    '</span> &nbsp; <span class="badge border border-white text-white fw-bold" style="width: 125px;font-size: 11px;" >Normal : ' +
+                                    row
+                                    .n_price +
+                                    '</span> &nbsp; <span class="badge border border-yellow text-yellow fw-bold" style="width: 125px;font-size: 11px;margin-top: 7px;" >Reseller : ' +
+                                    row.r_price +
+                                    '</span>  &nbsp; <span class="badge border border-pink text-pink fw-bold" style="width: 125px;font-size: 11px;" >Grosir : ' +
+                                    row.g_price + '</span>';
+                            },
+                        }, {
+                            data: 'product_variation',
+                            name: 'product_variation',
+                            class: 'text-center',
+                            searchable: true,
+                            // Edit Tian
+                            "render": function(data, type, row) {
+                                size = '';
+                                length = data.length;
+                                i = 0;
 
-                            return '<span class="fw-bold">' + row.id_ware +
-                                '</span><br><span class="fw-bold">' + row.quality +
-                                '</span><br><span class="fw-bold">' + row.category +
-                                '</span><br><span class="fw-bold">' + row.id_brand +
-                                '</span>';
-                        },
-                    }, {
-                        data: 'product_variation',
-                        name: 'product_variation',
-                        class: 'text-center',
-                        searchable: true,
-                        // Edit Tian
-                        "render": function(data, type, row) {
-                            size = '';
-                            length = data.length;
-                            i = 0;
-                            while (i < length) {
-                                size = size + '<span class="fw-bold text-theme">' + ' | ' + row
-                                    .product_variation[i]['size'] + '=' + row.product_variation[i][
-                                        'qty'
-                                    ] + '</span>';
-                                i++;
-                            }
+                                while (i < length) {
+                                    if (row.product_variation[i]['qty'] === '0') {
+                                        size = size + '<span class="text-danger">' + '[<i>' + row
+                                            .product_variation[i]['size'] +
+                                            '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
+                                            row.product_variation[
+                                                i][
+                                                'qty'
+                                            ] + '</span><span class="fw-bold text-danger">] </span>';
+                                        i++;
+                                    } else {
+                                        size = size + '<span class="text-lime">' + '[<i>' + row
+                                            .product_variation[i]['size'] +
+                                            '</i><span class="text-lime"> = </span><span class="text-lime fw-bold">' +
+                                            row.product_variation[
+                                                i][
+                                                'qty'
+                                            ] + '</span><span class="fw-bold text-lime">] </span>';
+                                        i++;
+                                    }
+                                }
 
-                            return size + '<span class="fw-bold text-theme"> |</span>';
-                        },
-                        // End Edit Tian
 
-                    }, {
-                        data: 'action',
-                        name: 'action',
-                        class: 'text-center fw-bold',
-                        "render": function(data, type, row) {
-                            return '<span><a class="text-primary" style="cursor: pointer;" ><i class="fas fa-xl fa-times-circle"></i></a></span>';
+
+                                return size;
+                            },
+                            // End Edit Tian
+
                         },
-                    }, ],
+                        {
+                            data: 'action',
+                            name: 'action',
+                            class: 'text-center fw-bold',
+                            "render": function(data, type, row) {
+                                return '<span><a class="text-primary" style="cursor: pointer;" ><i class="fas fa-xl fa-times-circle"></i></a></span>';
+                            },
+                        },
+                    ],
                     dom: 'tip',
                     // "ordering" : true,
                     order: [
-                        [1, 'desc']
+                        [0, 'desc']
                     ],
                     columnDefs: [{
                             orderable: false,

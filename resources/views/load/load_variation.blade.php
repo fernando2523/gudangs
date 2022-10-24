@@ -60,9 +60,9 @@
             var qty = row.insertCell(1);
             var aksi = row.insertCell(2);
 
-            size.innerHTML = "<input class='form-control' type='text' name='size[]' style='width: 100%'>";
+            size.innerHTML = "<input class='form-control text-center' type='text' name='size[]' style='width: 100%'>";
             qty.innerHTML =
-                "<input class='form-control' onkeypress='return isNumberKey(event)' type='text' name='qty[]' style='width: 100%'>";
+                "<input class='form-control text-center' onkeypress='return isNumberKey(event)' type='text' name='qty[]' style='width: 100%'>";
             aksi.innerHTML =
                 '<td style="width: 11px;"><button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">X</button></td>';
         }
