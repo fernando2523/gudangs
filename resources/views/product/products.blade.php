@@ -507,42 +507,39 @@
                             // Edit Tian
                             "render": function(data, type, row) {
                                 size = '';
-                                isisize = '';
                                 length = data.length;
                                 i = 0;
+                                b = 1;
 
-                                for (let index = 1; index <= length; index++) {
+                                while (i < length) {
+                                    if (row.product_variation[i]['qty'] === '0') {
+                                        size = size + '<span class="text-danger">' + '[<i>' + row
+                                            .product_variation[i]['size'] +
+                                            '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
+                                            row.product_variation[
+                                                i][
+                                                'qty'
+                                            ] +
+                                            '</span><span class="fw-bold text-danger">] </span>';
 
-                                    if (index <= 4) {
-                                        for (let index2 = 0; index2 < 4; index2++) {
-                                            isisize = isisize + 'index ' + index2;
-                                        }
-                                        size = isisize + '<br>';
+                                    } else {
+                                        size = size + '<span class="text-lime">' + '[<i>' + row
+                                            .product_variation[i]['size'] +
+                                            '</i><span class="text-lime"> = </span><span class="text-lime fw-bold">' +
+                                            row.product_variation[
+                                                i][
+                                                'qty'
+                                            ] + '</span><span class="fw-bold text-lime">] </span>';
                                     }
 
+                                    if (b === 4) {
+                                        size = size + '<br>';
+                                        b = 0;
+                                    }
+
+                                    b++;
+                                    i++;
                                 }
-                                // while (i < length) {
-                                //     if (row.product_variation[i]['qty'] === '0') {
-                                //         size = size + '<span class="text-danger">' + '[<i>' + row
-                                //             .product_variation[i]['size'] +
-                                //             '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
-                                //             row.product_variation[
-                                //                 i][
-                                //                 'qty'
-                                //             ] +
-                                //             '</span><span class="fw-bold text-danger">] </span>';
-                                //         i++;
-                                //     } else {
-                                //         size = size + '<span class="text-lime">' + '[<i>' + row
-                                //             .product_variation[i]['size'] +
-                                //             '</i><span class="text-lime"> = </span><span class="text-lime fw-bold">' +
-                                //             row.product_variation[
-                                //                 i][
-                                //                 'qty'
-                                //             ] + '</span><span class="fw-bold text-lime">] </span>';
-                                //         i++;
-                                //     }
-                                // }
 
                                 return size;
                             },
