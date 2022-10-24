@@ -48,7 +48,7 @@ class ProductController extends Controller
     public function tableproduct(Request $request)
     {
         if ($request->ajax()) {
-            $product = Product::with('product_variation')->get();
+            $product = Product::with('product_variation', 'warehouse')->get();
             return DataTables::of($product)
                 ->addIndexColumn()
                 ->addColumn('action', function () {
@@ -88,44 +88,43 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $getuser = Auth::user()->name;
-        $tanggalskrg = Date('Y-m-d');
+        $data_ware = Warehouse::all();
 
-        $getbrand = $request->id_brand;
-        $get_brand = DB::table('brands')
-            ->where('id_brand', '=', $getbrand)
-            ->pluck('code');
-        $get_brand2 = $get_brand->toArray();
-        $get_brand3 = implode(" ", $get_brand2);
+        foreach ($data_ware as $data_wares) {
+            $getuser = Auth::user()->name;
+            $tanggalskrg = Date('Y-m-d');
 
-        $get_brands = DB::table('brands')
-            ->where('id_brand', '=', $getbrand)
-            ->pluck('brand');
-        $get_brands2 = $get_brands->toArray();
-        $get_brands3 = implode(" ", $get_brands2);
+            $getbrand = $request->id_brand;
+            $get_brand = DB::table('brands')
+                ->where('id_brand', '=', $getbrand)
+                ->pluck('code');
+            $get_brand2 = $get_brand->toArray();
+            $get_brand3 = implode(" ", $get_brand2);
 
-        $cek = Product::count();
+            $get_brands = DB::table('brands')
+                ->where('id_brand', '=', $getbrand)
+                ->pluck('brand');
+            $get_brands2 = $get_brands->toArray();
+            $get_brands3 = implode(" ", $get_brands2);
 
-        $now = Carbon::now('Asia/Bangkok');
-        $thn = $now->format('y');
-        if ($cek === 0) {
-            $urut = 1;
-            $idproduk = '1' . $get_brand3 . $thn . sprintf("%05s", ($urut));
-        } else {
-            $ambildata = Product::all()->last();
-            $cek2 = (int)substr($ambildata->id_produk, -5) + 1;
-            $idproduk = '1' . $get_brand3 . $thn . sprintf("%05s", + ($cek2));
-        }
+            $cek = Product::count();
 
-        $nilaiwares = Warehouse::count('id_ware');
-        // $dataware = Warehouse::all();
+            $now = Carbon::now('Asia/Bangkok');
+            $thn = $now->format('y');
+            if ($cek === 0) {
+                $urut = 1;
+                $idproduk = '1' . $get_brand3 . $thn . sprintf("%05s", ($urut));
+            } else {
+                $ambildata = Product::all()->last();
+                $cek2 = (int)substr($ambildata->id_produk, -5) + 1;
+                $idproduk = '1' . $get_brand3 . $thn . sprintf("%05s", + ($cek2));
+            }
 
-        for ($i = 0; $i < $nilaiwares; $i++) {
-            $idwarehouse = $i;
+            // $request->id_ware
             // DB PRODUCT
             $data = new Product();
             $data->id_produk = $idproduk;
-            $data->id_ware = $request->id_ware;
+            $data->id_ware = $data_wares->id_ware;
             $data->brand = $get_brands3;
             $data->tanggal = $tanggalskrg;
             $data->produk = Str::headline($request->produk);
@@ -151,19 +150,19 @@ class ProductController extends Controller
             }
             $data->users = $getuser;
             $data->save();
+
             // END DB PRODUCT
 
             //////////////////////////
 
             //DB VARIATION
             $qtys = 0;
-            if ($idwarehouse == $request->id_ware) {
-
+            if ($data_wares->id_ware == $request->id_ware) {
                 for ($i = 0; $i < Count($request->size); $i++) {
                     $data2 = new variation();
                     $data2->tanggal = $tanggalskrg;
                     $data2->id_produk = $idproduk;
-                    $data2->id_ware = $request->id_ware;
+                    $data2->id_ware = $data_wares->id_ware;
                     $data2->users = $getuser;
                     $data2->size = $request->size[$i];
                     $data2->qty = $request->qty[$i];
@@ -171,53 +170,54 @@ class ProductController extends Controller
 
                     $qtys =  $qtys + $request->qty[$i];
                 }
+
+
+                //////////////////////////
+                //DB SUPPLIER ORDER
+                $thn_bln = $now->format('ym');
+                $ceks = Supplier_order::count();
+                if ($ceks === 0) {
+                    $urut2 = 1;
+                    $get_idpo = $thn_bln . sprintf("%04s", ($urut2));
+                } else {
+                    $ambildatas = Supplier_order::all()->last();
+                    $ceks2 = (int)substr($ambildatas->idpo, -4) + 1;
+                    $get_idpo = $thn_bln . sprintf("%04s", + ($ceks2));
+                }
+
+                $data3 = new Supplier_order();
+                $data3->idpo = $get_idpo;
+                $data3->id_sup = $request->id_sup;
+                $data3->id_produk = $idproduk;
+                $data3->id_ware = $request->id_ware;
+                $data3->brand = $get_brands3;
+                $data3->tanggal = $tanggalskrg;
+                $data3->produk = Str::headline($request->produk);
+                $data3->qty = $qtys;
+                $data3->m_price = $request->m_price;
+                $data3->subtotal = $request->m_price * $qtys;
+                $data3->tipe_order = "RELEASE";
+                $data3->users = $getuser;
+                $data3->save();
+                //END DB SUPPLIER ORDER
+                //////////////////////////
             } else {
                 for ($i = 0; $i < Count($request->size); $i++) {
                     $data2 = new variation();
                     $data2->tanggal = $tanggalskrg;
                     $data2->id_produk = $idproduk;
-                    $data2->id_ware = $request->id_ware;
+                    $data2->id_ware = $data_wares->id_ware;
                     $data2->users = $getuser;
                     $data2->size = $request->size[$i];
-                    $data2->qty = "0";
+                    $data2->qty = '0';
                     $data2->save();
                 }
+                # code...
             }
-            //End DB VARIATION
+            // End DB VARIATION
+
         }
 
-        //////////////////////////
-        //DB SUPPLIER ORDER
-        $thn_bln = $now->format('ym');
-        $ceks = Supplier_order::count();
-        if ($ceks === 0) {
-            $urut2 = 1;
-            $get_idpo = $thn_bln . sprintf("%04s", ($urut2));
-        } else {
-            $ambildatas = Supplier_order::all()->last();
-            $ceks2 = (int)substr($ambildatas->idpo, -4) + 1;
-            $get_idpo = $thn_bln . sprintf("%04s", + ($ceks2));
-        }
-
-        $data3 = new Supplier_order();
-        $data3->idpo = $get_idpo;
-        $data3->id_sup = $request->id_sup;
-        $data3->id_produk = $idproduk;
-        $data3->id_ware = $request->id_ware;
-        $data3->brand = $get_brands3;
-        $data3->tanggal = $tanggalskrg;
-        $data3->produk = Str::headline($request->produk);
-        $data3->qty = $qtys;
-        $data3->m_price = $request->m_price;
-        $data3->subtotal = $request->m_price * $qtys;
-        $data3->tipe_order = "RELEASE";
-        $data3->users = $getuser;
-        $data3->save();
-        //END DB SUPPLIER ORDER
-        //////////////////////////
-
-        //////////////////////////
-        //////////////////////////
 
         return redirect('product/products');
     }

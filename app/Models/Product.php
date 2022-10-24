@@ -15,8 +15,8 @@ class Product extends Model
         return $this->hasMany(variation::class, 'id_produk', 'id_produk')->orderBy('size');
     }
 
-    // public function warehouse()
-    // {
-    //     return $this->belongsTo(Warehouse::class, 'id_ware', 'id_ware');
-    // }
+    public function warehouse()
+    {
+        return $this->hasMany(Warehouse::class, 'id_ware', 'id_ware');
+    }
 }
