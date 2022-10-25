@@ -10,9 +10,11 @@ class Product extends Model
     use HasFactory;
 
     protected $table = "products";
+
     public function product_variation()
     {
-        return $this->hasMany(variation::class, 'id_produk', 'id_produk')->orderBy('size');
+        // $dataproduk = Product::all('id_produk')->groupBy('id_produk');
+        return $this->hasMany(variation::class, 'id_ware', 'id_ware')->orderBy('size');
     }
 
     public function warehouse()

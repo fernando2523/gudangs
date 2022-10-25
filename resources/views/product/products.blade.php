@@ -400,8 +400,10 @@
                                     </th>
                                     <th class="text-center" width="2%" style="color: #a8b6bc !important;">IMAGE
                                     </th>
-                                    <th class="text-center" width="50%" style="color: #a8b6bc !important;">NAME
+                                    <th class="text-center" width="55%" style="color: #a8b6bc !important;">NAME
                                     </th>
+                                    </th>
+                                    <th class="text-center" width="10%" style="color: #a8b6bc !important;">DETAIL
                                     </th>
                                     <th class="text-center" width="20%" style="color: #a8b6bc !important;">SIZE
                                     </th>
@@ -484,22 +486,32 @@
                             "render": function(data, type, row, meta) {
                                 let rupiah = Intl.NumberFormat('id-ID');
 
-                                return '<span class="fw-bold fs-14px">' + row.produk +
-                                    '</span><br><span class="fw-bold text-indigo">' + row
-                                    .warehouse[0]['warehouse'] +
-                                    '</span><br><span class="fw-bold">' + row
-                                    .quality +
-                                    '</span> | <span class="fw-bold">' + row.category +
-                                    '</span> <br><span class="badge border border-success text-success fw-bold" style="width: 125px;padding-right: 10px;font-size: 11px;" >Cost : ' +
+                                return '<span class="fw-bold fs-14px text-white">' + row.produk +
+                                    '</span><br><span class="fw-bold"><span class="fw-bold">' +
+                                    row.category +
+                                    '</span> <br><span class="badge border border-success text-success fw-bold" style="width: 120px;padding-right: 10px;font-size: 11px;" >Cost : ' +
                                     rupiah.format(row.m_price) +
-                                    '</span> &nbsp; <span class="badge border border-white text-white fw-bold" style="width: 125px;font-size: 11px;" >Normal : ' +
+                                    '</span> &nbsp; <span class="badge border border-white text-white fw-bold" style="width: 120px;font-size: 11px;" >Normal : ' +
                                     rupiah.format(row.n_price) +
-                                    '</span> &nbsp; <span class="badge border border-yellow text-yellow fw-bold" style="width: 125px;font-size: 11px;margin-top: 7px;" >Reseller : ' +
+                                    '</span> &nbsp; <span class="badge border border-yellow text-yellow fw-bold" style="width: 120px;font-size: 11px;margin-top: 7px;" >Reseller : ' +
                                     rupiah.format(row.r_price) +
-                                    '</span>  &nbsp; <span class="badge border border-pink text-pink fw-bold" style="width: 125px;font-size: 11px;" >Grosir : ' +
+                                    '</span>  &nbsp; <span class="badge border border-pink text-pink fw-bold" style="width: 120px;font-size: 11px;" >Grosir : ' +
                                     rupiah.format(row.g_price) + '</span>';
                             },
                         }, {
+                            data: 'quality',
+                            name: 'quality',
+                            class: 'text-center',
+                            searchable: true,
+                            "render": function(data, type, row, meta) {
+                                return '<span class="fw-bold text-indigo">' + row
+                                    .warehouse[0]['warehouse'] +
+                                    '</span><br><span class="fw-bold">' + row
+                                    .quality +
+                                    '</span>';
+                            },
+                        },
+                        {
                             data: 'product_variation',
                             name: 'product_variation',
                             class: 'text-center',
@@ -511,7 +523,10 @@
                                 i = 0;
                                 b = 1;
 
+
                                 while (i < length) {
+
+
                                     if (row.product_variation[i]['qty'] === '0') {
                                         size = size + '<span class="text-danger">' + '[<i>' + row
                                             .product_variation[i]['size'] +
@@ -539,7 +554,11 @@
 
                                     b++;
                                     i++;
+
+
+
                                 }
+
 
                                 return size;
                             },

@@ -15,4 +15,9 @@ class variation extends Model
         'size',
         'qty',
     ];
+
+    // public function product()
+    // {
+    //     return $this->hasMany(Product::class, 'id_produk', 'id_produk')->orderBy('id');
+    // }
 }

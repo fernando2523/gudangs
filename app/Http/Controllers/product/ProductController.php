@@ -35,6 +35,8 @@ class ProductController extends Controller
         $getware = Warehouse::all();
         $getsupplier = Supplier::all();
 
+        // $dataproduk = Product::all('id_produk')->groupBy('id_produk');
+        // dd($dataproduk);
 
         return view('product.products', compact(
             'title',
@@ -90,37 +92,36 @@ class ProductController extends Controller
     {
         $data_ware = Warehouse::all();
 
+        $getbrand = $request->id_brand;
+        $get_brand = DB::table('brands')
+            ->where('id_brand', '=', $getbrand)
+            ->pluck('code');
+        $get_brand2 = $get_brand->toArray();
+        $get_brand3 = implode(" ", $get_brand2);
+
+        $get_brands = DB::table('brands')
+            ->where('id_brand', '=', $getbrand)
+            ->pluck('brand');
+        $get_brands2 = $get_brands->toArray();
+        $get_brands3 = implode(" ", $get_brands2);
+
+        $cek = Product::count();
+
+        $now = Carbon::now('Asia/Bangkok');
+        $thn = $now->format('y');
+        if ($cek === 0) {
+            $urut = 1;
+            $idproduk = '1' . $get_brand3 . $thn . sprintf("%05s", ($urut));
+        } else {
+            $ambildata = Product::all()->last();
+            $cek2 = (int)substr($ambildata->id_produk, -5) + 1;
+            $idproduk = '1' . $get_brand3 . $thn . sprintf("%05s", + ($cek2));
+        }
+
         foreach ($data_ware as $data_wares) {
             $getuser = Auth::user()->name;
             $tanggalskrg = Date('Y-m-d');
 
-            $getbrand = $request->id_brand;
-            $get_brand = DB::table('brands')
-                ->where('id_brand', '=', $getbrand)
-                ->pluck('code');
-            $get_brand2 = $get_brand->toArray();
-            $get_brand3 = implode(" ", $get_brand2);
-
-            $get_brands = DB::table('brands')
-                ->where('id_brand', '=', $getbrand)
-                ->pluck('brand');
-            $get_brands2 = $get_brands->toArray();
-            $get_brands3 = implode(" ", $get_brands2);
-
-            $cek = Product::count();
-
-            $now = Carbon::now('Asia/Bangkok');
-            $thn = $now->format('y');
-            if ($cek === 0) {
-                $urut = 1;
-                $idproduk = '1' . $get_brand3 . $thn . sprintf("%05s", ($urut));
-            } else {
-                $ambildata = Product::all()->last();
-                $cek2 = (int)substr($ambildata->id_produk, -5) + 1;
-                $idproduk = '1' . $get_brand3 . $thn . sprintf("%05s", + ($cek2));
-            }
-
-            // $request->id_ware
             // DB PRODUCT
             $data = new Product();
             $data->id_produk = $idproduk;
@@ -171,7 +172,6 @@ class ProductController extends Controller
                     $qtys =  $qtys + $request->qty[$i];
                 }
 
-
                 //////////////////////////
                 //DB SUPPLIER ORDER
                 $thn_bln = $now->format('ym');
@@ -217,7 +217,6 @@ class ProductController extends Controller
             // End DB VARIATION
 
         }
-
 
         return redirect('product/products');
     }
