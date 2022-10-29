@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '9306c3b265ebc616ce0d6cc6cee6457f3e85599a',
+        'reference' => 'c8224ddcf8d8367b56c0b2dc6675408a625b5138',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -17,6 +17,15 @@
             'install_path' => __DIR__ . '/../asm89/stack-cors',
             'aliases' => array(),
             'reference' => '73e5b88775c64ccc0b84fb60836b30dc9d92ac4a',
+            'dev_requirement' => false,
+        ),
+        'awobaz/compoships' => array(
+            'pretty_version' => '2.1.4',
+            'version' => '2.1.4.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../awobaz/compoships',
+            'aliases' => array(),
+            'reference' => 'ba86741d9b439d1179a6432dded92b0ecc89a63a',
             'dev_requirement' => false,
         ),
         'brick/math' => array(
@@ -400,7 +409,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '9306c3b265ebc616ce0d6cc6cee6457f3e85599a',
+            'reference' => 'c8224ddcf8d8367b56c0b2dc6675408a625b5138',
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(
