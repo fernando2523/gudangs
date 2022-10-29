@@ -463,16 +463,16 @@
                             class: 'text-center fw-bold',
                             searchable: false
                         }, {
-                            data: 'img',
-                            name: 'img',
+                            data: 'image_product',
+                            name: 'image_product',
                             class: 'text-center',
                             "render": function(data, type, row) {
-                                if (row.img === "") {
+                                if (row.image_product[0]['img'] === "") {
                                     return '<span><img src="/product/defaultimg.png" alt="" width="75" height="75" class="rounded"></span><span class="fw-bold"><br>' +
                                         row
                                         .id_produk + '</span>';
                                 } else {
-                                    return '<span><img src="/product/' + row.img +
+                                    return '<span><img src="/product/' + row.image_product[0]['img'] +
                                         '" alt="" width="75"  height="75" class="rounded"></span><span class="fw-bold"><br>' +
                                         row
                                         .id_produk + '</span>';
@@ -523,12 +523,10 @@
                                 i = 0;
                                 b = 1;
 
-
                                 while (i < length) {
-
-
                                     if (row.product_variation[i]['qty'] === '0') {
-                                        size = size + '<span class="text-danger">' + '[<i>' + row
+                                        size = size + '<span class="text-danger">' + '[<i>' +
+                                            row
                                             .product_variation[i]['size'] +
                                             '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
                                             row.product_variation[
@@ -544,21 +542,18 @@
                                             row.product_variation[
                                                 i][
                                                 'qty'
-                                            ] + '</span><span class="fw-bold text-lime">] </span>';
+                                            ] +
+                                            '</span><span class="fw-bold text-lime">] </span>';
                                     }
 
                                     if (b === 4) {
                                         size = size + '<br>';
                                         b = 0;
                                     }
-
                                     b++;
                                     i++;
 
-
-
                                 }
-
 
                                 return size;
                             },

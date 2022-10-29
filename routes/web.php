@@ -91,4 +91,6 @@ route::any('/tableproduct', [ProductController::class, 'tableproduct'])->middlew
 Route::any('/load_variation', [ProductController::class, 'load_variation']);
 route::any('/product/products/store', [ProductController::class, 'store'])->middleware('auth');
 
-// route::get('/store_expense/store_expenses',[StoreEquipmentCostController::class,'store_expense'])->middleware('auth');
+route::get('/store_expense/store_expenses', [StoreEquipmentCostController::class, 'store_expense'])->middleware('auth');
+route::any('/tableexpenses', [StoreEquipmentCostController::class, 'tableexpenses'])->middleware('auth');
+route::any('/store_expense/store_expenses/store', [StoreEquipmentCostController::class, 'store'])->middleware('auth');
