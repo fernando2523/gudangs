@@ -148,20 +148,12 @@
             <div class="col-xl-7">
 
                 <div class="row mb-3">
-                    <div class="col-3">
+                    <div class="col-7">
                         <select class="form-select fw-bold  form-select-sm text-theme" name="store" required>
                             <option value="" disabled selected>Customer..</option>
                             <option value="RETAIL">RETAIL</option>
                             <option value="RESELLER">RESELLER</option>
                             <option value="GROSIR">GROSIR</option>
-                        </select>
-                    </div>
-                    <div class="col-4">
-                        <select class="form-select  fw-bold  form-select-sm text-theme" name="store" required>
-                            <option value="" disabled selected>Reseller..</option>
-                            @foreach ($getreseller as $reseller)
-                                <option value="{{ $reseller->nama }}">{{ $reseller->nama }}</option>
-                            @endforeach
                         </select>
                     </div>
                     <div class="col-2">
@@ -312,35 +304,44 @@
                 <div class="card mt-3">
 
                     <div class="card-body" style="height: auto;">
-                        <div class="row" style="margin-left: 0px;">
-                            <div class="col-4">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <select class="form-select  fw-bold  form-select-sm text-theme" name="store" required>
+                                    <option value="" disabled selected>Reseller..</option>
+                                    @foreach ($getreseller as $reseller)
+                                        <option value="{{ $reseller->nama }}">{{ $reseller->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-4" style="padding-left: 17px;">
                                 <div class="row bagde border border-default">
-                                    <div class="col-6" align="left" style="height: 27px;padding-top: 3px;">
-                                        <span class="text-success" style="width: 120px;">Amount
+                                    <div class="col-5" align="left" style="height: 27px;padding-top: 3px;">
+                                        <span class="text-success fs-12px" style="width: 120px;">Amount
                                             : </span>
                                     </div>
-                                    <div class="col-6" align="right" style="padding-top: 3px;">
-                                        <span class="text-success fw-bold" style="width: 120px;">Rp 500.500</span>
+                                    <div class="col-7" align="right" style="padding-top: 3px;">
+                                        <span class="text-success fw-bold fs-12px" style="width: 120px;">Rp
+                                            5.500.500</span>
                                     </div>
                                 </div>
 
                                 <div class="row bagde border border-default">
-                                    <div class="col-6" align="left" style="height: 27px;padding-top: 3px;">
-                                        <span class="text-yellow" style="width: 120px;">Disc
+                                    <div class="col-5" align="left" style="height: 27px;padding-top: 3px;">
+                                        <span class="text-yellow fs-12px" style="width: 120px;">Disc
                                             : </span>
                                     </div>
-                                    <div class="col-6" align="right" style="padding-top: 3px;">
-                                        <span class="text-yellow fw-bold" style="width: 120px;">Rp 500.500</span>
+                                    <div class="col-7" align="right" style="padding-top: 3px;">
+                                        <span class="text-yellow fw-bold fs-12px" style="width: 120px;">Rp 500.500</span>
                                     </div>
                                 </div>
 
                                 <div class="row bagde border border-default">
-                                    <div class="col-6" align="left" style="height: 27px;padding-top: 3px;">
-                                        <span class="text-indigo" style="width: 120px;">Ongkir
+                                    <div class="col-5" align="left" style="height: 27px;padding-top: 3px;">
+                                        <span class="text-indigo fs-12px" style="width: 120px;">Ongkir
                                             : </span>
                                     </div>
-                                    <div class="col-6" align="right" style="padding-top: 3px;">
-                                        <span class="text-indigo fw-bold" style="width: 120px;">Rp 0</span>
+                                    <div class="col-7" align="right" style="padding-top: 3px;">
+                                        <span class="text-indigo fw-bold fs-12px" style="width: 120px;">Rp 0</span>
                                     </div>
                                 </div>
                             </div>
