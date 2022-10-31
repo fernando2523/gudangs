@@ -31,6 +31,7 @@ class SaleController extends Controller
         $getstore = Store::all();
         $getkasir = Employee::all()->where('role', '!=', 'ADMIN');
         $getreseller = Reseller::all();
+        // $getreseller = Reseller::all();
 
         return view('sale.sales', compact(
             'title',
