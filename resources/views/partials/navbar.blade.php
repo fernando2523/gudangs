@@ -114,8 +114,8 @@
             </div>
 
             <div class="menu-header">Sales</div>
-            <div class="menu-item {{ Request::is('employee/employees') ? 'active' : '' }}">
-                <a href="/employee/employees" class="menu-link">
+            <div class="menu-item {{ Request::is('sale/sale') ? 'active' : '' }}">
+                <a href="/sale/sales" class="menu-link">
                     <span class="menu-icon"><i class="bi bi-cart-check text-theme"></i></span>
                     <span class="menu-text">Sales</span>
                 </a>
