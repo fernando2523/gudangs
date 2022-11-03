@@ -91,6 +91,10 @@ route::get('/product/products_test', [ProductController::class, 'product_test'])
 route::any('/tableproduct', [ProductController::class, 'tableproduct'])->middleware('auth');
 Route::any('/load_variation', [ProductController::class, 'load_variation']);
 route::any('/product/products/store', [ProductController::class, 'store'])->middleware('auth');
+route::any('/product/editact/{id}', [ProductController::class, 'editact'])->middleware('auth');
+route::any('/product/destroy/{id}', [ProductController::class, 'destroy'])->middleware('auth');
+route::any('/load_edit_variation', [ProductController::class, 'load_edit_variation']);
+route::any('/load_image', [ProductController::class, 'load_image']);
 
 route::get('/store_expense/store_expenses', [StoreEquipmentCostController::class, 'store_expense'])->middleware('auth');
 route::any('/tableexpenses', [StoreEquipmentCostController::class, 'tableexpenses'])->middleware('auth');

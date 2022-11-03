@@ -14,23 +14,6 @@ class Product extends Model
 
     public function product_variation()
     {
-        // $$dataproduk = DB::table('products')
-        //     ->select('id_ware')
-        //     ->groupBy('id_ware')
-        //     ->get();
-
-        // $datass = $dataproduk->toArray();
-
-        // return $this->hasMany(variation::class, 'id_produk', 'id_produk')
-        //     ->where(function ($query) {
-        //         $query->where('id_produk', $this->id_produk)
-        //             ->orWhere('id_ware', $this->id_ware);
-        //     });
-
-        // return variation::where(function ($query) {
-        //     $query->where('id_produk', $this->id_produk)
-        //         ->orWhere('id_ware', $this->id_ware);
-        // });
 
         return $this->hasMany(variation::class, 'id_produk', 'id_produk')->orderBy('size');
     }

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use GuzzleHttp\Psr7\Request as Psr7Request;
 use PHPUnit\Framework\Constraint\Count;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
@@ -37,20 +38,26 @@ class ProductController extends Controller
         $getcategory = Sub_category::all();
         $getware = Warehouse::all();
         $getsupplier = Supplier::all();
+        $getware = Warehouse::all();
 
-        // $dataproduk = DB::table('products')
-        //     ->select('id_ware')
-        //     ->groupBy('id_ware')
-        //     ->get();
+        $get_totalproduk = variation::all()->where('qty', '!=', '0')->groupBy('id_produk')->count('id_produk');
+        $get_totalqty = variation::all()->sum('qty');
 
-        // $datass = $dataproduk->toArray();
-        // $product = Product::with('product_variation')
-        //     ->whereIn('id_ware', ['WARE-2'])
-        //     ->get();
+        $getsproduct = DB::table('products')
+            ->distinct('id_ware')
+            ->distinct('id_produk')
+            ->select('id_ware')
+            ->groupBy('id_ware')
+            ->get();
 
-        // $now = Carbon::now('Asia/Bangkok');
-
-        // dd($get_idpo);
+        $get_perware = product::join('variations', 'variations.id_ware', '=', 'products.id_ware')
+            ->select(
+                DB::raw('COUNT(variations.id_produk) as countidproduk'),
+                DB::raw('variations.id_ware'),
+            )
+            ->where('qty', '!=', '0')
+            ->groupBy('variations.id_ware')
+            ->get();
 
         return view('product.products', compact(
             'title',
@@ -58,6 +65,10 @@ class ProductController extends Controller
             'getcategory',
             'getware',
             'getsupplier',
+            'get_totalproduk',
+            'get_totalqty',
+            'get_perware',
+            'getsproduct'
         ));
     }
 
@@ -82,6 +93,36 @@ class ProductController extends Controller
 
             return view('load/load_variation', compact(
                 'search'
+            ));
+        }
+    }
+
+    public function load_edit_variation(Request $request)
+    {
+
+        if ($request->ajax()) {
+            $variationss = variation::all();
+            $id_ware = $request->id_ware;
+            $id_produk = $request->id_produk;
+
+            return view('load/load_edit_variation', compact(
+                'id_ware',
+                'id_produk',
+                'variationss'
+            ));
+        }
+    }
+
+    public function load_image(Request $request)
+    {
+
+        if ($request->ajax()) {
+            $dataimg = Image_product::all();
+            $id_produk = $request->id_produk;
+
+            return view('load/load_image', compact(
+                'id_produk',
+                'dataimg'
             ));
         }
     }
@@ -157,14 +198,13 @@ class ProductController extends Controller
             $data->desc = null;
             $data->category = $request->category;
             $data->quality = $request->quality;
-            $data->n_price = $request->n_price;
-            $data->r_price = $request->r_price;
-            $data->g_price = $request->g_price;
-            $data->m_price = $request->m_price;
+            $data->n_price = preg_replace("/[^0-9]/", "", $request->n_price);
+            $data->r_price = preg_replace("/[^0-9]/", "", $request->r_price);
+            $data->g_price = preg_replace("/[^0-9]/", "", $request->g_price);
+            $data->m_price = preg_replace("/[^0-9]/", "", $request->m_price);
             $data->users = $getuser;
             $data->save();
             // END DB PRODUCT
-
 
             $qtys = 0;
             if ($data_wares->id_ware == $request->id_ware) {
@@ -242,8 +282,8 @@ class ProductController extends Controller
                 $data3->tanggal = $tanggalskrg;
                 $data3->produk = Str::headline($request->produk);
                 $data3->qty = $qtys;
-                $data3->m_price = $request->m_price;
-                $data3->subtotal = $request->m_price * $qtys;
+                $data3->m_price = preg_replace("/[^0-9]/", "", $request->m_price);
+                $data3->subtotal = preg_replace("/[^0-9]/", "", $request->m_price) * $qtys;
                 $data3->tipe_order = "RELEASE";
                 $data3->users = $getuser;
                 $data3->save();
@@ -286,9 +326,54 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function editact(Request $request, $id)
     {
-        //
+        $get_id_produk = $request->id_produk;
+
+        Product::where('id_produk', $get_id_produk)
+            ->update([
+                'produk' => Str::headline($request->edit_produk),
+                'brand' => $request->edit_id_brand,
+                'category' => $request->edit_category,
+                'quality' => $request->edit_quality,
+                'm_price' => preg_replace("/[^0-9]/", "", $request->edit_m_price),
+                'r_price' => preg_replace("/[^0-9]/", "", $request->edit_r_price),
+                'n_price' => preg_replace("/[^0-9]/", "", $request->edit_n_price),
+                'g_price' => preg_replace("/[^0-9]/", "", $request->edit_g_price),
+            ]);
+
+        for ($i = 0; $i < Count($request->size); $i++) {
+            variation::where('id_produk', $request->id_produk)->where('id_ware', $request->id_ware)->where('size', $request->size[$i])
+                ->update([
+                    'qty' => $request->qty[$i],
+                ]);
+        }
+
+        $getimg = Image_product::all()->where('id_produk', '=', $request->id_produk)->pluck('id');
+        $getimg2 = $getimg->toArray();
+        $getimg3 = implode(" ", $getimg2);
+        $id = $getimg3;
+
+        $data = Image_product::find($id);
+        if (empty($_FILES['file']['name'][0])) {
+        } else {
+            $request->validate([
+                'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
+            ]);
+
+            if ($data->img === "") {
+            } else {
+                $image = Image_product::find($id);
+                unlink("product/" . $image->img);
+            }
+
+            $fileName = time() . '.' . $request->file->extension();
+            $request->file->move(public_path('product'), $fileName);
+            $data->img = $fileName;
+        }
+        $data->update();
+
+        return redirect('product/products');
     }
 
     /**
@@ -309,8 +394,20 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Request $request, $id)
     {
-        //
+        DB::table('products')->where('id_produk', $request->del_id_produk)->delete();
+        DB::table('variations')->where('id_produk', $request->del_id_produk)->delete();
+
+        $image = DB::table('image_products')->where('id_produk', $request->del_id_produk)->get();
+        foreach ($image as $images) {
+            if ($images->id_produk === "" or $images->id_produk === null) {
+            } else {
+                unlink("product/" . $images->img);
+            }
+        }
+        DB::table('image_products')->where('id_produk', $request->del_id_produk)->delete();
+
+        return redirect('product/products');
     }
 }
