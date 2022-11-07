@@ -49,13 +49,23 @@
                                 <div class="col-12 form-group position-relative mb-3">
                                     <label class="form-label">Store</label>
                                     <select class="form-select form-select-sm text-theme" name="store" required>
-                                        <option value="" disabled selected>Choose Store</option>
-                                        @foreach ($getstore as $gets)
-                                            <option value="{{ $gets->store }}">{{ $gets->store }}</option>
-                                        @endforeach
+                                        @if (Auth::user()->role === 'SUPER-ADMIN')
+                                            <option value="" disabled selected>Pilih Store</option>
+                                            @foreach ($getstore as $gets)
+                                                <option value="{{ $gets->store }}">{{ $gets->store }}
+                                                </option>
+                                            @endforeach
+                                        @else
+                                            @foreach ($getstore as $gets)
+                                                @if (Auth::user()->id_store === $gets->id_store)
+                                                    <option value="{{ $gets->store }}">{{ $gets->store }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                     </select>
                                     <div class="invalid-tooltip">
-                                        Mohon pilih warehouse yang sesuai.
+                                        Mohon pilih store yang sesuai.
                                     </div>
                                 </div>
                                 <hr style="margin-top: 25px;">
@@ -63,20 +73,20 @@
                                 <div class="col-12 form-group mb-3 mt-1">
                                     <label class="form-label">Store Expenses</label>
                                     <input class="form-control form-control-sm text-theme is-invalid" type="text"
-                                        name="item" required placeholder="Mohon di isi nama pengeluaran toko"
+                                        name="item" required placeholder="Mohon di isi nama pengeluaran"
                                         autocomplete="OFF">
                                 </div>
 
                                 <div class="col-12 form-group mb-3">
                                     <label class="form-label">Desc</label>
-                                    <textarea class="form-control form-control-sm text-theme is-invalid" type="text" name="desc" required
+                                    <textarea class="form-control form-control-sm text-theme is-invalid" type="text" name="desc"
                                         placeholder="Opsional.." autocomplete="OFF" rows="2"></textarea>
                                 </div>
 
                                 <div class="col-12 form-group mb-3">
                                     <label class="form-label">Total Price</label>
-                                    <input class="form-control form-control-sm text-theme is-invalid" type="number"
-                                        name="total_price" required placeholder="0" autocomplete="OFF">
+                                    <input class="form-control form-control-sm text-theme is-invalid" type="text"
+                                        name="total_price" required placeholder="0" autocomplete="OFF" type-currency="IDR">
                                 </div>
                             </div>
                             <div class="form-group mt-3" align="right">
@@ -189,8 +199,8 @@
             <!-- END -->
         </div>
 
-        {{-- @include('store.delete')
-        @include('store.edit') --}}
+        @include('store_expense.delete')
+        @include('store_expense.edit')
 
         <link href="{{ URL::asset('/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"
             rel="stylesheet" />
@@ -244,7 +254,15 @@
                             data: 'desc',
                             name: 'desc',
                             class: 'text-center',
-                            searchable: true
+                            searchable: true,
+                            "render": function(data, type, row) {
+                                if (row.desc === "" || row.desc === null) {
+                                    return '<span>-</span>';
+                                } else {
+                                    return '<span>' + row.desc + '</span>';
+                                }
+
+                            },
                         },
                         {
                             data: 'total_price',
@@ -264,7 +282,21 @@
                             name: 'action',
                             class: 'text-center fw-bold',
                             "render": function(data, type, row) {
-                                return '<span><a class="text-primary" style="cursor: pointer;" onclick="openmodaledit()"><i class="fas fa-xl fa-times-circle"></i></a></span>';
+                                return '<span><a class="text-info" style="cursor: pointer;margin-right: 10px;" onclick="openmodaledit(' +
+                                    "'" + row.id + "'" +
+                                    ',' +
+                                    "'" + row.id_costs + "'" +
+                                    ',' +
+                                    "'" + row.store + "'" +
+                                    ',' +
+                                    "'" + row.item + "'" +
+                                    ',' +
+                                    "'" + row.desc + "'" +
+                                    ',' +
+                                    "'" + row.total_price + "'" +
+                                    ')"><i class="fas fa-xl fa-edit"></i></a><a class="text-danger" style="cursor: pointer;" onclick="openmodaldelete(' +
+                                    "'" + row.id + "'" +
+                                    ')"><i class="fas fa-xl fa-times-circle"></i></a></span>';
                             },
                         },
                     ],
@@ -290,24 +322,41 @@
 
 
 
-        {{-- <script>
+        <script>
             // edit
-            function openmodaledit(id, id_store, store, address, id_ware, warehouse) {
+            function openmodaledit(id, id_costs, store, item, desc, total_price) {
                 $('#modaledit').modal('show');
-
                 document.getElementById('e_id').value = id;
-                document.getElementById('e_id_store').value = id_store;
-                document.getElementById('e_store').value = store;
-                document.getElementById('e_address').value = address;
-                document.getElementById('e_id_ware').value = id_ware;
+                document.getElementById('e_id_costs').value = id_costs;
+                document.getElementById('e_item').value = item;
+                document.getElementById('e_totalprice').value = total_price;
 
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ URL::to('/expense_select_store') }}",
+                    data: {
+                        store: store,
+                    },
+                    success: function(data) {
+                        $("#expense_select_store").html(data);
+                    }
+                });
 
-                document.getElementById("e_warehousedefault").innerHTML = "DEFAULT : " + warehouse;
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ URL::to('/expense_desc') }}",
+                    data: {
+                        desc: desc,
+                    },
+                    success: function(data) {
+                        $("#expense_desc").html(data);
+                    }
+                });
             }
 
             function submitformedit() {
                 var value = document.getElementById('e_id').value;
-                document.getElementById('form_edit').action = "../store/editact/" + value;
+                document.getElementById('form_edit').action = "../store_expenses/editact/" + value;
                 document.getElementById("form_edit").submit();
             }
 
@@ -319,8 +368,29 @@
 
             function submitformdelete() {
                 var value = document.getElementById('del_id').value;
-                document.getElementById('form_delete').action = "../store/destroy/" + value;
+                document.getElementById('form_delete').action = "../store_expenses/destroy/" + value;
                 document.getElementById("form_delete").submit();
             }
-        </script> --}}
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script>
+            document.querySelectorAll('input[type-currency="IDR"]').forEach((element) => {
+                element.addEventListener('keyup', function(e) {
+                    let cursorPostion = this.selectionStart;
+                    let value = parseInt(this.value.replace(/[^,\d]/g, ''));
+                    let originalLenght = this.value.length;
+                    if (isNaN(value)) {
+                        this.value = "";
+                    } else {
+                        this.value = value.toLocaleString('id-ID', {
+                            currency: 'IDR',
+                            style: 'currency',
+                            minimumFractionDigits: 0
+                        });
+                        cursorPostion = this.value.length - originalLenght + cursorPostion;
+                        this.setSelectionRange(cursorPostion, cursorPostion);
+                    }
+                });
+            });
+        </script>
     @endsection

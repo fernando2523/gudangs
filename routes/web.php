@@ -13,6 +13,9 @@ use App\Http\Controllers\category\CategoryController;
 use App\Http\Controllers\product\ProductController;
 use App\Http\Controllers\storeequipmentcost\StoreEquipmentCostController;
 use App\Http\Controllers\sale\SaleController;
+use App\Http\Controllers\repeat\RepeatOrderController;
+use App\Http\Controllers\purchaseOrder\PurchaseOrderController;
+use App\Http\Controllers\asset\AssetController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,6 +49,8 @@ route::any('/employees/destroy/{id}', [EmployeeController::class, 'destroy'])->m
 route::any('/employees/destroy_employee/{id}', [EmployeeController::class, 'destroy_employee'])->middleware('auth');
 route::get('/layouts/main', [EmployeeController::class, 'main'])->middleware('auth');
 route::any('/employee/employees/cari', [EmployeeController::class, 'cari'])->middleware('auth');
+route::any('/load_editstore', [EmployeeController::class, 'load_editstore']);
+route::any('/load_selectrole', [EmployeeController::class, 'load_selectrole']);
 
 route::get('/supplier/suppliers', [SupplierController::class, 'supplier'])->middleware('auth');
 route::get('/tablesupplier', [SupplierController::class, 'tablesupplier'])->middleware('auth');
@@ -99,6 +104,25 @@ route::any('/load_image', [ProductController::class, 'load_image']);
 route::get('/store_expense/store_expenses', [StoreEquipmentCostController::class, 'store_expense'])->middleware('auth');
 route::any('/tableexpenses', [StoreEquipmentCostController::class, 'tableexpenses'])->middleware('auth');
 route::any('/store_expense/store_expenses/store', [StoreEquipmentCostController::class, 'store'])->middleware('auth');
+route::any('/expense_select_store', [StoreEquipmentCostController::class, 'expense_select_store']);
+route::any('/store_expenses/editact/{id}', [StoreEquipmentCostController::class, 'editact'])->middleware('auth');
+route::any('/expense_desc', [StoreEquipmentCostController::class, 'expense_desc']);
+route::any('/store_expenses/destroy/{id}', [StoreEquipmentCostController::class, 'destroy'])->middleware('auth');
+
+route::get('/repeat/repeatorders', [RepeatOrderController::class, 'repeatorders'])->middleware('auth');
+route::any('/tablerepeatorder', [RepeatOrderController::class, 'tablerepeatorder'])->middleware('auth');
+route::any('/load_repeatorder', [RepeatOrderController::class, 'load_repeatorder']);
+route::any('/table_detail_repeatorder/{id_ware}/{id_produk}', [RepeatOrderController::class, 'table_detail_repeatorder'])->middleware('auth');
+route::any('/repeat/repeats/{id}', [RepeatOrderController::class, 'repeats'])->middleware('auth');
+
+route::get('/purchase/purchaseorder', [PurchaseOrderController::class, 'purchaseorder'])->middleware('auth');
+route::any('/load_purchase_order', [PurchaseOrderController::class, 'load_purchase_order']);
+route::any('/purchase_variation', [PurchaseOrderController::class, 'purchase_variation']);
+
+route::get('/asset/assets', [AssetController::class, 'assets'])->middleware('auth');
+route::any('/tableassets', [AssetController::class, 'tableassets'])->middleware('auth');
 
 route::get('/sale/sales', [SaleController::class, 'sale'])->middleware('auth');
 route::any('/tablesale', [SaleController::class, 'tablesale'])->middleware('auth');
+route::any('/load_size', [SaleController::class, 'load_size'])->middleware('auth');
+route::any('/savesales', [SaleController::class, 'save_sales']);

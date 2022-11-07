@@ -37,27 +37,25 @@ class ProductController extends Controller
         $getbrand = brand::all();
         $getcategory = Sub_category::all();
         $getware = Warehouse::all();
-        $getsupplier = Supplier::all();
+        $getsupplier = DB::table('suppliers')->orderBy('id_sup', 'desc')->get();
         $getware = Warehouse::all();
 
         $get_totalproduk = variation::all()->where('qty', '!=', '0')->groupBy('id_produk')->count('id_produk');
         $get_totalqty = variation::all()->sum('qty');
 
         $getsproduct = DB::table('products')
-            ->distinct('id_ware')
-            ->distinct('id_produk')
-            ->select('id_ware')
-            ->groupBy('id_ware')
-            ->get();
+            ->select(DB::raw('id_ware'),)->groupBy('id_ware')->get();
 
-        $get_perware = product::join('variations', 'variations.id_ware', '=', 'products.id_ware')
+        $get_perware = DB::table('variations')
             ->select(
                 DB::raw('COUNT(variations.id_produk) as countidproduk'),
-                DB::raw('variations.id_ware'),
-            )
-            ->where('qty', '!=', '0')
-            ->groupBy('variations.id_ware')
-            ->get();
+                DB::raw('SUM(variations.qty) as totalQty'),
+                DB::raw('id_ware'),
+            )->where('qty', '!=', '0')->groupBy('id_ware')->get();
+
+        $getnamewarehouse = Warehouse::all();
+
+        $get_Supplier_Order = DB::table('supplier_orders')->select(DB::raw('idpo'), DB::raw('tanggal'), DB::raw('id_sup'),)->groupBy('idpo', 'tanggal', 'id_sup')->orderBy('idpo', 'desc')->limit(10)->get();
 
         return view('product.products', compact(
             'title',
@@ -68,7 +66,9 @@ class ProductController extends Controller
             'get_totalproduk',
             'get_totalqty',
             'get_perware',
-            'getsproduct'
+            'getsproduct',
+            'get_Supplier_Order',
+            'getnamewarehouse'
         ));
     }
 
@@ -215,8 +215,8 @@ class ProductController extends Controller
                     $urut2 = 1;
                     $get_idpo = $thn_bln . sprintf("%04s", ($urut2));
                 } else {
-                    $ambildatas = Supplier_order::all()->last();
-                    $ceks2 = (int)substr($ambildatas->idpo, 4) + 1;
+                    $ambildatas = DB::table('supplier_orders')->select(DB::raw('idpo'),)->max('idpo');
+                    $ceks2 = (int)substr($ambildatas, 4) + 1;
                     $get_idpo = $thn_bln . sprintf("%04s", + ($ceks2));
                 }
                 //END GET IDPO
@@ -233,62 +233,123 @@ class ProductController extends Controller
                     $get_idhistory = $thn_bln_tgl . sprintf("%04s", + ($hitung2));
                 }
                 //END ID HISTORY
-                for ($i = 0; $i < Count($request->size); $i++) {
-                    //DB VARIATION
-                    $data2 = new variation();
-                    $data2->tanggal = $tanggalskrg;
-                    $data2->id_produk = $idproduk;
-                    $data2->id_ware = $data_wares->id_ware;
-                    $data2->users = $getuser;
-                    $data2->size = $request->size[$i];
-                    $data2->qty = $request->qty[$i];
-                    $data2->save();
-                    $qtys =  $qtys + $request->qty[$i];
-                    //END DB VARIATION
+                $get_supplier_Lama = DB::table('supplier_orders')->select(DB::raw('idpo'), DB::raw('id_sup'),)->where('idpo', '=', $request->id_po_lama)->groupBy('idpo', 'id_sup')->pluck('id_sup');
+                $get_supplier_Lama2 = $get_supplier_Lama->toArray();
+                $get_supplier_Lama3 = implode(" ", $get_supplier_Lama2);
 
-                    //DB SUPPLIER VARIATIONS
-                    $data4 = new Supplier_variation();
-                    $data4->idpo = $get_idpo;
-                    $data4->id_sup = $request->id_sup;
-                    $data4->id_produk = $idproduk;
-                    $data4->id_ware = $request->id_ware;
-                    $data4->tanggal = $tanggalskrg;
-                    $data4->size = $request->size[$i];
-                    $data4->qty = $request->qty[$i];
-                    $data4->tipe_order = "RELEASE";
-                    $data4->users = $getuser;
-                    $data4->save();
-                    //END DB SUPPLIER VARIATIONS
+                if ($request->type_po === "baru") {
+                    for ($i = 0; $i < Count($request->size); $i++) {
+                        //DB VARIATION
+                        $data2 = new variation();
+                        $data2->tanggal = $tanggalskrg;
+                        $data2->id_produk = $idproduk;
+                        $data2->id_ware = $data_wares->id_ware;
+                        $data2->users = $getuser;
+                        $data2->size = $request->size[$i];
+                        $data2->qty = $request->qty[$i];
+                        $data2->save();
+                        $qtys =  $qtys + $request->qty[$i];
+                        //END DB VARIATION
 
-                    //DB VARIATIONS_HISTORIES
-                    $data5 = new Variation_history();
-                    $data5->tanggal = $tanggalskrg;
-                    $data5->id_history = $get_idhistory;
-                    $data5->id_produk = $idproduk;
-                    $data5->id_ware = $request->id_ware;
-                    $data5->size = $request->size[$i];
-                    $data5->qty = $request->qty[$i];
-                    $data5->users = $getuser;
-                    $data5->save();
-                    //END DB VARIATIONS_HISTORIES
+                        //DB SUPPLIER VARIATIONS
+                        $data4 = new Supplier_variation();
+                        $data4->idpo = $get_idpo;
+                        $data4->id_sup = $request->id_sup;
+                        $data4->id_produk = $idproduk;
+                        $data4->id_ware = $request->id_ware;
+                        $data4->tanggal = $tanggalskrg;
+                        $data4->size = $request->size[$i];
+                        $data4->qty = $request->qty[$i];
+                        $data4->tipe_order = "RELEASE";
+                        $data4->users = $getuser;
+                        $data4->save();
+                        //END DB SUPPLIER VARIATIONS
+
+                        //DB VARIATIONS_HISTORIES
+                        $data5 = new Variation_history();
+                        $data5->tanggal = $tanggalskrg;
+                        $data5->id_history = $get_idhistory;
+                        $data5->id_produk = $idproduk;
+                        $data5->id_ware = $request->id_ware;
+                        $data5->size = $request->size[$i];
+                        $data5->qty = $request->qty[$i];
+                        $data5->users = $getuser;
+                        $data5->save();
+                        //END DB VARIATIONS_HISTORIES
+                    }
+                    //DB SUPPLIER ORDER
+                    $data3 = new Supplier_order();
+                    $data3->idpo = $get_idpo;
+                    $data3->id_sup = $request->id_sup;
+                    $data3->id_produk = $idproduk;
+                    $data3->id_ware = $request->id_ware;
+                    $data3->brand = $get_brands3;
+                    $data3->tanggal = $tanggalskrg;
+                    $data3->produk = Str::headline($request->produk);
+                    $data3->qty = $qtys;
+                    $data3->m_price = preg_replace("/[^0-9]/", "", $request->m_price);
+                    $data3->subtotal = preg_replace("/[^0-9]/", "", $request->m_price) * $qtys;
+                    $data3->tipe_order = "RELEASE";
+                    $data3->users = $getuser;
+                    $data3->save();
+                    //END DB SUPPLIER ORDER
+                } elseif ($request->type_po === "lama") {
+                    for ($i = 0; $i < Count($request->size); $i++) {
+                        //DB VARIATION
+                        $data2 = new variation();
+                        $data2->tanggal = $tanggalskrg;
+                        $data2->id_produk = $idproduk;
+                        $data2->id_ware = $data_wares->id_ware;
+                        $data2->users = $getuser;
+                        $data2->size = $request->size[$i];
+                        $data2->qty = $request->qty[$i];
+                        $data2->save();
+                        $qtys =  $qtys + $request->qty[$i];
+                        //END DB VARIATION
+
+                        //DB SUPPLIER VARIATIONS
+                        $data4 = new Supplier_variation();
+                        $data4->idpo = $request->id_po_lama;
+                        $data4->id_sup = $get_supplier_Lama3;
+                        $data4->id_produk = $idproduk;
+                        $data4->id_ware = $request->id_ware;
+                        $data4->tanggal = $tanggalskrg;
+                        $data4->size = $request->size[$i];
+                        $data4->qty = $request->qty[$i];
+                        $data4->tipe_order = "RELEASE";
+                        $data4->users = $getuser;
+                        $data4->save();
+                        //END DB SUPPLIER VARIATIONS
+
+                        //DB VARIATIONS_HISTORIES
+                        $data5 = new Variation_history();
+                        $data5->tanggal = $tanggalskrg;
+                        $data5->id_history = $get_idhistory;
+                        $data5->id_produk = $idproduk;
+                        $data5->id_ware = $request->id_ware;
+                        $data5->size = $request->size[$i];
+                        $data5->qty = $request->qty[$i];
+                        $data5->users = $getuser;
+                        $data5->save();
+                        //END DB VARIATIONS_HISTORIES
+                    }
+                    //DB SUPPLIER ORDER
+                    $data3 = new Supplier_order();
+                    $data3->idpo = $request->id_po_lama;
+                    $data3->id_sup = $get_supplier_Lama3;
+                    $data3->id_produk = $idproduk;
+                    $data3->id_ware = $request->id_ware;
+                    $data3->brand = $get_brands3;
+                    $data3->tanggal = $tanggalskrg;
+                    $data3->produk = Str::headline($request->produk);
+                    $data3->qty = $qtys;
+                    $data3->m_price = preg_replace("/[^0-9]/", "", $request->m_price);
+                    $data3->subtotal = preg_replace("/[^0-9]/", "", $request->m_price) * $qtys;
+                    $data3->tipe_order = "RELEASE";
+                    $data3->users = $getuser;
+                    $data3->save();
+                    //END DB SUPPLIER ORDER
                 }
-                //DB SUPPLIER ORDER
-                $data3 = new Supplier_order();
-                $data3->idpo = $get_idpo;
-                $data3->id_sup = $request->id_sup;
-                $data3->id_produk = $idproduk;
-                $data3->id_ware = $request->id_ware;
-                $data3->brand = $get_brands3;
-                $data3->tanggal = $tanggalskrg;
-                $data3->produk = Str::headline($request->produk);
-                $data3->qty = $qtys;
-                $data3->m_price = preg_replace("/[^0-9]/", "", $request->m_price);
-                $data3->subtotal = preg_replace("/[^0-9]/", "", $request->m_price) * $qtys;
-                $data3->tipe_order = "RELEASE";
-                $data3->users = $getuser;
-                $data3->save();
-                //END DB SUPPLIER ORDER
-
             } else {
                 for ($i = 0; $i < Count($request->size); $i++) {
                     $data2 = new variation();

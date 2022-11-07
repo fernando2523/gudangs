@@ -5,9 +5,11 @@ namespace App\Http\Controllers\employee;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\User;
+use App\Models\Store;
 use App\Models\Employee_Type;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
@@ -26,16 +28,45 @@ class EmployeeController extends Controller
         $title = "Employee";
 
         $datauser = DB::table('employees')
-            ->where('role', '!=', 'SUPER-ADMIN')
             ->orderby('role', 'desc')->paginate(6);
 
         $getuser = DB::table('users')->get();
+        $getstore = store::all();
+        $getrole = Role::all();
 
         return view('employee.employees', compact(
             'title',
             'datauser',
-            'getuser'
+            'getuser',
+            'getstore',
+            'getrole'
         ));
+    }
+
+    public function load_editstore(Request $request)
+    {
+        if ($request->ajax()) {
+            $datastore = Store::all();
+            $id_store = $request->id_store;
+
+            return view('employee/load_editstore', compact(
+                'id_store',
+                'datastore',
+            ));
+        }
+    }
+
+    public function load_selectrole(Request $request)
+    {
+        if ($request->ajax()) {
+            $roledefault = $request->role;
+            $getrole = Role::all('role');
+
+            return view('employee/load_selectrole', compact(
+                'roledefault',
+                'getrole'
+            ));
+        }
     }
 
     /**
@@ -114,6 +145,11 @@ class EmployeeController extends Controller
         $adduser->tlp = $request->tlp;
         $adduser->domisili = $request->domisili;
         $adduser->role = $GETIDENTITY;
+        if ($GETIDENTITY === "SUPER-ADMIN") {
+            $adduser->id_store = "SUPER-ADMIN";
+        } else {
+            $adduser->id_store = $request->id_store;
+        }
         $adduser->save();
 
         return redirect('employee/employees');
@@ -147,6 +183,13 @@ class EmployeeController extends Controller
             $request->validate([
                 'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
             ]);
+
+            if ($edit2->img === "" or $edit2->img === "") {
+            } else {
+                $image = Employee::find($id);
+                unlink("user/" . $image->img);
+            }
+
             $fileName = time() . '.' . $request->file->extension();
             $request->file->move(public_path('user'), $fileName);
             // end get files
@@ -158,6 +201,9 @@ class EmployeeController extends Controller
         $edit2->tlp = $request->e_tlp;
         $edit2->domisili = $request->e_domisili;
         $edit2->role = $request->e_role;
+        if ($request->e_role === "SUPER-ADMIN") {
+            $edit2->id_store = "SUPER-ADMIN";
+        }
         $edit2->update();
 
         return redirect('employee/employees');

@@ -17,9 +17,10 @@ class CreateEmployeesTable extends Migration
             $table->id();
             $table->string('username');
             $table->string('name');
-            $table->string('tlp');
+            $table->string('tlp')->nullable(true);
             $table->string('domisili');
             $table->string('role');
+            $table->string('id_store');
             $table->string('img')->nullable(true);
             $table->timestamps();
         });

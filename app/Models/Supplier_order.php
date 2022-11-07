@@ -10,4 +10,14 @@ class Supplier_order extends Model
     use HasFactory;
 
     protected $table = "supplier_orders";
+
+    public function supplier_variation()
+    {
+        return $this->hasMany(Supplier_variation::class, 'idpo', 'idpo')->orderBy('idpo');
+    }
+
+    public function suppliers_detail()
+    {
+        return $this->hasMany(Supplier::class, 'id_sup', 'id_sup');
+    }
 }

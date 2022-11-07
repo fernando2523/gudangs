@@ -44,13 +44,43 @@ class StoreEquipmentCostController extends Controller
     public function tableexpenses(Request $request)
     {
         if ($request->ajax()) {
-            $data = Store_equipment_cost::latest()->get();
+            $tanggalskrg = Date('Y-m-d');
+
+            if (Auth::user()->role === "SUPER-ADMIN") {
+                $data = Store_equipment_cost::latest()->get();
+            } else {
+                $data = Store_equipment_cost::latest()->where('tanggal', '=', $tanggalskrg)->get();
+            }
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function () {
                 })
                 ->rawColumns(['action'])
                 ->make(true);
+        }
+    }
+
+    public function expense_select_store(Request $request)
+    {
+        if ($request->ajax()) {
+            $storedefault = $request->store;
+            $getstore = Store::all();
+
+            return view('store_expense/expense_select_store', compact(
+                'storedefault',
+                'getstore'
+            ));
+        }
+    }
+
+    public function expense_desc(Request $request)
+    {
+        if ($request->ajax()) {
+            $desc_default = $request->desc;
+
+            return view('store_expense/expense_desc', compact(
+                'desc_default',
+            ));
         }
     }
 
@@ -91,8 +121,12 @@ class StoreEquipmentCostController extends Controller
         $data->id_costs = $get_idcosts;
         $data->store = $request->store;
         $data->item = Str::headline($request->item);
-        $data->desc = $request->desc;
-        $data->total_price = $request->total_price;
+        if (empty($request->desc)) {
+            $data->desc = "";
+        } else {
+            $data->desc = $request->desc;
+        }
+        $data->total_price = preg_replace("/[^0-9]/", "", $request->total_price);
         $data->users = $getuser;
         $data->save();
 
@@ -116,9 +150,20 @@ class StoreEquipmentCostController extends Controller
      * @param  \App\Models\Store_equipment_cost  $store_equipment_cost
      * @return \Illuminate\Http\Response
      */
-    public function edit(Store_equipment_cost $store_equipment_cost)
+    public function editact(Request $request, $id)
     {
-        //
+        $data = Store_equipment_cost::find($id);
+        $data->store = $request->e_store;
+        $data->item = Str::headline($request->e_item);
+        if (empty($request->e_desc)) {
+            $data->desc = "";
+        } else {
+            $data->desc = $request->e_desc;
+        }
+        $data->total_price = preg_replace("/[^0-9]/", "", $request->e_totalprice);
+        $data->update();
+
+        return redirect('store_expense/store_expenses');
     }
 
     /**
@@ -134,8 +179,10 @@ class StoreEquipmentCostController extends Controller
      * @param  \App\Models\Store_equipment_cost  $store_equipment_cost
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Store_equipment_cost $store_equipment_cost)
+    public function destroy(Request $request, $id)
     {
-        //
+        Store_equipment_cost::destroy($id);
+
+        return redirect('store_expense/store_expenses');
     }
 }

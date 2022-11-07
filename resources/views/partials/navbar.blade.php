@@ -24,16 +24,19 @@
                 <div class="menu-submenu">
                     <div class="menu-item {{ Request::is('employee/employees') ? 'active' : '' }}">
                         <a href="/employee/employees" class="menu-link">
+                            <span class="menu-icon"><i class="bi bi-person-rolodex text-theme"></i></span>
                             <span class="menu-text">Employee</span>
                         </a>
                     </div>
                     <div class="menu-item {{ Request::is('supplier/suppliers') ? 'active' : '' }}">
                         <a href="/supplier/suppliers" class="menu-link">
+                            <span class="menu-icon"><i class="bi bi-person-check text-theme"></i></span>
                             <span class="menu-text">Supplier</span>
                         </a>
                     </div>
                     <div class="menu-item {{ Request::is('reseller/resellers') ? 'active' : '' }}">
                         <a href="/reseller/resellers" class="menu-link">
+                            <span class="menu-icon"><i class="bi bi-people text-theme"></i></span>
                             <span class="menu-text">Reseller</span>
                         </a>
                     </div>
@@ -43,7 +46,7 @@
             <div class="menu-item has-sub">
                 <a href="#" class="menu-link">
                     <span class="menu-icon">
-                        <i class="bi bi-shop text-theme"></i>
+                        <i class="bi bi-house-door-fill text-theme"></i>
                     </span>
                     <span class="menu-text">Warehouse / Store</span>
                     <span class="menu-caret"><b class="caret"></b></span>
@@ -51,11 +54,13 @@
                 <div class="menu-submenu">
                     <div class="menu-item {{ Request::is('warehouse/warehouses') ? 'active' : '' }}">
                         <a href="/warehouse/warehouses" class="menu-link">
+                            <span class="menu-icon"><i class="bi bi-house-door-fill text-theme"></i></span>
                             <span class="menu-text">Warehouse</span>
                         </a>
                     </div>
                     <div class="menu-item {{ Request::is('store/stores') ? 'active' : '' }}">
                         <a href="/store/stores" class="menu-link">
+                            <span class="menu-icon"><i class="bi bi-shop text-theme"></i></span>
                             <span class="menu-text">Store</span>
                         </a>
                     </div>
@@ -71,32 +76,51 @@
                     <span class="menu-caret"><b class="caret"></b></span>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item">
-                        <a href="email_compose.html" class="menu-link">
+                    <div class="menu-item { Request::is('repeat/repeatorders') ? 'active' : '' }}">
+                        <a href="/repeat/repeatorders" class="menu-link">
+                            <span class="menu-icon"><i class="bi-arrow-repeat text-theme"></i></span>
                             <span class="menu-text">Repeat Order</span>
                         </a>
                     </div>
-                    <div class="menu-item">
-                        <a href="email_compose.html" class="menu-link">
+                    <div class="menu-item {{ Request::is('purchase/purchaseorder') ? 'active' : '' }}">
+                        <a href="/purchase/purchaseorder" class="menu-link">
+                            <span class="menu-icon"><i class="bi bi-clipboard-data text-theme"></i></span>
                             <span class="menu-text">Data Purchase Order</span>
                         </a>
                     </div>
                     <div class="menu-item">
                         <a href="email_inbox.html" class="menu-link">
-                            <span class="menu-text">Product Exchange</span>
+                            <span class="menu-icon"><i class="bi bi-arrow-left-right text-theme"></i></span>
+                            <span class="menu-text">Product Transfer</span>
                         </a>
                     </div>
                     <div class="menu-item {{ Request::is('brand/brands') ? 'active' : '' }}">
                         <a href="/brand/brands" class="menu-link">
+                            <span class="menu-icon"><i class="fab fa-firstdraft text-theme"></i></span>
                             <span class="menu-text">Brand</span>
                         </a>
                     </div>
                     <div class="menu-item {{ Request::is('category/categories') ? 'active' : '' }}">
                         <a href="/category/categories" class="menu-link">
+                            <span class="menu-icon"><i class="bi bi-bookmarks-fill text-theme"></i></span>
                             <span class="menu-text">Category</span>
                         </a>
                     </div>
+                    <div class="menu-item {{ Request::is('employee/employees') ? 'active' : '' }}">
+                        <a href="/employee/employees" class="menu-link">
+                            <span class="menu-icon"><i class="bi bi-upc-scan text-theme"></i></span>
+                            <span class="menu-text">Barcode</span>
+                        </a>
+                    </div>
                 </div>
+            </div>
+
+            <div class="menu-header">Sales</div>
+            <div class="menu-item {{ Request::is('asset/assets') ? 'active' : '' }}">
+                <a href="/asset/assets" class="menu-link">
+                    <span class="menu-icon"><i class="bi bi bi-wallet text-theme"></i></span>
+                    <span class="menu-text">Assets</span>
+                </a>
             </div>
 
             <div class="menu-header">Products</div>
@@ -106,12 +130,7 @@
                     <span class="menu-text">Search Products</span>
                 </a>
             </div>
-            <div class="menu-item {{ Request::is('employee/employees') ? 'active' : '' }}">
-                <a href="/employee/employees" class="menu-link">
-                    <span class="menu-icon"><i class="bi bi-upc-scan text-theme"></i></span>
-                    <span class="menu-text">Barcode</span>
-                </a>
-            </div>
+
 
             <div class="menu-header">Sales</div>
             <div class="menu-item {{ Request::is('sale/sale') ? 'active' : '' }}">
@@ -138,17 +157,14 @@
                 <div class="menu-submenu">
                     <div class="menu-item">
                         <a href="email_compose.html" class="menu-link">
-                            <span class="menu-text">Store Retail</span>
+                            <span class="menu-icon"><i class="bi bi-person text-theme"></i></span>
+                            <span class="menu-text">Retail</span>
                         </a>
                     </div>
                     <div class="menu-item">
                         <a href="email_compose.html" class="menu-link">
-                            <span class="menu-text">Reseller Paid</span>
-                        </a>
-                    </div>
-                    <div class="menu-item">
-                        <a href="email_inbox.html" class="menu-link">
-                            <span class="menu-text">Reseller Pending</span>
+                            <span class="menu-icon"><i class="bi bi-people text-theme"></i></span>
+                            <span class="menu-text">Reseller</span>
                         </a>
                     </div>
                 </div>
@@ -165,16 +181,19 @@
                 <div class="menu-submenu">
                     <div class="menu-item">
                         <a href="email_compose.html" class="menu-link">
+                            <span class="menu-icon"><i class="bi bi-x-circle-fill text-theme"></i></span>
                             <span class="menu-text">Cancel</span>
                         </a>
                     </div>
                     <div class="menu-item">
                         <a href="email_compose.html" class="menu-link">
+                            <span class="menu-icon"><i class="bi bi-shuffle text-theme"></i></span>
                             <span class="menu-text">Return</span>
                         </a>
                     </div>
                     <div class="menu-item">
                         <a href="email_inbox.html" class="menu-link">
+                            <span class="menu-icon"><i class="bi bi-recycle text-theme"></i></span>
                             <span class="menu-text">Refund</span>
                         </a>
                     </div>

@@ -38,21 +38,19 @@
         </style>
 
         <div class="modal fade" id="modaladd" data-bs-backdrop="static">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title text-theme">ADD PRODUCTS</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <form class="was-validated" method="POST" enctype="multipart/form-data"
+                    <form id="formadd" class="was-validated" method="POST" enctype="multipart/form-data"
                         action="{{ url('/product/products/store') }}">
                         @csrf
                         <div class="modal-body">
-
                             <div class="row form-group">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <div class="row form-group">
-
                                         <div class="col-2 mt-2">
                                         </div>
                                         <div class="col-8 mt-2 form-group position-relative mb-2 profile-img"
@@ -63,7 +61,7 @@
                                                     previewimg.src = URL.createObjectURL(event.target.files[0]);
                                                 };
                                             </script>
-                                            <img class="mb-2" id="previewimg" width="200px"
+                                            <img class="mb-2" id="previewimg" width="247px"
                                                 src="/product/defaultimg.png">
                                             <input type="file" class="form-control" id="file" name="file"
                                                 onchange="loadeditFile(event)">
@@ -76,14 +74,17 @@
                                         </div>
                                         <div class="col-2 mt-2">
                                         </div>
-
                                         <div class="col-12 form-group mb-3">
                                             <label class="form-label">Nama Produk</label>
                                             <input class="form-control form-control-sm text-theme is-invalid" type="text"
                                                 name="produk" required placeholder="Silahkan masukan nama produk"
                                                 autocomplete="OFF">
                                         </div>
+                                    </div>
+                                </div>
 
+                                <div class="col-4">
+                                    <div class="row form-group">
                                         <div class="col-6 form-group position-relative mb-3">
                                             <label class="form-label">Brand</label>
                                             <select class="form-select form-select-sm text-theme" name="id_brand" required>
@@ -138,51 +139,90 @@
                                             </div>
                                         </div>
 
-                                    </div>
-                                </div>
-
-                                <div class="col-6">
-                                    <div class="row form-group">
-                                        <div class="col-6 form-group mb-3 mt-1">
+                                        <div class="col-6 form-group mb-3">
                                             <label class="form-label">Modal</label>
                                             <input class="form-control form-control-sm text-theme is-invalid" type="text"
                                                 name="m_price" required placeholder="0" autocomplete="OFF"
                                                 type-currency="IDR">
                                         </div>
-                                        <div class="col-6 form-group mb-3 mt-1">
+                                        <div class="col-6 form-group mb-3">
                                             <label class="form-label">Reseller</label>
                                             <input class="form-control form-control-sm text-theme is-invalid"
                                                 type="text" name="r_price" required placeholder="0"
                                                 autocomplete="OFF" type-currency="IDR">
                                         </div>
-                                        <div class="col-6 form-group mb-3 mt-1">
+                                        <div class="col-6 form-group mb-3">
                                             <label class="form-label">Normal</label>
                                             <input class="form-control form-control-sm text-theme is-invalid"
                                                 type="text" name="n_price" required placeholder="0"
                                                 autocomplete="OFF" type-currency="IDR">
                                         </div>
-                                        <div class="col-6 form-group mb-3 mt-1">
+                                        <div class="col-6 form-group mb-3">
                                             <label class="form-label">Grosir</label>
                                             <input
                                                 class="form-control form-select-sm form-control-sm text-theme is-invalid"
                                                 type="text" name="g_price" required placeholder="0"
                                                 autocomplete="OFF" type-currency="IDR">
                                         </div>
-
-                                        <div class="col-12 form-group position-relative mb-3">
+                                        <div class="col-12 form-group position-relative mb-2">
                                             <label class="form-label">Supplier</label>
-                                            <select class="form-select form-select-sm text-theme fs-12px" name="id_sup"
-                                                required>
-                                                <option value="" disabled selected>Pilih Supplier</option>
-                                                @foreach ($getsupplier as $gets)
-                                                    <option value="{{ $gets->id_sup }}">{{ $gets->supplier }}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="invalid-tooltip">
-                                                Silahkan pilih supplier yang sesuai.
+                                            <div class="position-relative text-center mb-3">
+                                                <select class="form-select form-select-sm text-theme text-center"
+                                                    name="type_po" id="type_po" required onchange="typepo()">
+                                                    <option value="" disabled selected>Tipe PO</option>
+                                                    <option value="baru">PO Baru</option>
+                                                    <option value="lama">PO Lanjutan</option>
+                                                </select>
                                             </div>
-                                        </div>
+                                            <div class="position-relative text-center mb-3" style="display:none;"
+                                                id="divlama">
+                                                <select class="form-select form-select-sm text-theme text-center"
+                                                    name="id_po_lama">
+                                                    <option value="" disabled selected>Pilih DATA PO</option>
+                                                    @foreach ($get_Supplier_Order as $orders)
+                                                        @foreach ($getsupplier as $supps)
+                                                            @if ($supps->id_sup === $orders->id_sup)
+                                                                <option value="{{ $orders->idpo }}">{{ $orders->tanggal }}
+                                                                    -
+                                                                    {{ $supps->supplier }}
+                                                                </option>
+                                                            @endif
+                                                        @endforeach
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
+                                            <div class="position-relative text-center" style="display:none;"
+                                                id="divbaru">
+                                                <select class="form-select form-select-sm text-theme text-center"
+                                                    name="id_sup" id="id_sup">
+                                                    <option value="" disabled selected>Pilih Supplier</option>
+                                                    @foreach ($getsupplier as $gets)
+                                                        <option value="{{ $gets->id_sup }}">{{ $gets->supplier }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <script>
+                                                function typepo() {
+                                                    var select = document.getElementById('type_po');
+                                                    var value = select.options[select.selectedIndex].value;
+
+                                                    if (value == 'baru') {
+                                                        document.getElementById("divbaru").style.display = 'block';
+                                                        document.getElementById("divlama").style.display = 'none';
+                                                    } else if (value == 'lama') {
+                                                        document.getElementById("divbaru").style.display = 'none';
+                                                        document.getElementById("divlama").style.display = 'block';
+                                                    }
+                                                }
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="row form-group">
                                         <div class="col-12 form-group position-relative mb-3">
                                             <label class="form-label">Variation</label>
                                             <select class="form-select form-select-sm text-theme fs-12px"
@@ -192,10 +232,9 @@
                                                 <option value="CUSTOM">Custom</option>
                                             </select>
                                             <div class="invalid-tooltip">
-                                                Select a valid Supplier.
+                                                Pilih supplier yang sesuai.
                                             </div>
                                         </div>
-
                                         <div class="col-12 mt-3">
                                             <div id="hasil_variation" style="text-align: center;"></div>
                                             <script>
@@ -221,9 +260,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group mt-3" align="right">
-                                <button class="btn btn-theme" type="submit">Save</button>
+                            <div class="form-group mt-1" align="right">
+                                <button class="btn btn-theme" type="submit" onclick="submitadd()">Save</button>
                             </div>
+
                         </div>
                     </form>
                 </div>
@@ -320,181 +360,45 @@
                     <div class="card-body p-3" style="height: 225px;">
                         <div class="row" align="center">
                             @foreach ($getsproduct as $key => $utama)
-                                @foreach ($get_perware as $keys => $kedua)
-                                    @if ($utama->id_ware === $kedua->id_ware)
-                                        <div class="col-4 mb-3">
-                                            <div class="card">
-                                                <div class="card-body p-3 bg-white bg-opacity-10">
-                                                    <div class="d-flex fw-bold small mb-2">
-                                                        <span class="flex-grow-1 text-theme">{{ $utama->id_ware }}</span>
-                                                    </div>
-                                                    <div class="row align-items-center">
-                                                        <div class="row">
-                                                            <div class="col-6">
-                                                                <h6 class="mb-0">
-                                                                    {{ $kedua->countidproduk }}</h6>
-                                                                <h6 class="mb-0 fs-10px">PCS
-                                                                </h6>
+                                @foreach ($getnamewarehouse as $wares)
+                                    @if ($utama->id_ware === $wares->id_ware)
+                                        @foreach ($get_perware as $keys => $kedua)
+                                            @if ($utama->id_ware === $kedua->id_ware)
+                                                <div class="col-4 mb-3">
+                                                    <div class="card">
+                                                        <div class="card-body p-3 bg-white bg-opacity-10">
+                                                            <div class="d-flex fw-bold small mb-2">
+                                                                <span
+                                                                    class="flex-grow-1 text-theme">{{ $wares->warehouse }}</span>
                                                             </div>
-                                                            <div class="col-6">
-                                                                <h6 class="mb-0">4.351</h6>
-                                                                <h6 class="mb-0 fs-10px">QTY</h6>
+                                                            <div class="row align-items-center">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <h6 class="mb-0">
+                                                                            {{ $kedua->countidproduk }}</h6>
+                                                                        <h6 class="mb-0 fs-10px">PCS
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <h6 class="mb-0">{{ $kedua->totalQty }}</h6>
+                                                                        <h6 class="mb-0 fs-10px">QTY</h6>
+                                                                    </div>
+                                                                </div>
                                                             </div>
+                                                        </div>
+                                                        <div class="card-arrow">
+                                                            <div class="card-arrow-top-left"></div>
+                                                            <div class="card-arrow-top-right"></div>
+                                                            <div class="card-arrow-bottom-left"></div>
+                                                            <div class="card-arrow-bottom-right"></div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="card-arrow">
-                                                    <div class="card-arrow-top-left"></div>
-                                                    <div class="card-arrow-top-right"></div>
-                                                    <div class="card-arrow-bottom-left"></div>
-                                                    <div class="card-arrow-bottom-right"></div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            @endif
+                                        @endforeach
                                     @endif
                                 @endforeach
                             @endforeach
-
-                            {{-- <div class="col-4 mb-3">
-                                <div class="card">
-                                    <div class="card-body p-3 bg-white bg-opacity-10">
-                                        <div class="d-flex fw-bold small mb-2">
-                                            <span class="flex-grow-1 text-theme">DIPATIUKUR 2</span>
-                                        </div>
-                                        <div class="row align-items-center">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <h6 class="mb-0">243</h6>
-                                                    <h6 class="mb-0 fs-10px">PCS</h6>
-                                                </div>
-                                                <div class="col-6">
-                                                    <h6 class="mb-0">4.351</h6>
-                                                    <h6 class="mb-0 fs-10px">QTY</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-arrow">
-                                        <div class="card-arrow-top-left"></div>
-                                        <div class="card-arrow-top-right"></div>
-                                        <div class="card-arrow-bottom-left"></div>
-                                        <div class="card-arrow-bottom-right"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-4 mb-3">
-                                <div class="card">
-                                    <div class="card-body p-3 bg-white bg-opacity-10">
-                                        <div class="d-flex fw-bold small mb-2">
-                                            <span class="flex-grow-1 text-theme">DIPATIUKUR 3</span>
-                                        </div>
-                                        <div class="row align-items-center">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <h6 class="mb-0">243</h6>
-                                                    <h6 class="mb-0 fs-10px">PCS</h6>
-                                                </div>
-                                                <div class="col-6">
-                                                    <h6 class="mb-0">4.351</h6>
-                                                    <h6 class="mb-0 fs-10px">QTY</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-arrow">
-                                        <div class="card-arrow-top-left"></div>
-                                        <div class="card-arrow-top-right"></div>
-                                        <div class="card-arrow-bottom-left"></div>
-                                        <div class="card-arrow-bottom-right"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-4 mb-3">
-                                <div class="card">
-                                    <div class="card-body p-3 bg-white bg-opacity-10">
-                                        <div class="d-flex fw-bold small mb-2">
-                                            <span class="flex-grow-1 text-theme">GUDANG SELATAN</span>
-                                        </div>
-                                        <div class="row align-items-center">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <h6 class="mb-0">243</h6>
-                                                    <h6 class="mb-0 fs-10px">PCS</h6>
-                                                </div>
-                                                <div class="col-6">
-                                                    <h6 class="mb-0">4.351</h6>
-                                                    <h6 class="mb-0 fs-10px">QTY</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-arrow">
-                                        <div class="card-arrow-top-left"></div>
-                                        <div class="card-arrow-top-right"></div>
-                                        <div class="card-arrow-bottom-left"></div>
-                                        <div class="card-arrow-bottom-right"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-4 mb-3">
-                                <div class="card">
-                                    <div class="card-body p-3 bg-white bg-opacity-10">
-                                        <div class="d-flex fw-bold small mb-2">
-                                            <span class="flex-grow-1 text-theme">PADANG</span>
-                                        </div>
-                                        <div class="row align-items-center">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <h6 class="mb-0">243</h6>
-                                                    <h6 class="mb-0 fs-10px">PCS</h6>
-                                                </div>
-                                                <div class="col-6">
-                                                    <h6 class="mb-0">4.351</h6>
-                                                    <h6 class="mb-0 fs-10px">QTY</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-arrow">
-                                        <div class="card-arrow-top-left"></div>
-                                        <div class="card-arrow-top-right"></div>
-                                        <div class="card-arrow-bottom-left"></div>
-                                        <div class="card-arrow-bottom-right"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-4 mb-3">
-                                <div class="card">
-                                    <div class="card-body p-3 bg-white bg-opacity-10">
-                                        <div class="d-flex fw-bold small mb-2">
-                                            <span class="flex-grow-1 text-theme">JAKARTA</span>
-                                        </div>
-                                        <div class="row align-items-center">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <h6 class="mb-0">243</h6>
-                                                    <h6 class="mb-0 fs-10px">PCS</h6>
-                                                </div>
-                                                <div class="col-6">
-                                                    <h6 class="mb-0">4.351</h6>
-                                                    <h6 class="mb-0 fs-10px">QTY</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-arrow">
-                                        <div class="card-arrow-top-left"></div>
-                                        <div class="card-arrow-top-right"></div>
-                                        <div class="card-arrow-bottom-left"></div>
-                                        <div class="card-arrow-bottom-right"></div>
-                                    </div>
-                                </div>
-                            </div> --}}
-
                         </div>
                     </div>
                     <div class="card-arrow">

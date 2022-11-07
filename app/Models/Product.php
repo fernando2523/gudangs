@@ -27,4 +27,14 @@ class Product extends Model
     {
         return $this->hasMany(Image_product::class, 'id_produk', 'id_produk');
     }
+
+    public function supplier_order()
+    {
+        return $this->hasMany(Supplier_order::class, 'id_produk', 'id_produk');
+    }
+
+    public function supplier_variation()
+    {
+        return $this->hasMany(supplier_variation::class, 'id_produk', 'id-produk');
+    }
 }

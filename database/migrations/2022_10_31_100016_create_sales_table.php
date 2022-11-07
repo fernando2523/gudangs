@@ -21,6 +21,7 @@ class CreateSalesTable extends Migration
             $table->string('id_ware');
             $table->string('id_store');
             $table->string('id_brand');
+            $table->string('id_reseller');
             $table->string('payment');
             $table->string('customer');
             $table->string('quality');
