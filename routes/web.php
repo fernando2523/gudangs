@@ -125,4 +125,5 @@ route::any('/tableassets', [AssetController::class, 'tableassets'])->middleware(
 route::get('/sale/sales', [SaleController::class, 'sale'])->middleware('auth');
 route::any('/tablesale', [SaleController::class, 'tablesale'])->middleware('auth');
 route::any('/load_size', [SaleController::class, 'load_size'])->middleware('auth');
+route::any('/load_ware', [SaleController::class, 'load_ware'])->middleware('auth');
 route::any('/savesales', [SaleController::class, 'save_sales']);

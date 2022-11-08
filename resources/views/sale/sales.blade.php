@@ -4,7 +4,7 @@
         <div class="d-flex align-items-center">
             <div>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/location/locations">SALES</a></li>
+                    <li class="breadcrumb-item"><a href="/sale/sales">SALES</a></li>
                     <li class="breadcrumb-item active">SALES PAGE</li>
                 </ul>
 
@@ -14,7 +14,7 @@
             </div>
         </div>
         <style>
-            .button-hover {
+            .button-hover {data-ware
                 padding: 0.5%;
                 border-radius: 5px;
             }
@@ -37,10 +37,10 @@
                         <select class="form-select fw-bold  form-select-sm text-theme" id="select_store" name="store" required>
                             <option value="" disabled selected>Pilih Store..</option>
                             @foreach ($getstore as $stores)
-                                <option data-ware="{{ $stores->id_ware }}" value="{{ $stores->store }}">{{ $stores->store }}</option>
+                                <option data-ware="{{ $stores->id_area }}" value="{{ $stores->store }}">{{ $stores->store }}</option>
                             @endforeach
                         </select>
-                        <input type="hidden" name="r_warehouse" id="r_warehouse">
+                        <input type="text" name="r_area" id="r_area">
                     </div>
 
                     <div class="col-6">
@@ -107,14 +107,14 @@
                 <script type="text/javascript">
                     var page = 1;
                     var heigh = $('#product_catalog').height();
-                    var warehouse = '';
+                    var area = '';
 
                     $("#select_store").change(function() {
                         
                         $("#opening").css("display", "none");
                         var ware = $(this).find(':selected').data("ware");
-                        warehouse = ware;
-                        $('#r_warehouse').val(warehouse);
+                        area = ware;
+                        $('#r_area').val(area);
                         loadMoreData(page, ware);
                         
                         $("#search_product").prop( "disabled", false );
@@ -127,7 +127,7 @@
                     
                     $("#search_product").bind("enterKey",function(e) {
                         console.log(this.value);
-                        loadMoreData(page, warehouse);
+                        loadMoreData(page, area);
                     });
 
                     $('#search_product').keyup(function(e){
@@ -149,12 +149,12 @@
                             
                     });
                 
-                    function loadMoreData(page, warehouse){
+                    function loadMoreData(page, area){
                         $.ajax({
                             url: "/tablesale?page="+ page,
                             type: "POST",
                             data: {
-                                warehouse: warehouse,
+                                area: area,
                             },
                             beforeSend: function () {
                             }
@@ -164,7 +164,8 @@
                             //     $('.auto-load').html("We don't have more data to display :(");
                             //     return;
                             // }
-                            $(".load_data").append(response);
+                            // $(".load_data").append(response);
+                            $(".load_data").html(response);
                         })
                         .fail(function (jqXHR, ajaxOptions, thrownError) {
                             console.log('Server error occured');
@@ -455,7 +456,7 @@
         {{-- Modal Discount --}}
 
         <!-- BEGIN #modalPosItem -->
-        <div class="modal modal-pos fade" id="modalPosItem" style="margin-top: 3%;">
+        <div class="modal modal-pos fade" id="modalPosItem" style="margin-top: 2%;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content border-0">
                     <div class="card">
@@ -463,20 +464,57 @@
                             <a href="#" onclick="hide_modal()" class="btn-close position-absolute top-0 end-0 m-4"></a>
                             <div class="modal-pos-product">
                                 <div class="modal-pos-product-img">
-                                    <div class="img"><img id="image_product" width="100%"></div>
                                     <input type="hidden" id="mdl_produk" name="mdl_produk" value="">
                                     <input type="hidden" id="mdl_id_produk" name="mdl_id_produk" value="">
                                     <input type="hidden" id="mdl_id_brand" name="mdl_id_brand" value="">
                                     <input type="hidden" id="mdl_quality" name="mdl_quality" value="">
                                     <input type="hidden" id="mdl_m_price" name="mdl_m_price" value="">
                                     <input type="hidden" id="mdl_selling_price" name="mdl_selling_price" value="">
+
+                                    <div class="mb-2"><img id="image_product" width="100%"></div>
+
+                                    <div class="mb-2 p-2">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="fw-bold mb-2">Qty:</div>
+                                                <div class="d-flex mb-3">
+                                                    <button type="button" class="btn btn-outline-theme" onclick="change_qty('minus')"><i class="fa fa-minus"></i></button>
+                                                    <input type="text" class="form-control w-50px fw-bold mx-2 border-1 border-theme text-center" id="mdl_qty" value="1" readonly />
+                                                    <button type="button" class="btn btn-outline-theme" onclick="change_qty('plus')"><i class="fa fa-plus"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="fw-bold mb-2">Discount Item:</div>
+                                                <select class="form-select fw-bold border-theme text-theme" id="mdl_diskon_item">
+                                                    <option value="0" selected>Rp 0</option>
+                                                    <option value="10000">Rp 10.000</option>
+                                                    <option value="20000">Rp 20.000</option>
+                                                    <option value="30000">Rp 30.000</option>
+                                                    <option value="40000">Rp 40.000</option>
+                                                    <option value="50000">Rp 50.000</option>
+                                                    <option value="60000">Rp 60.000</option>
+                                                    <option value="70000">Rp 70.000</option>
+                                                    <option value="80000">Rp 80.000</option>
+                                                    <option value="90000">Rp 90.000</option>
+                                                    <option value="100000">Rp 100.000</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="modal-pos-product-info">
                                     <div class="h5 mb-2" id="md_nameproduct"></div>
-                                    <div class="text-white text-opacity-50 mb-2" id="md_warehouse"></div>
                                     <div class="h6 mb-3" id="md_price"></div>
-                                   
-                                    <hr class="mx-n4" />
+                                    <hr class="mx-n4"/>
+
+                                    <div class="mb-3">
+                                        <div class="col-12">
+                                            <div class="fw-bold mb-2">Warehouse:</div>
+                                            <div id="load_ware"></div>
+                                        </div>
+                                    </div>
+
                                     <div class="mb-4">
                                         <div class="fw-bold mb-2">Size:</div>
                                         <style>
@@ -510,34 +548,6 @@
                                         <div class="radio-toolbar row" id="load_size">
                                         </div>
                                     </div>
-                                    <div class="mb-2">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="fw-bold mb-2">Qty:</div>
-                                                <div class="d-flex mb-3">
-                                                    <button type="button" class="btn btn-outline-theme" onclick="change_qty('minus')"><i class="fa fa-minus"></i></button>
-                                                    <input type="text" class="form-control w-50px fw-bold mx-2 border-1 border-theme text-center" id="mdl_qty" value="1" readonly />
-                                                    <button type="button" class="btn btn-outline-theme" onclick="change_qty('plus')"><i class="fa fa-plus"></i></button>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="fw-bold mb-2">Discount Item:</div>
-                                                <select class="form-select fw-bold border-theme text-theme" id="mdl_diskon_item">
-                                                    <option value="0" selected>Rp 0</option>
-                                                    <option value="10000">Rp 10.000</option>
-                                                    <option value="20000">Rp 20.000</option>
-                                                    <option value="30000">Rp 30.000</option>
-                                                    <option value="40000">Rp 40.000</option>
-                                                    <option value="50000">Rp 50.000</option>
-                                                    <option value="60000">Rp 60.000</option>
-                                                    <option value="70000">Rp 70.000</option>
-                                                    <option value="80000">Rp 80.000</option>
-                                                    <option value="90000">Rp 90.000</option>
-                                                    <option value="100000">Rp 100.000</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
                                     
                                     <script>
                                         function change_qty(params) {
@@ -552,7 +562,7 @@
                                             }
                                         }
                                     </script>
-                                    <hr class="mx-n4" />
+                                    <hr class="mb-4"/>
                                     <div class="row">
                                         <div class="col-4">
                                             <a href="#" class="btn btn-default h4 mb-0 d-block rounded-0 py-3" onclick="hide_modal()">Cancel</a>
@@ -584,6 +594,9 @@
             // });
 
             $(document).on("dblclick", ".open-modal", function () {
+                
+                $('#load_size').html('<center>Pilih Warehouse Dahulu</center>')
+
                 var cashier = $('#cashier').find(":selected").val();
                 var customer = $('#customer').find(":selected").val();
                 var reseller_name = $('#reseller_name').find(":selected").val();
@@ -591,7 +604,7 @@
                 var md_nameproduct = $(this).data('md_nameproduct');
                 var image_product = $(this).data('image_product');
                 var id_produk = $(this).data('id_produk');
-                var id_ware = $(this).data('id_ware');
+                var id_area = $(this).data('id_area');
                 var id_brand = $(this).data('id_brand');
                 var quality = $(this).data('quality');
                 var m_price = $(this).data('m_price');
@@ -629,11 +642,13 @@
                             if (reseller_name=='') {
                                 alert('Silahkan Pilih Nama Reseller');
                             } else {
-                                load_size(id_produk, id_ware);
+                                load_ware(id_area)
+                                // load_size(id_produk, id_area);
                                 $('#modalPosItem').modal('show');
                             }
                         } else {
-                            load_size(id_produk, id_ware);
+                            load_ware(id_area)
+                            // load_size(id_produk, id_area);
                             $('#modalPosItem').modal('show');
                         }
                     }
@@ -660,6 +675,23 @@
                         });               
             }
 
+            function load_ware(id_area) {
+                $.ajax({
+                    url: "/load_ware",
+                    type: "POST",
+                    data: {
+                        id_area: id_area
+                    },
+                           
+                    })
+                    .done(function (response) {
+                        $("#load_ware").html(response);
+                    })
+                    .fail(function (jqXHR, ajaxOptions, thrownError) {
+                        console.log('Server error occured');
+                        });               
+            }
+
             $('#customer').on('change', function() {
                 clear_cart();
                 if (this.value != 'RETAIL') {
@@ -672,6 +704,8 @@
                     $("#btn_ongkir").removeClass( "btn-purple" ).addClass( "btn-default" );
                 }
             });
+
+           
 
             function addCart()
             {
@@ -686,6 +720,7 @@
                     var mdl_size = document.querySelector('input[name="mdl_size"]:checked').value;
                     var mdl_produk = document.getElementById("mdl_produk").value;
                     var mdl_id_produk = document.getElementById("mdl_id_produk").value;
+                    var mdl_warehouse = document.getElementById("mdl_warehouse").value;
                     var mdl_id_brand = document.getElementById("mdl_id_brand").value;
                     var mdl_quality = document.getElementById("mdl_quality").value;
                     var mdl_m_price = document.getElementById("mdl_m_price").value;
@@ -698,16 +733,17 @@
                     <tr>
                         <td class="text-left fw-bold" style="width:60%;">
                             <span>`+mdl_produk+`</span><br>
-                            <input type="hidden" id="r_produk" name="r_produk[]" value="`+mdl_produk+`">
-                            <input type="hidden" id="r_id_produk" name="r_id_produk[]" value="`+mdl_id_produk+`">
-                            <input type="hidden" id="r_id_brand" name="r_id_brand[]" value="`+mdl_id_brand+`">
-                            <input type="hidden" id="r_quality" name="r_quality[]" value="`+mdl_quality+`">
-                            <input type="hidden" id="r_m_price" name="r_m_price[]" value="`+mdl_m_price+`">
-                            <input type="hidden" id="r_selling_price" name="r_selling_price[]" value="`+mdl_selling_price+`">
-                            <input type="hidden" id="r_subtotal" name="r_subtotal[]" value="`+mdl_subtotal+`">
-                            <input type="hidden" id="r_size" name="r_size[]" value="`+mdl_size+`">
-                            <input type="hidden" id="r_qty" name="r_qty[]" value="`+mdl_qty+`">
-                            <input type="hidden" id="r_diskon_item" name="r_diskon_item[]" value="`+mdl_diskon_item+`">
+                            <input type="text" id="r_produk" name="r_produk[]" value="`+mdl_produk+`">
+                            <input type="text" id="r_id_produk" name="r_id_produk[]" value="`+mdl_id_produk+`">
+                            <input type="text" id="r_idware" name="r_idware[]" value="`+mdl_warehouse+`">
+                            <input type="text" id="r_id_brand" name="r_id_brand[]" value="`+mdl_id_brand+`">
+                            <input type="text" id="r_quality" name="r_quality[]" value="`+mdl_quality+`">
+                            <input type="text" id="r_m_price" name="r_m_price[]" value="`+mdl_m_price+`">
+                            <input type="text" id="r_selling_price" name="r_selling_price[]" value="`+mdl_selling_price+`">
+                            <input type="text" id="r_subtotal" name="r_subtotal[]" value="`+mdl_subtotal+`">
+                            <input type="text" id="r_size" name="r_size[]" value="`+mdl_size+`">
+                            <input type="text" id="r_qty" name="r_qty[]" value="`+mdl_qty+`">
+                            <input type="text" id="r_diskon_item" name="r_diskon_item[]" value="`+mdl_diskon_item+`">
                         </td>
                         <td width="15%" class="text-center">`+mdl_qty+`x`+mdl_size+`</td>
                         <td width="15%" class="text-center">`+new Intl.NumberFormat('ID-ID', { maximumSignificantDigits: 3 }).format(mdl_selling_price)+`</td>

@@ -20,7 +20,7 @@ class Product extends Model
 
     public function warehouse()
     {
-        return $this->hasMany(Warehouse::class, 'id_ware', 'id_ware');
+        return $this->hasMany(Warehouse::class, 'id_area', 'id_area');
     }
 
     public function image_product()
@@ -35,6 +35,6 @@ class Product extends Model
 
     public function supplier_variation()
     {
-        return $this->hasMany(supplier_variation::class, 'id_produk', 'id-produk');
+        return $this->hasMany(supplier_variation::class, 'id_produk', 'id_produk');
     }
 }

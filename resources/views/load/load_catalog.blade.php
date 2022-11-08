@@ -36,7 +36,7 @@
         data-md_warehouse="{{ $product->warehouse[0]['warehouse'] }}"
         data-md_price="{{  $image_product }}"
         data-id_produk="{{  $product->id_produk }}"
-        data-id_ware="{{  $product->id_ware }}"
+        data-id_area="{{  $product->id_area }}"
 
         data-id_brand="{{  $product->brand }}"
         data-quality="{{  $product->quality }}"

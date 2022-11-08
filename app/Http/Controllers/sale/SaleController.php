@@ -10,6 +10,7 @@ use App\Models\Store;
 use App\Models\Employee;
 use App\Models\Product;
 use App\Models\Reseller;
+use App\Models\Warehouse;
 use App\Models\variation;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
@@ -46,8 +47,8 @@ class SaleController extends Controller
     public function tablesale(Request $request)
     {
         if ($request->ajax()) {
-            $warehouse = $request->warehouse;
-            $data = Product::with('warehouse', 'image_product', 'product_variation')->where('products.id_ware', $warehouse)->paginate(6);
+            $id_area = $request->area;
+            $data = Product::with('warehouse', 'image_product', 'product_variation')->where('products.id_area', $id_area)->paginate(6);
 
             return view('load.load_catalog', compact(
                 'data'
@@ -68,6 +69,19 @@ class SaleController extends Controller
             ));
         }
     }
+
+    public function load_ware(Request $request)
+    {
+        if ($request->ajax()) {
+            $id_area = $request->id_area;
+            $data = DB::table('warehouses')->where('id_area', $id_area)->get();
+
+            return view('load.load_warehouse', compact(
+                'data'
+            ));
+        }
+    }
+
     public function save_sales(Request $request)
     {
         $tanggal = $request->r_tanggal;
