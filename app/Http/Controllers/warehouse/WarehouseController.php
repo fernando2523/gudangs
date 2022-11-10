@@ -4,6 +4,7 @@ namespace App\Http\Controllers\warehouse;
 
 use App\Http\Controllers\Controller;
 use App\Models\Warehouse;
+use App\Models\City;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
@@ -23,9 +24,11 @@ class WarehouseController extends Controller
     public function warehouse()
     {
         $title = "Warehouse";
+        $getarea = City::all();
 
         return view('warehouse.warehouses', compact(
             'title',
+            'getarea'
         ));
     }
 
@@ -39,6 +42,21 @@ class WarehouseController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->make(true);
+        }
+    }
+
+    public function edit_select_ware(Request $request)
+    {
+        if ($request->ajax()) {
+            $id_area = $request->id_area;
+            $area = $request->area;
+            $getarea = City::all();
+
+            return view('warehouse/edit_select_ware', compact(
+                'id_area',
+                'area',
+                'getarea'
+            ));
         }
     }
 
@@ -70,9 +88,12 @@ class WarehouseController extends Controller
             $cek3 = $cek2[1] + 1;
             $idware = 'WARE-' . $cek3;
         }
+
         $data = new warehouse();
         $data->id_ware = $idware;
         $data->warehouse = $request->warehouse;
+        $data->id_area = $request->id_area;
+        $data->area = $request->r_kota;
         $data->address = $request->address;
         $data->save();
 
@@ -82,8 +103,17 @@ class WarehouseController extends Controller
     public function editact(Request $request, $id)
     {
         $data = Warehouse::find($id);
-        $data->warehouse = $request->e_warehouse;
-        $data->address = $request->e_address;
+        if ($request->e_kota === null) {
+            $data->warehouse = $request->e_warehouse;
+            $data->address = $request->e_address;
+            $data->id_area = $request->e_id_area;
+            $data->area = $request->e_kota_default;
+        } else {
+            $data->warehouse = $request->e_warehouse;
+            $data->address = $request->e_address;
+            $data->id_area = $request->e_id_area;
+            $data->area = $request->e_kota;
+        }
         $data->update();
 
         return redirect('warehouse/warehouses');

@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStoreRequest;
 use App\Http\Requests\UpdateStoreRequest;
 use App\Models\Store;
+use App\Models\City;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class StoreController extends Controller
 {
@@ -34,13 +36,26 @@ class StoreController extends Controller
     public function tablestore(Request $request)
     {
         if ($request->ajax()) {
-            $data = Store::latest()->get();
+            $data = Store::with('warehouses')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function () {
                 })
                 ->rawColumns(['action'])
                 ->make(true);
+        }
+    }
+
+    public function edit_select_store(Request $request)
+    {
+        if ($request->ajax()) {
+            $id_ware = $request->id_ware;
+            $getwarehouse = Warehouse::get();
+
+            return view('store/edit_select_store', compact(
+                'id_ware',
+                'getwarehouse'
+            ));
         }
     }
 
@@ -73,19 +88,15 @@ class StoreController extends Controller
             $idstore = 'STR-' . $cek3;
         }
 
-        $get_id_ware = $request->id_ware;
-        $getwarename = DB::table('warehouses')
-            ->where('id_ware', '=', $get_id_ware)
-            ->pluck('warehouse');
-        $getwarename2 = $getwarename->toArray();
-        $getwarename3 = implode(" ", $getwarename2);
+        $getarea = DB::table('warehouses')->where('id_ware', '=', $request->id_ware)->get();
 
         $data = new Store();
         $data->id_store = $idstore;
-        $data->id_ware = $get_id_ware;
-        $data->warehouse = $getwarename3;
-        $data->store = $request->store;
-        $data->address = $request->address;
+        $data->id_ware = $request->id_ware;
+        $data->id_area = $getarea[0]->id_area;
+        $data->area = $getarea[0]->area;
+        $data->store = Str::upper($request->store);
+        $data->address = Str::headline($request->address);
         $data->save();
 
         return redirect('store/stores');
@@ -110,18 +121,14 @@ class StoreController extends Controller
      */
     public function editact(Request $request, $id)
     {
-        $get_id_ware = $request->e_id_ware;
-        $getwarename = DB::table('warehouses')
-            ->where('id_ware', '=', $get_id_ware)
-            ->pluck('warehouse');
-        $getwarename2 = $getwarename->toArray();
-        $getwarename3 = implode(" ", $getwarename2);
+        $getarea = DB::table('warehouses')->where('id_ware', '=', $request->e_id_ware)->get();
 
         $data = Store::find($id);
         $data->id_ware = $request->e_id_ware;
-        $data->warehouse = $getwarename3;
-        $data->store = $request->e_store;
-        $data->address = $request->e_address;
+        $data->id_area = $getarea[0]->id_ware;
+        $data->area = $getarea[0]->area;
+        $data->store = Str::upper($request->e_store);
+        $data->address = Str::headline($request->e_address);
         $data->update();
 
         return redirect('store/stores');
