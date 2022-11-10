@@ -122,6 +122,7 @@ route::any('/repeat/repeats/{id}', [RepeatOrderController::class, 'repeats'])->m
 
 route::get('/purchase/purchaseorder', [PurchaseOrderController::class, 'purchaseorder'])->middleware('auth');
 route::any('/load_purchase_order', [PurchaseOrderController::class, 'load_purchase_order']);
+route::any('/load_tb_po', [PurchaseOrderController::class, 'load_table_po']);
 route::any('/purchase_variation', [PurchaseOrderController::class, 'purchase_variation']);
 
 route::get('/asset/assets', [AssetController::class, 'assets'])->middleware('auth');

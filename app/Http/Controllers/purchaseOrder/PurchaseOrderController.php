@@ -48,6 +48,20 @@ class PurchaseOrderController extends Controller
         ));
     }
 
+    public function load_table_po(Request $request)
+    {
+        if ($request->ajax()) {
+            $product = Supplier_order::all();
+            // dd($product);
+            return DataTables::of($product)
+                ->addIndexColumn()
+                ->addColumn('action', function () {
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    }
+
     public function load_purchase_order(Request $request)
     {
         if ($request->ajax()) {

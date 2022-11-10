@@ -258,6 +258,34 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <br>
+                        <table class="table-sm table-bordered mb-0" style="width: 100%" id="tb_po">
+                            <thead class="thead-custom">
+                                <tr class="text-white">
+                                    <th class="text-center text-white" width="2%">NO
+                                    </th>
+                                    <th class="text-center text-white" width="50%">
+                                        PRODUCT
+                                    </th>
+                                    <th class="text-center text-white" width="4%">ACT
+                                    </th>
+                                    <th class="text-center text-white" width="5%">
+                                        TYPE
+                                    </th>
+                                    <th class="text-center text-white" width="10%">
+                                        SUPPLIER
+                                    </th>
+                                    <th class="text-center text-white" width="3%">QTY
+                                    </th>
+                                    <th class="text-center text-white" width="10%">
+                                        COST
+                                    </th>
+                                    <th class="text-center text-white" width="12%">SUB
+                                        TOTAL
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                     <div class="card-arrow">
                         <div class="card-arrow-top-left"></div>
@@ -271,6 +299,14 @@
         </div>
         @include('purchase.edit')
 
+        <link href="{{ URL::asset('/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"
+            rel="stylesheet" />
+        <link href="{{ URL::asset('/assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
+            rel="stylesheet" />
+        <link href="{{ URL::asset('/assets/plugins/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}"
+            rel="stylesheet" />
+
+       
         <script>
             // edit
             function openmodaldetail(idpo, id_produk, id_ware, produk) {
@@ -325,5 +361,65 @@
                 document.getElementById('form_delete').action = "../purchase/destroy/" + value;
                 document.getElementById("form_delete").submit();
             }
+
+            $( document ).ready(function() {
+                // alert( "ready!" );
+            });
+
+            // Load Table PO
+            function load_po() {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ URL::to('/load_edit_variation') }}",
+                    data: {
+                        id_area: id_area,
+                        id_produk: id_produk
+                    },
+                    success: function(data) {
+                        $("#edit_variation").html(data);
+                    }
+                });
+            }
+            // Load Table PO
         </script>
+
+        {{-- Tb Load PO --}}
+        <script type="text/javascript">
+            $(function() {
+                var table = $('#tb_po').DataTable({
+                    lengthMenu: [10],
+                    responsive: true,
+                    processing: false,
+                    serverSide: true,
+                    ajax: "/load_tb_po",
+                    columns: [{
+                            data: 'idpo',
+                            name: 'idpo',
+                            orderable: false,
+                            class: 'fs-12px text-lime',
+                            "render": function(data, type, row) {
+                                return '<span class="fs-12px">'+row.idpo+'</span> <span class="fs-12px text-lime">#asd</span>'
+                            },
+                        }
+                    ],
+                    // dom: 'tip',
+                });
+
+                // $('#search_product').on('keyup', function() {
+                //     table.search(this.value).draw();
+                // });
+            });
+            // end
+        </script>
+        {{-- Tb Load PO --}}
+        <script src="{{ URL::asset('/assets/plugins/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ URL::asset('/assets/plugins/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
+        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
+        <script src="{{ URL::asset('/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+        <script src="{{ URL::asset('/assets/plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
     @endsection
