@@ -131,7 +131,7 @@ class BrandController extends Controller
                 'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
             ]);
 
-            if ($request->e_img2 === null or $request->e_img2 === "") {
+            if ($data->img === null or $data->img === "") {
             } else {
                 $image = Brand::find($id);
                 unlink("brand/" . $image->img);

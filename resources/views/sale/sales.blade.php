@@ -37,10 +37,11 @@
                         <select class="form-select fw-bold  form-select-sm text-theme" id="select_store" name="store" required>
                             <option value="" disabled selected>Pilih Store..</option>
                             @foreach ($getstore as $stores)
-                                <option data-ware="{{ $stores->id_area }}" value="{{ $stores->store }}">{{ $stores->store }}</option>
+                                <option data-area="{{ $stores->id_area }}" data-id_store="{{ $stores->id_store }}" value="{{ $stores->store }}">{{ $stores->store }}</option>
                             @endforeach
                         </select>
-                        <input type="text" name="r_area" id="r_area">
+                        <input type="hidden" name="r_area" id="r_area">
+                        <input type="hidden" name="r_id_store" id="r_id_store">
                     </div>
 
                     <div class="col-6">
@@ -84,6 +85,12 @@
                             scrollbar-width: none;  /* Firefox */
                             }
                         </style>
+                        <div id="loading_catalog" class="row" style="position: absolute;background-color:rgb(65, 69, 72);margin:15px;top:13%;left:0;right:0;bottom:0;display:none;z-index:100000;">
+                            <div align="center" class="align-items-center m-auto">
+                                    <span class="spinner-border" style="width: 20px;height:20px;margin-right:5px;"></span>
+                                    <span>Loading... </span>
+                            </div>
+                        </div>
                         {{-- Load Product --}}
                         <div class="row scroll-hide load_data" id="product_catalog" style="overflow-y: scroll;height: 83%;padding-bottom:40%;">
                             <div align="center" id="opening" style="margin: auto;">
@@ -112,11 +119,13 @@
                     $("#select_store").change(function() {
                         
                         $("#opening").css("display", "none");
-                        var ware = $(this).find(':selected').data("ware");
-                        area = ware;
+                        var area = $(this).find(':selected').data("area");
+                        var id_store = $(this).find(':selected').data("id_store");
+                        area = area;
+                        id_store = id_store;
                         $('#r_area').val(area);
-                        loadMoreData(page, ware);
-                        
+                        $('#r_id_store').val(id_store);
+                        loadData(page, area);
                         $("#search_product").prop( "disabled", false );
                         $("#search_product").addClass( "border-theme" );
                     });
@@ -127,7 +136,7 @@
                     
                     $("#search_product").bind("enterKey",function(e) {
                         console.log(this.value);
-                        loadMoreData(page, area);
+                        loadData(page, area);
                     });
 
                     $('#search_product').keyup(function(e){
@@ -140,7 +149,7 @@
                     $('#product_catalog').scroll(function() {
                         if($('#product_catalog').scrollTop()+550 > heigh) {
                             page++;
-                            loadMoreData(page, warehouse);
+                            loadMoreData(page, area);
                             heigh= heigh+heigh;
                             console.log('PAGE '+page);
                             console.log($('#product_catalog').scrollTop()+150);
@@ -148,6 +157,26 @@
                         }
                             
                     });
+
+                    function loadData(page, area){
+                        $.ajax({
+                            url: "/tablesale?page="+ page,
+                            type: "POST",
+                            data: {
+                                area: area,
+                            },
+                            beforeSend: function () {
+                                $("#loading_catalog").css("display", "flex");
+                            }
+                        })
+                        .done(function (response) {
+                            $("#loading_catalog").css("display", "none");
+                            $(".load_data").html(response);
+                        })
+                        .fail(function (jqXHR, ajaxOptions, thrownError) {
+                            console.log('Server error occured');
+                        });
+                    }
                 
                     function loadMoreData(page, area){
                         $.ajax({
@@ -160,12 +189,7 @@
                             }
                         })
                         .done(function (response) {
-                            // if (response.length == 0) {
-                            //     $('.auto-load').html("We don't have more data to display :(");
-                            //     return;
-                            // }
-                            // $(".load_data").append(response);
-                            $(".load_data").html(response);
+                            $(".load_data").append(response);
                         })
                         .fail(function (jqXHR, ajaxOptions, thrownError) {
                             console.log('Server error occured');
@@ -468,7 +492,7 @@
                                     <input type="hidden" id="mdl_id_produk" name="mdl_id_produk" value="">
                                     <input type="hidden" id="mdl_id_brand" name="mdl_id_brand" value="">
                                     <input type="hidden" id="mdl_quality" name="mdl_quality" value="">
-                                    <input type="hidden" id="mdl_m_price" name="mdl_m_price" value="">
+                                    {{-- <input type="hidden" id="mdl_m_price" name="mdl_m_price" value=""> --}}
                                     <input type="hidden" id="mdl_selling_price" name="mdl_selling_price" value="">
 
                                     <div class="mb-2"><img id="image_product" width="100%"></div>
@@ -527,7 +551,8 @@
                                             padding: 4px 11px;
                                             font-family: Arial;
                                             font-size: 16px;
-                                            cursor: pointer;
+                                            text-align: center;
+                                            width: 100%;
                                             }
 
                                             .radio-toolbar input[type="radio"]:checked+label {
@@ -607,7 +632,7 @@
                 var id_area = $(this).data('id_area');
                 var id_brand = $(this).data('id_brand');
                 var quality = $(this).data('quality');
-                var m_price = $(this).data('m_price');
+                // var m_price = $(this).data('m_price');
 
                 var n_price = $(this).data('n_price');
                 var r_price = $(this).data('r_price');
@@ -617,7 +642,7 @@
                 $('#mdl_id_produk').val(id_produk) ;
                 $('#mdl_id_brand').val(id_brand) ;
                 $('#mdl_quality').val(quality) ;
-                $('#mdl_m_price').val(m_price) ;
+                // $('#mdl_m_price').val(m_price) ;
                 $("#md_nameproduct").html(md_nameproduct);
                 $('#image_product').attr('src','/product/'+image_product);
 
@@ -705,8 +730,6 @@
                 }
             });
 
-           
-
             function addCart()
             {
                 var table = document.getElementById("table");
@@ -718,56 +741,84 @@
                 
                 if ($('input[name=mdl_size]:checked').length > 0) {
                     var mdl_size = document.querySelector('input[name="mdl_size"]:checked').value;
+                    var mdl_qty_stock = document.querySelector('input[name="mdl_size"]:checked').getAttribute('data-qty');
                     var mdl_produk = document.getElementById("mdl_produk").value;
                     var mdl_id_produk = document.getElementById("mdl_id_produk").value;
                     var mdl_warehouse = document.getElementById("mdl_warehouse").value;
                     var mdl_id_brand = document.getElementById("mdl_id_brand").value;
                     var mdl_quality = document.getElementById("mdl_quality").value;
-                    var mdl_m_price = document.getElementById("mdl_m_price").value;
+                    // var mdl_m_price = document.getElementById("mdl_m_price").value;
                     var mdl_selling_price = document.getElementById("mdl_selling_price").value;
                     var mdl_qty = document.getElementById("mdl_qty").value;
                     var mdl_diskon_item  = parseInt(document.getElementById("mdl_diskon_item").value) * parseInt(mdl_qty);
                     var mdl_subtotal = (mdl_selling_price * mdl_qty) - mdl_diskon_item ;
+                    var md_warehouse = $('#mdl_warehouse').find(':selected').data("warehouse");
 
-                    document.getElementById("table_cart").insertRow(-1).innerHTML = `
-                    <tr>
-                        <td class="text-left fw-bold" style="width:60%;">
-                            <span>`+mdl_produk+`</span><br>
-                            <input type="text" id="r_produk" name="r_produk[]" value="`+mdl_produk+`">
-                            <input type="text" id="r_id_produk" name="r_id_produk[]" value="`+mdl_id_produk+`">
-                            <input type="text" id="r_idware" name="r_idware[]" value="`+mdl_warehouse+`">
-                            <input type="text" id="r_id_brand" name="r_id_brand[]" value="`+mdl_id_brand+`">
-                            <input type="text" id="r_quality" name="r_quality[]" value="`+mdl_quality+`">
-                            <input type="text" id="r_m_price" name="r_m_price[]" value="`+mdl_m_price+`">
-                            <input type="text" id="r_selling_price" name="r_selling_price[]" value="`+mdl_selling_price+`">
-                            <input type="text" id="r_subtotal" name="r_subtotal[]" value="`+mdl_subtotal+`">
-                            <input type="text" id="r_size" name="r_size[]" value="`+mdl_size+`">
-                            <input type="text" id="r_qty" name="r_qty[]" value="`+mdl_qty+`">
-                            <input type="text" id="r_diskon_item" name="r_diskon_item[]" value="`+mdl_diskon_item+`">
-                        </td>
-                        <td width="15%" class="text-center">`+mdl_qty+`x`+mdl_size+`</td>
-                        <td width="15%" class="text-center">`+new Intl.NumberFormat('ID-ID', { maximumSignificantDigits: 3 }).format(mdl_selling_price)+`</td>
-                        <td width="15%" class="text-center">`+new Intl.NumberFormat('ID-ID', { maximumSignificantDigits: 3 }).format(mdl_diskon_item)+`</td>
-                        <td width="15%" class="text-center">`+new Intl.NumberFormat('ID-ID', { maximumSignificantDigits: 3 }).format(mdl_subtotal)+`</td>
-                        <td width="10%" class="text-center"><button onclick="deleteRow(this)" type="button" class="btn btn-sm btn-danger">X</button></td>
-                    </tr>
-                    `;
+                   if (parseInt(mdl_qty_stock) < parseInt(mdl_qty)) {
+                    alert('QTY Melebihi Stock yang ada');
+                   } else {
+                    var table = document.getElementById("table");
+                    var tbo = table.tBodies[0].rows.length;
+                    var length = parseInt(tbo);
 
-                    document.getElementById("rh_subtotal").innerHTML = parseInt(document.getElementById("rs_subtotal").value) + parseInt(mdl_selling_price);
-                    document.getElementById("rs_subtotal").value = parseInt(document.getElementById("rs_subtotal").value) + parseInt(mdl_selling_price);
-                    /////////////////////////////
-                    document.getElementById("rh_discitems").innerHTML = parseInt(document.getElementById("rs_discitems").value) + parseInt(mdl_diskon_item);
-                    document.getElementById("rs_discitems").value = parseInt(document.getElementById("rs_discitems").value) + parseInt(mdl_diskon_item);
-                    /////////////////////////////
-                    document.getElementById("rh_payment").innerHTML = parseInt(document.getElementById("rs_subtotal").value) - (parseInt(document.getElementById("rs_discitems").value) + parseInt(document.getElementById("rs_discnota").value) + parseInt(document.getElementById("rs_ongkir").value));
-                    document.getElementById("rs_payment").value =  parseInt(document.getElementById("rs_subtotal").value) - (parseInt(document.getElementById("rs_discitems").value) + parseInt(document.getElementById("rs_discnota").value) + parseInt(document.getElementById("rs_ongkir").value));
-                    document.getElementById("pay_ammount").innerHTML = document.getElementById("rs_payment").value;
-                    /////////////////////////////
-                    document.getElementById("mdl_qty").value = 1;
-                    document.getElementById("mdl_diskon_item").value = 0;
-                    $('#modalPosItem').modal('hide');
+                    $validasi_produk = '';
+
+                    for (index = 0; index < length; index++) {
+                        var row_id_ware = document.getElementsByName('r_idware[]')[index].value;
+                        var row_size = document.getElementsByName('r_size[]')[index].value;
+                        if (mdl_warehouse == row_id_ware && mdl_size == row_size) {
+                            $validasi_produk = 'BREAK';
+                            break;
+                        }
+                        $validasi_produk = 'OKE';
+                        }
+
+                        if ($validasi_produk === 'BREAK') {
+                            alert('Produk dengan Size dan Gudang yang sama sudah ada');
+                        } else {
+                            // add To Cart
+                            document.getElementById("table_cart").insertRow(-1).innerHTML = `
+                            <tr>
+                                <td class="text-left fw-bold" style="width:60%;">
+                                    <span>`+mdl_produk+`</span><br>
+                                    <span class="text-theme">`+md_warehouse+`</span><br>
+                                    <input type="hidden" id="r_produk" name="r_produk[]" value="`+mdl_produk+`">
+                                    <input type="hidden" id="r_id_produk" name="r_id_produk[]" value="`+mdl_id_produk+`">
+                                    <input type="hidden" id="r_idware" name="r_idware[]" value="`+mdl_warehouse+`">
+                                    <input type="hidden" id="r_id_brand" name="r_id_brand[]" value="`+mdl_id_brand+`">
+                                    <input type="hidden" id="r_quality" name="r_quality[]" value="`+mdl_quality+`">
+                                    <input type="hidden" id="r_selling_price" name="r_selling_price[]" value="`+mdl_selling_price+`">
+                                    <input type="hidden" id="r_subtotal" name="r_subtotal[]" value="`+mdl_subtotal+`">
+                                    <input type="hidden" id="r_size" name="r_size[]" value="`+mdl_size+`">
+                                    <input type="hidden" id="r_qty" name="r_qty[]" value="`+mdl_qty+`">
+                                    <input type="hidden" id="r_diskon_item" name="r_diskon_item[]" value="`+mdl_diskon_item+`">
+                                </td>
+                                <td width="15%" class="text-center">`+mdl_qty+`x`+mdl_size+`</td>
+                                <td width="15%" class="text-center">`+new Intl.NumberFormat('ID-ID', { maximumSignificantDigits: 3 }).format(mdl_selling_price)+`</td>
+                                <td width="15%" class="text-center">`+new Intl.NumberFormat('ID-ID', { maximumSignificantDigits: 3 }).format(mdl_diskon_item)+`</td>
+                                <td width="15%" class="text-center">`+new Intl.NumberFormat('ID-ID', { maximumSignificantDigits: 3 }).format(mdl_subtotal)+`</td>
+                                <td width="10%" class="text-center"><button onclick="deleteRow(this)" type="button" class="btn btn-sm btn-danger">X</button></td>
+                            </tr>
+                            `;
+
+                            document.getElementById("rh_subtotal").innerHTML = parseInt(document.getElementById("rs_subtotal").value) + (parseInt(mdl_selling_price) * parseInt(mdl_qty));
+                            document.getElementById("rs_subtotal").value = parseInt(document.getElementById("rs_subtotal").value) + (parseInt(mdl_selling_price) * parseInt(mdl_qty));
+                            /////////////////////////////
+                            document.getElementById("rh_discitems").innerHTML = parseInt(document.getElementById("rs_discitems").value) + parseInt(mdl_diskon_item);
+                            document.getElementById("rs_discitems").value = parseInt(document.getElementById("rs_discitems").value) + parseInt(mdl_diskon_item);
+                            /////////////////////////////
+                            document.getElementById("rh_payment").innerHTML = parseInt(document.getElementById("rs_subtotal").value) - (parseInt(document.getElementById("rs_discitems").value) + parseInt(document.getElementById("rs_discnota").value) + parseInt(document.getElementById("rs_ongkir").value));
+                            document.getElementById("rs_payment").value =  parseInt(document.getElementById("rs_subtotal").value) - (parseInt(document.getElementById("rs_discitems").value) + parseInt(document.getElementById("rs_discnota").value) + parseInt(document.getElementById("rs_ongkir").value));
+                            document.getElementById("pay_ammount").innerHTML = document.getElementById("rs_payment").value;
+                            /////////////////////////////
+                            document.getElementById("mdl_qty").value = 1;
+                            document.getElementById("mdl_diskon_item").value = 0;
+                            $('#modalPosItem').modal('hide');
+                            // add To Cart
+                    }
+                   }
                 } else {
-                    alert('Mohon Pilih Size');
+                    alert('Mohon Lengkapi Warehouse dan Size');
                 }
             }
 
@@ -783,10 +834,11 @@
                 var r = i-1;
 
                 var subtotal = document.getElementsByName('r_selling_price[]')[r].value;
+                var qty = document.getElementsByName('r_qty[]')[r].value;
                 var discitem = document.getElementsByName('r_diskon_item[]')[r].value;
                 
-                document.getElementById("rh_subtotal").innerHTML = parseInt(document.getElementById("rs_subtotal").value) - parseInt(subtotal);
-                document.getElementById("rs_subtotal").value = parseInt(document.getElementById("rs_subtotal").value) - parseInt(subtotal);
+                document.getElementById("rh_subtotal").innerHTML = parseInt(document.getElementById("rs_subtotal").value) - (parseInt(subtotal) * parseInt(qty));
+                document.getElementById("rs_subtotal").value = parseInt(document.getElementById("rs_subtotal").value) - (parseInt(subtotal) * parseInt(qty));
                 /////////////////////////////
                 document.getElementById("rh_discitems").innerHTML = parseInt(document.getElementById("rs_discitems").value) - parseInt(discitem);
                 document.getElementById("rs_discitems").value = parseInt(document.getElementById("rs_discitems").value) - parseInt(discitem);

@@ -13,8 +13,6 @@
                 </h1>
             </div>
             <div class="ms-auto mt-3">
-                <a href="#" class="btn btn-outline-secondary"><i class="fa fa-upload fa-fw me-1 text-white"></i> Export
-                    CSV</a>
             </div>
         </div>
         <style>
@@ -48,7 +46,7 @@
                                 <div class="col-12 form-group mb-3">
                                     <label class="form-label">Name Category</label>
                                     <input class="form-control form-control-sm text-theme is-invalid" type="text"
-                                        name="category" required placeholder="Please provide a name category"
+                                        name="category" required placeholder="Silahkan masukan nama category yang sesuai"
                                         autocomplete="OFF">
                                 </div>
                             </div>
@@ -84,14 +82,14 @@
                                         @endforeach
                                     </select>
                                     <div class="invalid-tooltip">
-                                        Please select a valid Category.
+                                        Silahkan pilih category yang sesuai.
                                     </div>
                                 </div>
                                 <div class="col-12 form-group mb-3 mt-3">
                                     <label class="form-label">Name Sub Category</label>
                                     <input class="form-control form-control-sm text-theme is-invalid" type="text"
-                                        name="sub_category" required placeholder="Please provide a name sub category"
-                                        autocomplete="OFF">
+                                        name="sub_category" required
+                                        placeholder="Silahkan masukan nama sub category yang sesuai" autocomplete="OFF">
                                 </div>
                             </div>
 
@@ -376,9 +374,18 @@
                 document.getElementById('esub_id').value = id;
                 document.getElementById('esub_id_catsub').value = id_catsub;
                 document.getElementById('esub_sub_category').value = sub_category;
-                document.getElementById('esub_id_cat').value = id_cat;
 
-                document.getElementById("esub_default_category").innerHTML = "DEFAULT : " + category;
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ URL::to('/editselectcategory') }}",
+                    data: {
+                        id_cat: id_cat,
+                        category: category,
+                    },
+                    success: function(data) {
+                        $("#editselectcategory").html(data);
+                    }
+                });
             }
 
             function submitformedit_sub() {

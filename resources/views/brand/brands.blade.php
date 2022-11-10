@@ -13,8 +13,6 @@
                 </h1>
             </div>
             <div class="ms-auto">
-                <a href="#" class="btn btn-outline-secondary"><i class="fa fa-upload fa-fw me-1 text-white"></i> Export
-                    CSV</a>
             </div>
             <div class="ms-sm-3 mt-sm-0 mt-2"><a class="btn btn-outline-theme" data-bs-toggle="modal"
                     data-bs-target="#modaladd"><i class="fa fa-plus-circle fa-fw me-1"></i> Add Brand</a></div>
@@ -34,8 +32,8 @@
             }
         </style>
 
-        <div class="modal fade" id="modaladd" data-bs-backdrop="static" style="padding-top:12%;">
-            <div class="modal-dialog modal-lg">
+        <div class="modal fade" id="modaladd" data-bs-backdrop="static" style="padding-top:10%;">
+            <div class="modal-dialog modal-ml">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title text-theme">ADD BRAND</h5>
@@ -45,21 +43,31 @@
                         action="{{ url('/brand/brands/store') }}">
                         @csrf
                         <div class="modal-body">
-
                             <div class="row form-group">
-                                <div class="col-12 form-group mb-3">
+                                <div class="col-12 mt-2 form-group position-relative mb-2 profile-img" align="center">
+                                    <script type="text/javascript">
+                                        var loadeditFile = function(event) {
+                                            var previewimg = document.getElementById('previewimg');
+                                            previewimg.src = URL.createObjectURL(event.target.files[0]);
+                                        };
+                                    </script>
+                                    <img class="mb-2" id="previewimg" width="178px" src="/product/defaultimg.png">
+                                    <input type="file" class="form-control form-control-sm" id="file" name="file"
+                                        onchange="loadeditFile(event)">
+                                </div>
+                                <div class="card-arrow">
+                                    <div class="card-arrow-top-left"></div>
+                                    <div class="card-arrow-top-right"></div>
+                                    <div class="card-arrow-bottom-left"></div>
+                                    <div class="card-arrow-bottom-right"></div>
+                                </div>
+                                <div class="col-12 form-group mt-2 mb-2">
                                     <label class="form-label">Name Brand</label>
                                     <input class="form-control form-control-sm text-theme is-invalid" type="text"
-                                        name="brand" required placeholder="Please provide a name brand"
+                                        name="brand" required placeholder="Silahkan masukan nama brand yang sesuai."
                                         autocomplete="OFF">
                                 </div>
-
-                                <div class="col-12 form-group mb-3">
-                                    <label class="form-label">Photo <small class="text-warning">optional</small></label>
-                                    <input type="file" class="form-control form-control-sm" name="file">
-                                </div>
                             </div>
-
                             <div class="form-group mt-3" align="right">
                                 <button class="btn btn-theme" type="submit">Save</button>
                             </div>
@@ -68,6 +76,22 @@
                 </div>
             </div>
         </div>
+
+        <script type="text/javascript">
+            $('#file').change(function() {
+
+                if (file === "") {
+                    document.getElementById("previewimg").src = '/brand/defaultimg.png';
+                } else {
+                    let reader = new FileReader();
+                    reader.onload = (e) => {
+                        $('#previewimg').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+
+            });
+        </script>
 
         <div class="row">
             <!-- DATA ASSSET -->
@@ -214,7 +238,6 @@
                 document.getElementById('e_id').value = id;
                 document.getElementById('e_id_brand').value = id_brand;
                 document.getElementById('e_brand').value = brand;
-                document.getElementById('e_img2').value = img;
 
                 if (img != "") {
                     document.getElementById("e_img").src = '../../brand/' + img;

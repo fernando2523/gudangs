@@ -58,6 +58,21 @@ class CategoryController extends Controller
         }
     }
 
+    public function editselectcategory(Request $request)
+    {
+        if ($request->ajax()) {
+            $id_cat_default = $request->id_cat;
+            $category_default = $request->category;
+            $getcategory = Category::get();
+
+            return view('category/editselectcategory', compact(
+                'id_cat_default',
+                'getcategory',
+                'category_default'
+            ));
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -89,7 +104,7 @@ class CategoryController extends Controller
 
         $data = new Category();
         $data->id_cat = $idcat;
-        $data->category = $request->category;
+        $data->category = strtoupper($request->category);
         $data->save();
 
         return redirect('category/categories');
@@ -117,9 +132,9 @@ class CategoryController extends Controller
 
         $data = new Sub_category();
         $data->id_catsub = $idsubcat;
-        $data->sub_category = $request->sub_category;
+        $data->sub_category = strtoupper($request->sub_category);
         $data->id_cat = $getidcat;
-        $data->category = $getcategory3;
+        $data->category = strtoupper($getcategory3);
         $data->save();
 
         return redirect('category/categories');
@@ -147,10 +162,10 @@ class CategoryController extends Controller
         $getidcat = $request->e_id_cat;
 
         $data = Category::find($id);
-        $data->category = $request->e_category;
+        $data->category = strtoupper($request->e_category);
         Sub_category::where('id_cat', $getidcat)
             ->update([
-                'category' => $request->e_category
+                'category' => strtoupper($request->e_category)
             ]);
         $data->update();
 
@@ -167,9 +182,9 @@ class CategoryController extends Controller
         $getcategory3 = implode(" ", $getcategory2);
 
         $data = Sub_category::find($id);
-        $data->sub_category = $request->esub_sub_category;
+        $data->sub_category = strtoupper($request->esub_sub_category);
         $data->id_cat = $request->esub_id_cat;
-        $data->category = $getcategory3;
+        $data->category = strtoupper($getcategory3);
         $data->update();
 
         return redirect('category/categories');

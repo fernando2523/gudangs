@@ -16,6 +16,9 @@ use App\Http\Controllers\sale\SaleController;
 use App\Http\Controllers\repeat\RepeatOrderController;
 use App\Http\Controllers\purchaseOrder\PurchaseOrderController;
 use App\Http\Controllers\asset\AssetController;
+use App\Http\Controllers\barcode\BarcodeController;
+use App\Http\Controllers\order\OrderController;
+use App\Http\Controllers\orderreseller\OrderResellerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,6 +65,7 @@ route::get('/reseller/resellers', [ResellerController::class, 'reseller'])->midd
 route::any('/tablereseller', [ResellerController::class, 'tablereseller'])->middleware('auth');
 route::any('/reseller/resellers/store', [ResellerController::class, 'store'])->middleware('auth');
 route::any('/resellers/editact/{id}', [ResellerController::class, 'editact'])->middleware('auth');
+route::any('/resellers/destroy/{id}', [ResellerController::class, 'destroy'])->middleware('auth');
 
 route::get('/warehouse/warehouses', [WarehouseController::class, 'warehouse'])->middleware('auth');
 route::any('/tablewarehouse', [WarehouseController::class, 'tablewarehouse'])->middleware('auth');
@@ -90,6 +94,7 @@ route::any('/category/editact/{id}', [CategoryController::class, 'editact'])->mi
 route::any('/category/editactsub/{id}', [CategoryController::class, 'editactsub'])->middleware('auth');
 route::any('/category/destroy/{id}', [CategoryController::class, 'destroy'])->middleware('auth');
 route::any('/category/destroysub/{id}', [CategoryController::class, 'destroysub'])->middleware('auth');
+route::any('/editselectcategory', [CategoryController::class, 'editselectcategory']);
 
 route::get('/product/products', [ProductController::class, 'product'])->middleware('auth');
 route::get('/product/products_test', [ProductController::class, 'product_test'])->middleware('auth');
@@ -123,7 +128,13 @@ route::get('/asset/assets', [AssetController::class, 'assets'])->middleware('aut
 route::any('/tableassets', [AssetController::class, 'tableassets'])->middleware('auth');
 
 route::get('/sale/sales', [SaleController::class, 'sale'])->middleware('auth');
-route::any('/tablesale', [SaleController::class, 'tablesale'])->middleware('auth');
-route::any('/load_size', [SaleController::class, 'load_size'])->middleware('auth');
-route::any('/load_ware', [SaleController::class, 'load_ware'])->middleware('auth');
+route::any('/tablesale', [SaleController::class, 'tablesale']);
+route::any('/load_size', [SaleController::class, 'load_size']);
+route::any('/load_ware', [SaleController::class, 'load_ware']);
 route::any('/savesales', [SaleController::class, 'save_sales']);
+
+// nando baru 9 nov
+route::get('/barcode/barcodes', [BarcodeController::class, 'barcodes'])->middleware('auth');
+route::get('/order/orders', [OrderController::class, 'orders'])->middleware('auth');
+route::get('/orderreseller/orderresellers', [OrderResellerController::class, 'orderresellers'])->middleware('auth');
+// nando baru 9 nov

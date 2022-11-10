@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class ResellerController extends Controller
 {
@@ -57,20 +58,21 @@ class ResellerController extends Controller
      */
     public function store(Request $request)
     {
+        $now = Carbon::now('Asia/Jakarta');
+        $thn_bln = $now->format('ymd');
         $cek = Reseller::count();
         if ($cek === 0) {
             $urut = 1;
-            $idres = "RES-" . $urut;
+            $idres = $thn_bln . sprintf("%03s", ($urut));
         } else {
-            $ambildata = Reseller::all()->max('id_reseller');
-            $cek2 = explode("-", $ambildata);
-            $cek3 = $cek2[1] + 1;
-            $idres = 'RES-' . $cek3;
+            $ambildata = DB::table('resellers')->select(DB::raw('id_reseller'),)->max('id_reseller');
+            $cek2 = (int)substr($ambildata, 6) + 1;
+            $idres = $thn_bln . sprintf("%03s", + ($cek2));
         }
 
         $data = new Reseller();
         $data->id_reseller = $idres;
-        $data->nama = $request->nama;
+        $data->nama = Str::headline($request->nama);
         $data->tlp = $request->tlp;
         if (empty($_FILES['file']['name'][0])) {
             $data->img = "";
@@ -109,7 +111,7 @@ class ResellerController extends Controller
     public function editact(Request $request, $id)
     {
         $data = Reseller::find($id);
-        $data->nama = $request->e_nama;
+        $data->nama = Str::headline($request->e_nama);
         $data->tlp = $request->e_tlp;
         if (empty($_FILES['file']['name'][0])) {
         } else {
@@ -118,7 +120,7 @@ class ResellerController extends Controller
                 'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
             ]);
 
-            if ($request->e_img2 === null or $request->e_img2 === "") {
+            if ($data->img === null or $data->img === "") {
             } else {
                 $image = Reseller::find($id);
                 unlink("reseller/" . $image->img);
@@ -148,9 +150,9 @@ class ResellerController extends Controller
             Reseller::destroy($id);
         } else {
             Reseller::destroy($id);
-            unlink("brand/" . $request->del_img);
+            unlink("reseller/" . $request->del_img);
         }
 
-        return redirect('brand/brands');
+        return redirect('reseller/resellers');
     }
 }

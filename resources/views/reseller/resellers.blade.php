@@ -13,8 +13,6 @@
                 </h1>
             </div>
             <div class="ms-auto">
-                <a href="#" class="btn btn-outline-secondary"><i class="fa fa-upload fa-fw me-1 text-white"></i> Export
-                    CSV</a>
             </div>
             <div class="ms-sm-3 mt-sm-0 mt-2"><a class="btn btn-outline-theme" data-bs-toggle="modal"
                     data-bs-target="#modaladd"><i class="fa fa-plus-circle fa-fw me-1"></i> Add Reseller</a></div>
@@ -49,25 +47,47 @@
                                 <input type="hidden" class="validate" name="users" value="{{ Auth::user()->name }}">
                             </div>
                             <div class="row form-group">
-                                <div class="col-8 form-group mb-3">
-                                    <label class="form-label">Name Reseller</label>
-                                    <input class="form-control form-control-sm text-theme is-invalid" type="text"
-                                        name="nama" required placeholder="Please provide a name supplier"
-                                        autocomplete="OFF">
-                                    <div class="valid-feedback">Looks good!</div>
-                                </div>
 
-                                <div class="col-4 form-group mb-3">
-                                    <label class="form-label">No Telp</label>
-                                    <input class="form-control form-control-sm text-theme is-invalid" type="number"
-                                        name="tlp" required placeholder="Please provide a No Telp" autocomplete="OFF">
-                                    <div class="valid-feedback">Looks good!</div>
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-12 mt-2 form-group position-relative mb-2 profile-img"
+                                            align="center">
+                                            <script type="text/javascript">
+                                                var loadeditFile = function(event) {
+                                                    var previewimg = document.getElementById('previewimg');
+                                                    previewimg.src = URL.createObjectURL(event.target.files[0]);
+                                                };
+                                            </script>
+                                            <img class="mb-2" id="previewimg" width="178px"
+                                                src="/product/defaultimg.png">
+                                            <input type="file" class="form-control" id="file" name="file"
+                                                onchange="loadeditFile(event)">
+                                        </div>
+                                        <div class="card-arrow">
+                                            <div class="card-arrow-top-left"></div>
+                                            <div class="card-arrow-top-right"></div>
+                                            <div class="card-arrow-bottom-left"></div>
+                                            <div class="card-arrow-bottom-right"></div>
+                                        </div>
+                                    </div>
                                 </div>
+                                <div class="col-8">
+                                    <div class="row">
+                                        <div class="col-12 form-group mb-3">
+                                            <label class="form-label">Name Reseller</label>
+                                            <input class="form-control form-control-sm text-theme is-invalid" type="text"
+                                                name="nama" required placeholder="Please provide a name supplier"
+                                                autocomplete="OFF">
+                                            <div class="valid-feedback">Looks good!</div>
+                                        </div>
 
-                                <div class="col-12 form-group mb-3">
-                                    <label class="form-label">Photo <small class="text-warning">optional</small></label>
-                                    <input type="file" class="form-control form-control-sm" id="file"
-                                        name="file">
+                                        <div class="col-12 form-group mb-3">
+                                            <label class="form-label">No Telp</label>
+                                            <input class="form-control form-control-sm text-theme is-invalid" type="number"
+                                                name="tlp" placeholder="Please provide a No Telp" autocomplete="OFF">
+                                            <div class="valid-feedback">Looks good!</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group mt-3" align="right">
@@ -78,6 +98,22 @@
                 </div>
             </div>
         </div>
+
+        <script type="text/javascript">
+            $('#file').change(function() {
+
+                if (file === "") {
+                    document.getElementById("previewimg").src = '/reseller/defaultimg.png';
+                } else {
+                    let reader = new FileReader();
+                    reader.onload = (e) => {
+                        $('#previewimg').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+
+            });
+        </script>
 
         <div class="row">
             <!-- DATA ASSSET -->
@@ -209,6 +245,8 @@
                                     "'" +
                                     ')"><i class="fas fa-xl fa-edit">  </i></a> </span><span><a class="text-default" style="font-weight: bold;">|</a> </span><span><a class="text-danger" style="cursor: pointer;" onclick="openmodaldelete(' +
                                     "'" + row.id + "'" +
+                                    ',' +
+                                    "'" + row.img + "'" +
                                     ')"><i class="fas fa-xl fa-times-circle"></i></a></span>';
                             },
                         },
@@ -243,12 +281,11 @@
                 document.getElementById('e_id_reseller').value = id_reseller;
                 document.getElementById('e_nama').value = nama;
                 document.getElementById('e_tlp').value = tlp;
-                document.getElementById('e_img2').value = img;
 
-                if (img != "") {
-                    document.getElementById("e_img").src = '../../reseller/' + img;
-                } else {
+                if (img == "") {
                     document.getElementById("e_img").src = '../../reseller/defaultimg.png';
+                } else {
+                    document.getElementById("e_img").src = '../../reseller/' + img;
                 }
             }
 
@@ -267,7 +304,7 @@
 
             function submitformdelete() {
                 var value = document.getElementById('del_id').value;
-                document.getElementById('form_delete').action = "../reseller/destroy/" + value;
+                document.getElementById('form_delete').action = "../resellers/destroy/" + value;
                 document.getElementById("form_delete").submit();
             }
         </script>

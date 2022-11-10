@@ -18,6 +18,12 @@ class Product extends Model
         return $this->hasMany(variation::class, 'id_produk', 'id_produk')->orderBy('size');
     }
 
+    public function product_variation2()
+    {
+
+        return $this->hasMany(variation::class, 'id_produk', 'id_produk')->selectRaw('*,SUM(qty) as qty')->orderBy('size')->groupBy('size');
+    }
+
     public function warehouse()
     {
         return $this->hasMany(Warehouse::class, 'id_area', 'id_area');

@@ -127,10 +127,10 @@
 
                                         <div class="col-6 form-group position-relative mb-3 mt-3">
                                             <label class="form-label">Warehouse</label>
-                                            <select class="form-select form-select-sm text-theme" name="id_ware" required>
+                                            <select class="form-select form-select-sm text-theme" name="id_area" required>
                                                 <option value="" disabled selected>Pilih Warehouse</option>
                                                 @foreach ($getware as $gets)
-                                                    <option value="{{ $gets->id_ware }}">{{ $gets->warehouse }}
+                                                    <option value="{{ $gets->id_area }}">{{ $gets->warehouse }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -361,9 +361,9 @@
                         <div class="row" align="center">
                             @foreach ($getsproduct as $key => $utama)
                                 @foreach ($getnamewarehouse as $wares)
-                                    @if ($utama->id_ware === $wares->id_ware)
+                                    @if ($utama->id_area === $wares->id_area)
                                         @foreach ($get_perware as $keys => $kedua)
-                                            @if ($utama->id_ware === $kedua->id_ware)
+                                            @if ($utama->id_area === $kedua->id_area)
                                                 <div class="col-4 mb-3">
                                                     <div class="card">
                                                         <div class="card-body p-3 bg-white bg-opacity-10">
@@ -539,9 +539,9 @@
                             "render": function(data, type, row, meta) {
                                 let rupiah = Intl.NumberFormat('id-ID');
 
-                                return '<span class="badge border fw-bold" style="width: 120px;margin-bottom: 7px;margin-top: 3px;font-size: 11px;" >Cost : ' +
-                                    rupiah.format(row.m_price) +
-                                    '</span> <br><span class="badge border fw-bold" style="width: 120px;margin-bottom: 7px;font-size: 11px;" >Normal : ' +
+                                // return '<span class="badge border fw-bold" style="width: 120px;margin-bottom: 7px;margin-top: 3px;font-size: 11px;" >Cost : ' +
+                                //     rupiah.format(row.m_price) +
+                                return '</span> <br><span class="badge border fw-bold" style="width: 120px;margin-bottom: 7px;font-size: 11px;" >Normal : ' +
                                     rupiah.format(row.n_price) +
                                     '</span> <br><span class="badge border fw-bold" style="width: 120px;font-size: 11px;margin-bottom: 7px;" >Reseller : ' +
                                     rupiah.format(row.r_price) +
@@ -563,8 +563,8 @@
                             },
                         },
                         {
-                            data: 'product_variation',
-                            name: 'product_variation',
+                            data: 'product_variation2',
+                            name: 'product_variation2',
                             class: 'text-center',
                             searchable: true,
                             // Edit Tian
@@ -576,15 +576,15 @@
                                 b = 1;
 
                                 while (i < length) {
-                                    if (row.warehouse[0]['id_ware'] === row.product_variation[i][
-                                            'id_ware'
+                                    if (row.warehouse[0]['id_area'] === row.product_variation2[i][
+                                            'id_area'
                                         ]) {
-                                        if (row.product_variation[i]['qty'] === '0') {
+                                        if (row.product_variation2[i]['qty'] === 0) {
                                             size = size + '<span class="text-danger"> ' + '[<i>' +
                                                 row
-                                                .product_variation[i]['size'] +
+                                                .product_variation2[i]['size'] +
                                                 '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
-                                                row.product_variation[
+                                                row.product_variation2[
                                                     i][
                                                     'qty'
                                                 ] +
@@ -592,9 +592,9 @@
 
                                         } else {
                                             size = size + '<span class="text-lime">' + '[<i>' + row
-                                                .product_variation[i]['size'] +
+                                                .product_variation2[i]['size'] +
                                                 '</i><span class="text-lime"> = </span><span class="text-lime fw-bold">' +
-                                                row.product_variation[
+                                                row.product_variation2[
                                                     i][
                                                     'qty'
                                                 ] +
@@ -605,6 +605,8 @@
                                             b = 0;
                                         }
                                         b++;
+                                    } else{
+                                        size = 'STOCK BELUM ADA';
                                     }
                                     i++;
                                 }
@@ -623,7 +625,7 @@
                                     .quality + "'" + ',' + "'" + row.m_price + "'" + ',' + "'" + row
                                     .r_price + "'" + ',' + "'" + row.n_price + "'" + ',' + "'" + row
                                     .g_price + "'" +
-                                    ',' + "'" + row.id_ware + "'" +
+                                    ',' + "'" + row.id_area + "'" +
                                     ')"><i class="fas fa-xl fa-edit">  </i></a> </span><span><a class="text-default" style="font-weight: bold;">|</a> </span><span><a class="text-danger" style="cursor: pointer;" onclick="openmodaldelete(' +
                                     "'" + row.id + "'" +
                                     ',' + "'" + row.id_produk + "'" +
@@ -656,7 +658,7 @@
         <script>
             // edit
             function openmodaledit(id, id_produk, produk, brand, category, quality, m_price, r_price, n_price,
-                g_price, id_ware) {
+                g_price, id_area) {
                 $('#modaledit').modal('show');
                 document.getElementById('id').value = id;
                 document.getElementById('id_produk').value = id_produk;
@@ -715,14 +717,14 @@
                 document.getElementById('r_price').value = "Rp " + hasil_r_price;
                 document.getElementById('n_price').value = "Rp " + hasil_n_price;
                 document.getElementById('g_price').value = "Rp " + hasil_g_price;
-                document.getElementById('id_ware').value = id_ware;
+                document.getElementById('id_area').value = id_area;
                 // document.getElementById('img').value = img;
 
                 $.ajax({
                     type: 'POST',
                     url: "{{ URL::to('/load_edit_variation') }}",
                     data: {
-                        id_ware: id_ware,
+                        id_area: id_area,
                         id_produk: id_produk
                     },
                     success: function(data) {

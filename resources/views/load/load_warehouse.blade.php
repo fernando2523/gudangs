@@ -1,7 +1,7 @@
 <select class="form-select fw-bold border-theme text-theme" id="mdl_warehouse">
     <option value="" disabled selected>Pilih Warehouse..</option>
     @foreach ($data as $data)
-        <option value="{{ $data->id_ware }}">{{ $data->warehouse }}</option>
+        <option data-warehouse="{{ $data->warehouse }}" value="{{ $data->id_ware }}">{{ $data->warehouse }}</option>
     @endforeach
 </select>
 

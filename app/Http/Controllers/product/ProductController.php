@@ -44,14 +44,14 @@ class ProductController extends Controller
         $get_totalqty = variation::all()->sum('qty');
 
         $getsproduct = DB::table('products')
-            ->select(DB::raw('id_ware'),)->groupBy('id_ware')->get();
+            ->select(DB::raw('id_area'),)->groupBy('id_area')->get();
 
         $get_perware = DB::table('variations')
             ->select(
                 DB::raw('COUNT(variations.id_produk) as countidproduk'),
                 DB::raw('SUM(variations.qty) as totalQty'),
-                DB::raw('id_ware'),
-            )->where('qty', '!=', '0')->groupBy('id_ware')->get();
+                DB::raw('id_area'),
+            )->where('qty', '!=', '0')->groupBy('id_area')->get();
 
         $getnamewarehouse = Warehouse::all();
 
@@ -75,8 +75,8 @@ class ProductController extends Controller
     public function tableproduct(Request $request)
     {
         if ($request->ajax()) {
-            $product = Product::with('warehouse', 'image_product', 'product_variation')->get();
-
+            $product = Product::with('warehouse', 'image_product', 'product_variation2')->get();
+            // dd($product);
             return DataTables::of($product)
                 ->addIndexColumn()
                 ->addColumn('action', function () {

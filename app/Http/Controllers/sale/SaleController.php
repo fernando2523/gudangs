@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\Reseller;
 use App\Models\Warehouse;
 use App\Models\variation;
+use App\Models\Supplier_order;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,7 @@ class SaleController extends Controller
     {
         if ($request->ajax()) {
             $id_area = $request->area;
-            $data = Product::with('warehouse', 'image_product', 'product_variation')->where('products.id_area', $id_area)->paginate(6);
+            $data = Product::with('warehouse', 'image_product', 'product_variation')->where('products.id_area', $id_area)->get();
 
             return view('load.load_catalog', compact(
                 'data'
@@ -62,10 +63,13 @@ class SaleController extends Controller
             $id_produk = $request->id_produk;
             $id_ware = $request->id_ware;
 
-            $data = DB::table('variations')->where('id_produk', $id_produk)->where('id_ware', $id_ware)->get();
+            $data = DB::table('variations')->selectRaw('SUM(qty) as qty,id,size')->where('id_produk', $id_produk)->where('id_ware', $id_ware)->groupBy('size')->get();
+
+            $count = count($data);
 
             return view('load.load_modal_catalog', compact(
-                'data'
+                'data',
+                'count'
             ));
         }
     }
@@ -84,17 +88,19 @@ class SaleController extends Controller
 
     public function save_sales(Request $request)
     {
+
+
+
         $tanggal = $request->r_tanggal;
         $idinvoice = $request->r_idinvoice;
-        $warehouse = $request->r_warehouse;
-        $store = $request->store;
-
+        $warehouse = $request->r_idware;
+        $id_area = $request->r_area;
+        $store = $request->r_id_store;
         $customer = $request->customer;
         $quality = $request->r_quality;
         $produk = $request->r_produk;
         $size = $request->r_size;
         $qty = $request->r_qty;
-        $m_price = $request->r_m_price;
         $selling_price = $request->r_selling_price;
         $discitem = $request->r_diskon_item;
         $discnota = $request->rs_discnota;
@@ -142,39 +148,139 @@ class SaleController extends Controller
 
         $count = $request->count;
 
-        // Save Function
-        for ($i = 0; $i < $count; $i++) {
-            $data = new Sale();
-            $data->tanggal = $tanggal;
-            $data->id_invoice = $idinvoice;
-            $data->id_produk = $idproduk[$i];
-            $data->id_ware = $warehouse;
-            $data->id_store = $store;
-            $data->id_brand = $idbrand[$i];
-            $data->id_reseller = $reseller_name;
-            $data->payment = 'PAID';
-            $data->customer = $customer;
-            $data->quality = $quality[$i];
-            $data->produk = $produk[$i];
-            $data->size = $size[$i];
-            $data->qty = $qty[$i];
-            $data->m_price = $m_price[$i];
-            $data->selling_price = $selling_price[$i];
-            $data->diskon_item = $discitem[$i];
-            $data->diskon_all = $discnota;
-            $data->subtotal = $subtotal[$i];
-            $data->grandtotal = $grandtotal;
-            $data->cash = $cash;
-            $data->bca = $bca;
-            $data->mandiri = $mandiri;
-            $data->qris = $banktf;
-            $data->ongkir = $ongkir;
-            $data->refund = '0';
-            $data->users = $cashier;
-            $data->save();
-        }
-        // End Save Function
 
+        for ($i = 0; $i < $count; $i++) {
+            // cek stock Variasi Aktif
+            // $m_price = $request->r_m_price;
+            $get_var = variation::where('id_produk', $idproduk[$i])
+                ->where('id_area', $id_area)
+                ->where('id_ware', $warehouse[$i])
+                ->where('size', $size[$i])
+                ->where('qty', '!=', '0')
+                ->orderBy('id_po', 'ASC')
+                ->get();
+
+            $qty_sales = $qty[$i];
+
+            for ($b = 0; $b < count($get_var); $b++) {
+                $get_qty = $get_var[$b]['qty'];
+                $qty_baru = intval($get_qty) - intval($qty_sales);
+
+                $get_modal = Supplier_order::where('idpo', $get_var[$b]['id_po'])->get('m_price');
+
+                if ($qty_baru >= 0) {
+                    // print_r(' SIZE : ' . $size[$i]);
+                    // print_r(' STOCK : ' . $get_qty);
+                    // print_r(' REQ : ' . $qty_sales);
+                    // print_r(' SISA : ' . $qty_baru);
+                    // print_r(' MODAL : ' . $get_modal[0]['m_price']);
+                    // print_r('<br><br>');
+
+                    // Save Function
+                    $data = new Sale();
+                    $data->m_price = $get_modal[0]['m_price'];
+                    $data->tanggal = $tanggal;
+                    $data->id_invoice = $idinvoice;
+                    $data->id_produk = $idproduk[$i];
+                    $data->id_po = $get_var[$b]['id_po'];
+                    $data->id_area = $id_area;
+                    $data->id_ware = $warehouse[$i];
+                    $data->id_store = $store;
+                    $data->id_brand = $idbrand[$i];
+                    $data->id_reseller = $reseller_name;
+                    $data->payment = 'PAID';
+                    $data->customer = $customer;
+                    $data->quality = $quality[$i];
+                    $data->produk = $produk[$i];
+                    $data->size = $size[$i];
+                    $data->qty = $qty_sales;
+                    $data->selling_price = $selling_price[$i];
+                    $data->diskon_item = $discitem[$i];
+                    $data->diskon_all = $discnota;
+                    $data->subtotal = $subtotal[$i];
+                    $data->grandtotal = $grandtotal;
+                    $data->cash = $cash;
+                    $data->bca = $bca;
+                    $data->mandiri = $mandiri;
+                    $data->qris = $banktf;
+                    $data->ongkir = $ongkir;
+                    $data->refund = '0';
+                    $data->users = $cashier;
+                    $data->save();
+                    // End Save Function
+
+                    // Update Variation QTY
+                    variation::where('id_produk', $idproduk[$i])
+                        ->where('id_area', $id_area)
+                        ->where('id_ware', $warehouse[$i])
+                        ->where('size', $size[$i])
+                        ->where('id_po', $get_var[$b]['id_po'])
+                        ->update([
+                            'qty' => $qty_baru,
+                        ]);
+                    // QTY Update Variation QTY
+
+                    break;
+                } else {
+                    if ($qty_baru < 0) {
+                        $qty_sisa = 0;
+                    }
+                    // print_r(' SIZE : ' . $size[$i]);
+                    // print_r(' STOCK : ' . $get_qty);
+                    // print_r(' REQ : ' . $qty_sales);
+                    // print_r(' SISA : ' . $qty_sisa);
+                    // print_r(' MODAL : ' . $get_modal[0]['m_price']);
+                    // print_r('<br>');
+
+                    // Save Function
+                    $data = new Sale();
+                    $data->m_price = $get_modal[0]['m_price'];
+                    $data->tanggal = $tanggal;
+                    $data->id_invoice = $idinvoice;
+                    $data->id_produk = $idproduk[$i];
+                    $data->id_po = $get_var[$b]['id_po'];
+                    $data->id_area = $id_area;
+                    $data->id_ware = $warehouse[$i];
+                    $data->id_store = $store;
+                    $data->id_brand = $idbrand[$i];
+                    $data->id_reseller = $reseller_name;
+                    $data->payment = 'PAID';
+                    $data->customer = $customer;
+                    $data->quality = $quality[$i];
+                    $data->produk = $produk[$i];
+                    $data->size = $size[$i];
+                    $data->qty = $get_qty;
+                    $data->selling_price = $selling_price[$i];
+                    $data->diskon_item = $discitem[$i];
+                    $data->diskon_all = $discnota;
+                    $data->subtotal = $subtotal[$i];
+                    $data->grandtotal = $grandtotal;
+                    $data->cash = $cash;
+                    $data->bca = $bca;
+                    $data->mandiri = $mandiri;
+                    $data->qris = $banktf;
+                    $data->ongkir = $ongkir;
+                    $data->refund = '0';
+                    $data->users = $cashier;
+                    $data->save();
+                    // End Save Function
+
+                    // Update Variation QTY
+                    variation::where('id_produk', $idproduk[$i])
+                        ->where('id_area', $id_area)
+                        ->where('id_ware', $warehouse[$i])
+                        ->where('size', $size[$i])
+                        ->where('id_po', $get_var[$b]['id_po'])
+                        ->update([
+                            'qty' => $qty_sisa,
+                        ]);
+                    // QTY Update Variation QTY
+
+                    $qty_sales = intval($qty_sales) - intval($get_qty);
+                }
+            }
+            // End cek stock Variasi Aktif
+        }
         return redirect('/sale/sales');
     }
 

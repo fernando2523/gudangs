@@ -106,8 +106,8 @@
                             <span class="menu-text">Category</span>
                         </a>
                     </div>
-                    <div class="menu-item {{ Request::is('employee/employees') ? 'active' : '' }}">
-                        <a href="/employee/employees" class="menu-link">
+                    <div class="menu-item {{ Request::is('barcode/barcodes') ? 'active' : '' }}">
+                        <a href="/barcode/barcodes" class="menu-link">
                             <span class="menu-icon"><i class="bi bi-upc-scan text-theme"></i></span>
                             <span class="menu-text">Barcode</span>
                         </a>
@@ -155,14 +155,14 @@
                     <span class="menu-caret"><b class="caret"></b></span>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item">
-                        <a href="email_compose.html" class="menu-link">
+                    <div class="menu-item {{ Request::is('order/orders') ? 'active' : '' }}">
+                        <a href="/order/orders" class="menu-link">
                             <span class="menu-icon"><i class="bi bi-person text-theme"></i></span>
                             <span class="menu-text">Retail</span>
                         </a>
                     </div>
-                    <div class="menu-item">
-                        <a href="email_compose.html" class="menu-link">
+                    <div class="menu-item {{ Request::is('orderreseller/orderresellers') ? 'active' : '' }}">
+                        <a href="/orderreseller/orderresellers" class="menu-link">
                             <span class="menu-icon"><i class="bi bi-people text-theme"></i></span>
                             <span class="menu-text">Reseller</span>
                         </a>
