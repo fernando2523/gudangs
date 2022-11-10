@@ -13,34 +13,24 @@
                     <div>
                         <input type="hidden" id="e_id">
                         <input type="hidden" id="e_id_store">
-                        <input type="hidden" id="e_id_ware" name="e_id_ware">
                     </div>
 
                     <div class="row form-group">
                         <div class="col-12 form-group mb-3">
                             <label class="form-label">Name Store</label>
                             <input class="form-control form-control-sm text-theme is-invalid" type="text"
-                                name="e_store" id="e_store" required placeholder="Please provide a name store"
+                                name="e_store" id="e_store" required placeholder="Silahkan Masukan nama store"
                                 autocomplete="OFF">
                         </div>
 
                         <div class="col-12 form-group mb-3">
                             <label class="form-label">Address</label>
                             <textarea class="form-control form-control-sm text-theme is-invalid" type="text" name="e_address" id="e_address"
-                                required placeholder="Please provide a Adress store" autocomplete="OFF" rows="2"></textarea>
+                                required placeholder="Silahkan isi alamat store yang sesuai." autocomplete="OFF" rows="2"></textarea>
                         </div>
 
-                        <div class="col-12 form-group position-relative mb-3">
-                            <label class="form-label">Warehouse</label>
-                            <select class="form-select form-select-sm text-theme" name="e_id_ware" required>
-                                <option id="e_warehousedefault" disabled selected>Choose Warehouse</option>
-                                @foreach ($getwarehouse as $gets)
-                                    <option value="{{ $gets->id_ware }}">{{ $gets->warehouse }}</option>
-                                @endforeach
-                            </select>
-                            <div class="invalid-tooltip">
-                                Please select a valid Warehouse.
-                            </div>
+                        <div class="col-12 form-group position-relative mb-3" id="edit_select_store">
+
                         </div>
                     </div>
                     <div class="form-group mt-3" align="right">

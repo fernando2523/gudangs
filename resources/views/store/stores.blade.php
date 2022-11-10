@@ -13,8 +13,6 @@
                 </h1>
             </div>
             <div class="ms-auto">
-                <a href="#" class="btn btn-outline-secondary"><i class="fa fa-upload fa-fw me-1 text-white"></i> Export
-                    CSV</a>
             </div>
             <div class="ms-sm-3 mt-sm-0 mt-2"><a class="btn btn-outline-theme" data-bs-toggle="modal"
                     data-bs-target="#modaladd"><i class="fa fa-plus-circle fa-fw me-1"></i> Add Store</a></div>
@@ -47,28 +45,28 @@
 
                             <div class="row form-group">
                                 <div class="col-12 form-group mb-3">
-                                    <label class="form-label">Name Store</label>
+                                    <label class="form-label">Nama Store</label>
                                     <input class="form-control form-control-sm text-theme is-invalid" type="text"
-                                        name="store" required placeholder="Please provide a name store"
+                                        name="store" required placeholder="Silahkan Masukan nama store"
                                         autocomplete="OFF">
                                 </div>
 
                                 <div class="col-12 form-group mb-3">
-                                    <label class="form-label">Address</label>
+                                    <label class="form-label">Alamat</label>
                                     <textarea class="form-control form-control-sm text-theme is-invalid" type="text" name="address" required
-                                        placeholder="Please provide a Adress store" autocomplete="OFF" rows="2"></textarea>
+                                        placeholder="Silahkan isi alamat store yang sesuai." autocomplete="OFF" rows="2"></textarea>
                                 </div>
 
                                 <div class="col-12 form-group position-relative mb-3">
                                     <label class="form-label">Warehouse</label>
                                     <select class="form-select text-theme" name="id_ware" required>
-                                        <option value="" disabled selected>Choose Warehouse</option>
+                                        <option value="" disabled selected>Pilih Warehouse</option>
                                         @foreach ($getwarehouse as $gets)
                                             <option value="{{ $gets->id_ware }}">{{ $gets->warehouse }}</option>
                                         @endforeach
                                     </select>
                                     <div class="invalid-tooltip">
-                                        Please select a valid Warehouse.
+                                        Silahkan pilih warehouse yang sesuai.
                                     </div>
                                 </div>
                             </div>
@@ -108,10 +106,12 @@
                             <thead style="font-size: 11px;">
                                 <tr>
                                     <th class="text-center" width="2%" style="color: #a8b6bc !important;">NO</th>
-                                    <th class="text-center" width="6%" style="color: #a8b6bc !important;">ID</th>
                                     <th class="text-center" width="15%" style="color: #a8b6bc !important;">STORE</th>
                                     <th class="text-center" width="30%" style="color: #a8b6bc !important;">ADDRESS</th>
-                                    <th class="text-center" width="15%" style="color: #a8b6bc !important;">WAREHOUSE</th>
+                                    <th class="text-center" width="15%" style="color: #a8b6bc !important;">AREA
+                                    </th>
+                                    <th class="text-center" width="15%" style="color: #a8b6bc !important;">WAREHOUSE
+                                    </th>
                                     <th class="text-center" width="5%" style="color: #a8b6bc !important;">ACT</th>
                                 </tr>
                             </thead>
@@ -167,14 +167,9 @@
                             class: 'text-center fw-bold',
                             searchable: false
                         }, {
-                            data: 'id_store',
-                            name: 'id_store',
-                            class: 'text-center text-theme fw-bold',
-                            searchable: false
-                        }, {
                             data: 'store',
                             name: 'store',
-                            class: 'text-center',
+                            class: 'text-center fw-bold',
                             searchable: true
                         }, {
                             data: 'address',
@@ -183,10 +178,19 @@
                             searchable: true
                         },
                         {
-                            data: 'warehouse',
-                            name: 'warehouse',
-                            class: 'text-center fw-bold text-theme',
+                            data: 'area',
+                            name: 'area',
+                            class: 'text-center fw-bold',
                             searchable: true
+                        },
+                        {
+                            data: 'warehouses',
+                            name: 'warehouses',
+                            class: 'text-center fw-bold text-theme',
+                            searchable: true,
+                            "render": function(data, type, row) {
+                                return '<span>' + row.warehouses[0]['warehouse'] + '</span>';
+                            },
                         },
                         {
                             data: 'action',
@@ -197,7 +201,7 @@
                                     "'" + row.id + "'" + ',' + "'" + row.id_store + "'" + ',' + "'" +
                                     row
                                     .store + "'" + ',' + "'" + row.address + "'" + ',' + "'" + row
-                                    .id_ware + "'" + ',' + "'" + row.warehouse + "'" +
+                                    .id_ware + "'" +
                                     ')"><i class="fas fa-xl fa-edit">  </i></a> </span><span><a class="text-default" style="font-weight: bold;">|</a> </span><span><a class="text-danger" style="cursor: pointer;" onclick="openmodaldelete(' +
                                     "'" + row.id + "'" +
                                     ')"><i class="fas fa-xl fa-times-circle"></i></a></span>';
@@ -207,7 +211,7 @@
                     dom: 'tip',
                     // "ordering" : true,
                     order: [
-                        [1, 'desc']
+                        [0, 'desc']
                     ],
                     columnDefs: [{
                             orderable: false,
@@ -228,17 +232,23 @@
 
         <script>
             // edit
-            function openmodaledit(id, id_store, store, address, id_ware, warehouse) {
+            function openmodaledit(id, id_store, store, address, id_ware) {
                 $('#modaledit').modal('show');
-
                 document.getElementById('e_id').value = id;
                 document.getElementById('e_id_store').value = id_store;
                 document.getElementById('e_store').value = store;
                 document.getElementById('e_address').value = address;
-                document.getElementById('e_id_ware').value = id_ware;
 
-
-                document.getElementById("e_warehousedefault").innerHTML = "DEFAULT : " + warehouse;
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ URL::to('/edit_select_store') }}",
+                    data: {
+                        id_ware: id_ware,
+                    },
+                    success: function(data) {
+                        $("#edit_select_store").html(data);
+                    }
+                });
             }
 
             function submitformedit() {

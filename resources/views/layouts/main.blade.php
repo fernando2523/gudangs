@@ -17,7 +17,6 @@
     <!-- ================== BEGIN page-css ================== -->
     <link href="{{ URL::asset('assets/plugins/jvectormap-next/jquery-jvectormap.css') }}" rel="stylesheet" />
     <!-- ================== END page-css ================== -->
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>

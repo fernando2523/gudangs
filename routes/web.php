@@ -72,12 +72,18 @@ route::any('/tablewarehouse', [WarehouseController::class, 'tablewarehouse'])->m
 route::any('/warehouse/warehouses/store', [WarehouseController::class, 'store'])->middleware('auth');
 route::any('/warehouse/editact/{id}', [WarehouseController::class, 'editact'])->middleware('auth');
 route::any('/warehouse/destroy/{id}', [WarehouseController::class, 'destroy'])->middleware('auth');
+// nando 11 nov
+route::any('/edit_select_ware', [WarehouseController::class, 'edit_select_ware']);
+// end nando 11 nov
 
 route::get('/store/stores', [StoreController::class, 'store'])->middleware('auth');
 route::any('/store/stores/storeadd', [StoreController::class, 'storeadd'])->middleware('auth');
 route::any('/tablestore', [StoreController::class, 'tablestore'])->middleware('auth');
 route::any('/store/editact/{id}', [StoreController::class, 'editact'])->middleware('auth');
 route::any('/store/destroy/{id}', [StoreController::class, 'destroy'])->middleware('auth');
+// nando 11 nov
+route::any('/edit_select_store', [StoreController::class, 'edit_select_store']);
+// end nando 11 nov
 
 route::get('/brand/brands', [BrandController::class, 'brand'])->middleware('auth');
 route::any('/tablebrand', [BrandController::class, 'tablebrand'])->middleware('auth');

@@ -17,6 +17,8 @@ class CreateWarehousesTable extends Migration
             $table->id();
             $table->string('id_ware');
             $table->string('warehouse');
+            $table->string('id_area');
+            $table->string('area');
             $table->string('address');
             $table->timestamps();
         });
