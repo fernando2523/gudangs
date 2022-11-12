@@ -1,4 +1,9 @@
+<<<<<<< HEAD
+public/brand/1668238231.jpg
+.env
+=======
 
 .env
 .env
 app/Http/Controllers/store/StoreController.php
+>>>>>>> 828b5f989549c02df12ea72a9d9e3e076bff397b
