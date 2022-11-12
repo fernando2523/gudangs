@@ -20,4 +20,9 @@ class Supplier_order extends Model
     {
         return $this->hasMany(Supplier::class, 'id_sup', 'id_sup');
     }
+
+    public function suppliers_details()
+    {
+        return $this->hasMany(Supplier_order::class, 'idpo', 'idpo');
+    }
 }

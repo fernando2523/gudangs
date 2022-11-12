@@ -124,7 +124,8 @@
                                 </div>
                             </div>
                         </div>
-                        <table class="table-sm mb-0" style="width: 100%">
+                        {{-- tb awal --}}
+                        {{-- <table class="table-sm mb-0" style="width: 100%">
                             <thead class="thead-custom">
                                 <tr class="text-white">
                                     <th class="text-center text-white" width="2%">NO
@@ -258,8 +259,23 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <br>
-                        <table class="table-sm table-bordered mb-0" style="width: 100%" id="tb_po">
+                        <br> --}}
+                        {{-- tb awal --}}
+                        <style>
+                            .thead-custom {
+                                font-size: 11px;
+                                background-color: darkslategray;
+                            }
+
+                            .tr-custom {
+                                font-size: 11px;
+                                border-left-width: 1px;
+                                border-right-width: 1px;
+                                border-bottom-width: 1px;
+                                border-top-width: 1px;
+                            }
+                        </style>
+                        <table class="table-sm mb-0" style="width: 100%">
                             <thead class="thead-custom">
                                 <tr class="text-white">
                                     <th class="text-center text-white" width="2%">NO
@@ -285,6 +301,8 @@
                                     </th>
                                 </tr>
                             </thead>
+                            <tbody id="tb_po">
+                            </tbody>
                         </table>
                     </div>
                     <div class="card-arrow">
@@ -299,14 +317,6 @@
         </div>
         @include('purchase.edit')
 
-        <link href="{{ URL::asset('/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"
-            rel="stylesheet" />
-        <link href="{{ URL::asset('/assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
-            rel="stylesheet" />
-        <link href="{{ URL::asset('/assets/plugins/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}"
-            rel="stylesheet" />
-
-       
         <script>
             // edit
             function openmodaldetail(idpo, id_produk, id_ware, produk) {
@@ -362,10 +372,6 @@
                 document.getElementById("form_delete").submit();
             }
 
-            $( document ).ready(function() {
-                // alert( "ready!" );
-            });
-
             // Load Table PO
             function load_po() {
                 $.ajax({
@@ -384,42 +390,63 @@
         </script>
 
         {{-- Tb Load PO --}}
-        <script type="text/javascript">
-            $(function() {
-                var table = $('#tb_po').DataTable({
-                    lengthMenu: [10],
-                    responsive: true,
-                    processing: false,
-                    serverSide: true,
-                    ajax: "/load_tb_po",
-                    columns: [{
-                            data: 'idpo',
-                            name: 'idpo',
-                            orderable: false,
-                            class: 'fs-12px text-lime',
-                            "render": function(data, type, row) {
-                                return '<span class="fs-12px">'+row.idpo+'</span> <span class="fs-12px text-lime">#asd</span>'
-                            },
-                        }
-                    ],
-                    // dom: 'tip',
-                });
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            var query_awal = '';
+            var limit = 10;
 
-                // $('#search_product').on('keyup', function() {
-                //     table.search(this.value).draw();
-                // });
+            $(document).ready(function() {
+                load_tb_po(limit, query_awal);
             });
-            // end
+
+            $("#search_purchaseOrder").bind("enterKey", function(e) {
+                var query = $(this).val();
+                load_tb_po(limit, query);
+            });
+
+            $('#search_purchaseOrder').keyup(function(e) {
+                if (e.keyCode == 13) {
+                    $(this).trigger("enterKey");
+                }
+            });
+
+            function load_tb_po(limit, query) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ URL::to('/load_tb_po') }}",
+                    data: {
+                        limit: limit,
+                        querys: query
+                    },
+                    success: function(data) {
+                        $("#tb_po").html(data);
+                    }
+                });
+            }
+
+            var page = 1;
+            var querys = $('#search_purchaseOrder').val();
+            $(window).scroll(function() {
+                if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
+                    page++;
+                    var limit_new = limit * page;
+                    append_tb_po(limit_new, querys);
+                }
+            });
+
+            function append_tb_po(limit, query) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ URL::to('/load_tb_po?page=') }}" + page,
+                    data: {
+                        limit: limit,
+                        querys: query
+                    },
+                    success: function(data) {
+                        $("#tb_po").append(data);
+                    }
+                });
+            }
         </script>
         {{-- Tb Load PO --}}
-        <script src="{{ URL::asset('/assets/plugins/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
     @endsection

@@ -541,7 +541,7 @@
 
                                 // return '<span class="badge border fw-bold" style="width: 120px;margin-bottom: 7px;margin-top: 3px;font-size: 11px;" >Cost : ' +
                                 //     rupiah.format(row.m_price) +
-                                return '</span> <br><span class="badge border fw-bold" style="width: 120px;margin-bottom: 7px;font-size: 11px;" >Normal : ' +
+                                  return  '</span> <br><span class="badge border fw-bold" style="width: 120px;margin-bottom: 7px;font-size: 11px;" >Normal : ' +
                                     rupiah.format(row.n_price) +
                                     '</span> <br><span class="badge border fw-bold" style="width: 120px;font-size: 11px;margin-bottom: 7px;" >Reseller : ' +
                                     rupiah.format(row.r_price) +

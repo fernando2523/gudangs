@@ -23,8 +23,10 @@ use Illuminate\Database\Eloquent\Builder;
 
 class PurchaseOrderController extends Controller
 {
+
     public function purchaseorder()
     {
+
         $title = "Purchase Order";
         $datapo = DB::table('supplier_orders')->select(DB::raw('idpo'), DB::raw('tanggal'), DB::raw('users'),)->groupBy('idpo', 'tanggal', 'users')->limit(10)->get();
         $datapoDetail = Supplier_order::all();
@@ -51,14 +53,27 @@ class PurchaseOrderController extends Controller
     public function load_table_po(Request $request)
     {
         if ($request->ajax()) {
-            $product = Supplier_order::all();
-            // dd($product);
-            return DataTables::of($product)
-                ->addIndexColumn()
-                ->addColumn('action', function () {
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+
+
+            $query = $request->querys;
+            $limit = $request->limit;
+
+            // if ($query == '') {
+            //     $datapo = Supplier_order::with('suppliers_details')->groupBy('idpo', 'tanggal', 'users')->limit($limit)->get();
+            // } else {
+            //     $datapo = Supplier_order::with('suppliers_details')->where('idpo', 'LIKE', '%' . $query . '%')->groupBy('idpo', 'tanggal', 'users')->limit($limit)->get();
+            // }
+
+            if ($query == '') {
+                $datapo = Supplier_order::with('suppliers_details')->groupBy('idpo', 'tanggal', 'users')->paginate(10);
+            } else {
+                $datapo = Supplier_order::with('suppliers_details')->where('idpo', 'LIKE', '%' . $query . '%')->groupBy('idpo', 'tanggal', 'users')->paginate(10);
+            }
+
+
+            return view('load.load_tb_po', compact(
+                'datapo',
+            ));
         }
     }
 
