@@ -76,7 +76,7 @@ class ProductController extends Controller
     {
         if ($request->ajax()) {
             $product = Product::with('warehouse', 'image_product', 'product_variation2')->get();
-            // dd($product);
+
             return DataTables::of($product)
                 ->addIndexColumn()
                 ->addColumn('action', function () {
