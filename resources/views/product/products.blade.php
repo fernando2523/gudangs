@@ -127,10 +127,10 @@
 
                                         <div class="col-6 form-group position-relative mb-3 mt-3">
                                             <label class="form-label">Warehouse</label>
-                                            <select class="form-select form-select-sm text-theme" name="id_area" required>
+                                            <select class="form-select form-select-sm text-theme" name="id_ware" required>
                                                 <option value="" disabled selected>Pilih Warehouse</option>
                                                 @foreach ($getware as $gets)
-                                                    <option value="{{ $gets->id_area }}">{{ $gets->warehouse }}
+                                                    <option value="{{ $gets->id_ware }}">{{ $gets->warehouse }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -563,8 +563,8 @@
                             },
                         },
                         {
-                            data: 'product_variation2',
-                            name: 'product_variation2',
+                            data: 'product_variation',
+                            name: 'product_variation',
                             class: 'text-center',
                             searchable: true,
                             // Edit Tian
@@ -576,15 +576,15 @@
                                 b = 1;
 
                                 while (i < length) {
-                                    if (row.warehouse[0]['id_area'] === row.product_variation2[i][
-                                            'id_area'
+                                    if (row.warehouse[0]['id_ware'] === row.product_variation[i][
+                                            'id_ware'
                                         ]) {
-                                        if (row.product_variation2[i]['qty'] === 0) {
+                                        if (row.product_variation[i]['qty'] === 0) {
                                             size = size + '<span class="text-danger"> ' + '[<i>' +
                                                 row
-                                                .product_variation2[i]['size'] +
+                                                .product_variation[i]['size'] +
                                                 '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
-                                                row.product_variation2[
+                                                row.product_variation[
                                                     i][
                                                     'qty'
                                                 ] +
@@ -592,9 +592,9 @@
 
                                         } else {
                                             size = size + '<span class="text-lime">' + '[<i>' + row
-                                                .product_variation2[i]['size'] +
+                                                .product_variation[i]['size'] +
                                                 '</i><span class="text-lime"> = </span><span class="text-lime fw-bold">' +
-                                                row.product_variation2[
+                                                row.product_variation[
                                                     i][
                                                     'qty'
                                                 ] +

@@ -21,12 +21,12 @@ class Product extends Model
     public function product_variation2()
     {
 
-        return $this->hasMany(variation::class, 'id_produk', 'id_produk')->selectRaw('*,SUM(qty) as qty')->orderBy('size')->groupBy('size');
+        return $this->hasMany(variation::class, 'id_produk', 'id_produk')->orderBy('size');
     }
 
     public function warehouse()
     {
-        return $this->hasMany(Warehouse::class, 'id_area', 'id_area');
+        return $this->hasMany(Warehouse::class, 'id_ware', 'id_ware');
     }
 
     public function image_product()
