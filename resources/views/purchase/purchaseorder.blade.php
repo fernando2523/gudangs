@@ -305,6 +305,10 @@
                             </tbody>
                         </table>
                     </div>
+                    <!-- Data Loader -->
+                    <div class="auto-load text-center">
+                        <div class="spinner-border"></div>
+                    </div>
                     <div class="card-arrow">
                         <div class="card-arrow-top-left"></div>
                         <div class="card-arrow-top-right"></div>
@@ -418,8 +422,12 @@
                         limit: limit,
                         querys: query
                     },
+                    beforeSend: function() {
+                        $('.auto-load').show();
+                    },
                     success: function(data) {
                         $("#tb_po").html(data);
+                        $('.auto-load').hide();
                     }
                 });
             }
@@ -436,16 +444,27 @@
 
             function append_tb_po(limit, query) {
                 $.ajax({
-                    type: 'POST',
-                    url: "{{ URL::to('/load_tb_po?page=') }}" + page,
-                    data: {
-                        limit: limit,
-                        querys: query
-                    },
-                    success: function(data) {
-                        $("#tb_po").append(data);
-                    }
-                });
+                        type: 'POST',
+                        url: "{{ URL::to('/load_tb_po?page=') }}" + page,
+                        data: {
+                            limit: limit,
+                            querys: query
+                        },
+                        beforeSend: function() {
+                            $('.auto-load').show();
+                        }
+                    })
+                    .done(function(response) {
+                        if (response.length == 0) {
+                            $('.auto-load').html("We don't have more data to display :(");
+                            return;
+                        }
+                        $('.auto-load').hide();
+                        $("#tb_po").append(response);
+                    })
+                    .fail(function(jqXHR, ajaxOptions, thrownError) {
+                        console.log('Server error occured');
+                    });
             }
         </script>
         {{-- Tb Load PO --}}
