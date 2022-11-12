@@ -125,12 +125,11 @@ class StoreController extends Controller
 
         $data = Store::find($id);
         $data->id_ware = $request->e_id_ware;
-        $data->id_area = $getarea[0]->id_ware;
+        $data->id_area = $getarea[0]->id_area;
         $data->area = $getarea[0]->area;
         $data->store = Str::upper($request->e_store);
         $data->address = Str::headline($request->e_address);
         $data->update();
-
         return redirect('store/stores');
     }
 

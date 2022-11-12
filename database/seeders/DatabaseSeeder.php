@@ -19,28 +19,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // User::create([
-        //     'name' => 'ADMIN',
-        //     'email' => 'admin',
-        //     'password' => Hash::make('asdqwe123'),
-        //     'role' => 'SUPER-ADMIN',
-        // ]);
-
-        Role::create([
+        User::create([
+            'name' => 'ADMIN',
+            'email' => 'admin',
+            'password' => Hash::make('asdqwe123'),
             'role' => 'SUPER-ADMIN',
         ]);
-        Role::create([
-            'role' => 'HEAD-AREA',
-        ]);
-        Role::create([
-            'role' => 'HEAD-WAREHOUSE',
-        ]);
-        Role::create([
-            'role' => 'HEAD-STORE',
-        ]);
-        Role::create([
-            'role' => 'CASHIER',
-        ]);
+
+        // Role::create([
+        //     'role' => 'SUPER-ADMIN',
+        // ]);
+        // Role::create([
+        //     'role' => 'HEAD-AREA',
+        // ]);
+        // Role::create([
+        //     'role' => 'HEAD-WAREHOUSE',
+        // ]);
+        // Role::create([
+        //     'role' => 'HEAD-STORE',
+        // ]);
+        // Role::create([
+        //     'role' => 'CASHIER',
+        // ]);
 
         // Product::create([
         //     'id_produk' => '1321081971',
