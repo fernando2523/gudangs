@@ -276,8 +276,9 @@
 
                                 <tr>
                                     <td colspan="6" class="fw-bold " style="padding-top: 20px;">
+                                        <span class="fs-12px text-success">RETAIL</span><br>
                                         <span class="fs-12px">1) </span>
-                                        <span class="fs-12px text-theme">#351354246404</span> | 2022-11-14<span
+                                        <span class="fs-12px text-success">#351354246404</span> | 2022-11-14<span
                                             style="padding-left: 5px;cursor: pointer;"><i
                                                 class="fa fa-print fa-lg text-info me-2 ms-2"></i></span><span
                                             style="padding-left: 5px;cursor: pointer;"><i
@@ -396,8 +397,9 @@
                                 {{-- data reseller --}}
                                 <tr>
                                     <td colspan="6" class="fw-bold " style="padding-top: 20px;">
+                                        <span class="fs-12px text-yellow">RESELLER</span><br>
                                         <span class="fs-12px">2) </span>
-                                        <span class="fs-12px text-theme">#351354246404</span> | 2022-11-14<span
+                                        <span class="fs-12px text-yellow">#351354246404</span> | 2022-11-14<span
                                             style="padding-left: 5px;cursor: pointer;"><i
                                                 class="fa fa-print fa-lg text-info me-2 ms-2"></i></span><span
                                             style="padding-left: 5px;cursor: pointer;"><i
