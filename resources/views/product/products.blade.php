@@ -578,7 +578,7 @@
                                     if (row.warehouse[0]['id_ware'] === row.product_variation[i][
                                             'id_ware'
                                         ]) {
-                                        if (row.product_variation[i]['qty'] === '0') {
+                                        if (row.product_variation[i]['qty'] === 0) {
                                             size = size + '<span class="text-danger"> ' + '[<i>' +
                                                 row
                                                 .product_variation[i]['size'] +
@@ -609,7 +609,7 @@
                                     }
                                     i++;
                                 }
-                                return size;
+                                return row.product_variation[0]['qty'];
                             },
                         },
                         {
