@@ -361,9 +361,9 @@
                         <div class="row" align="center">
                             @foreach ($getsproduct as $key => $utama)
                                 @foreach ($getnamewarehouse as $wares)
-                                    @if ($utama->id_area === $wares->id_area)
+                                    @if ($utama->id_ware === $wares->id_ware)
                                         @foreach ($get_perware as $keys => $kedua)
-                                            @if ($utama->id_area === $kedua->id_area)
+                                            @if ($utama->id_ware === $kedua->id_ware)
                                                 <div class="col-4 mb-3">
                                                     <div class="card">
                                                         <div class="card-body p-3 bg-white bg-opacity-10">
@@ -375,7 +375,8 @@
                                                                 <div class="row">
                                                                     <div class="col-6">
                                                                         <h6 class="mb-0">
-                                                                            {{ $kedua->countidproduk }}</h6>
+                                                                            {{ $kedua->countidproduk }}
+                                                                        </h6>
                                                                         <h6 class="mb-0 fs-10px">PCS
                                                                         </h6>
                                                                     </div>
@@ -539,8 +540,6 @@
                             "render": function(data, type, row, meta) {
                                 let rupiah = Intl.NumberFormat('id-ID');
 
-                                // return '<span class="badge border fw-bold" style="width: 120px;margin-bottom: 7px;margin-top: 3px;font-size: 11px;" >Cost : ' +
-                                //     rupiah.format(row.supplier_order[0]['m_price']) +
                                 return '</span> <br><span class="badge border fw-bold" style="width: 120px;margin-bottom: 7px;font-size: 11px;" >Normal : ' +
                                     rupiah.format(row.n_price) +
                                     '</span> <br><span class="badge border fw-bold" style="width: 120px;font-size: 11px;margin-bottom: 7px;" >Reseller : ' +
@@ -579,7 +578,7 @@
                                     if (row.warehouse[0]['id_ware'] === row.product_variation[i][
                                             'id_ware'
                                         ]) {
-                                        if (row.product_variation[i]['qty'] === 0) {
+                                        if (row.product_variation[i]['qty'] === '0') {
                                             size = size + '<span class="text-danger"> ' + '[<i>' +
                                                 row
                                                 .product_variation[i]['size'] +
@@ -622,10 +621,10 @@
                                     "'" + row.id + "'" + ',' + "'" + row.id_produk + "'" + ',' + "'" +
                                     row.produk + "'" + ',' + "'" + row
                                     .brand + "'" + ',' + "'" + row.category + "'" + ',' + "'" + row
-                                    .quality + "'" + ',' + "'" + row.m_price + "'" + ',' + "'" + row
+                                    .quality + "'" + ',' + "'" + row
                                     .r_price + "'" + ',' + "'" + row.n_price + "'" + ',' + "'" + row
                                     .g_price + "'" +
-                                    ',' + "'" + row.id_area + "'" +
+                                    ',' + "'" + row.id_ware + "'" +
                                     ')"><i class="fas fa-xl fa-edit">  </i></a> </span><span><a class="text-default" style="font-weight: bold;">|</a> </span><span><a class="text-danger" style="cursor: pointer;" onclick="openmodaldelete(' +
                                     "'" + row.id + "'" +
                                     ',' + "'" + row.id_produk + "'" +
@@ -657,8 +656,8 @@
 
         <script>
             // edit
-            function openmodaledit(id, id_produk, produk, brand, category, quality, m_price, r_price, n_price,
-                g_price, id_area) {
+            function openmodaledit(id, id_produk, produk, brand, category, quality, r_price, n_price,
+                g_price, id_ware) {
                 $('#modaledit').modal('show');
                 document.getElementById('id').value = id;
                 document.getElementById('id_produk').value = id_produk;
@@ -668,17 +667,6 @@
                 document.getElementById("branddefault").innerHTML = brand;
                 document.getElementById("categorydefault").innerHTML = category;
                 document.getElementById("qualitydefault").innerHTML = quality;
-
-                var convert_m_price = m_price;
-                var number_string = convert_m_price.toString(),
-                    sisa = number_string.length % 3,
-                    hasil_m_price = number_string.substr(0, sisa),
-                    ribuan = number_string.substr(sisa).match(/\d{3}/g);
-
-                if (ribuan) {
-                    separator = sisa ? '' : '';
-                    hasil_m_price += separator + ribuan.join('.');
-                }
 
                 var convert_r_price = r_price;
                 var number_string = convert_r_price.toString(),
@@ -713,18 +701,16 @@
                     hasil_g_price += separator + ribuan.join('.');
                 }
 
-                document.getElementById('m_price').value = "Rp " + hasil_m_price;
                 document.getElementById('r_price').value = "Rp " + hasil_r_price;
                 document.getElementById('n_price').value = "Rp " + hasil_n_price;
                 document.getElementById('g_price').value = "Rp " + hasil_g_price;
-                document.getElementById('id_area').value = id_area;
-                // document.getElementById('img').value = img;
+                document.getElementById('id_ware').value = id_ware;
 
                 $.ajax({
                     type: 'POST',
                     url: "{{ URL::to('/load_edit_variation') }}",
                     data: {
-                        id_area: id_area,
+                        id_ware: id_ware,
                         id_produk: id_produk
                     },
                     success: function(data) {
