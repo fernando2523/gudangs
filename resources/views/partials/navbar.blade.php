@@ -145,8 +145,14 @@
                     <span class="menu-text">Store Expenditure</span>
                 </a>
             </div>
+            <div class="menu-item {{ Request::is('order/orders') ? 'active' : '' }}">
+                <a href="/order/orders" class="menu-link">
+                    <span class="menu-icon"><i class="bi bi-inboxes-fill text-theme"></i></span>
+                    <span class="menu-text">Orders</span>
+                </a>
+            </div>
 
-            <div class="menu-item has-sub">
+            {{-- <div class="menu-item has-sub">
                 <a href="#" class="menu-link">
                     <span class="menu-icon">
                         <i class="bi bi-inboxes-fill text-theme"></i>
@@ -168,7 +174,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="menu-item has-sub">
                 <a href="#" class="menu-link">
