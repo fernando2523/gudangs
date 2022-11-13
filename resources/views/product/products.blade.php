@@ -609,7 +609,7 @@
                                     }
                                     i++;
                                 }
-                                return row.product_variation[0]['qty'];
+                                return size;
                             },
                         },
                         {
