@@ -13,6 +13,10 @@
                 </h1>
             </div>
             <div class="ms-auto">
+                <div id="reportrange" class="btn btn-outline-theme d-flex align-items-center mt-2">
+                    <span class="text-truncate">&nbsp;tanggal sekarang &nbsp;</span>
+                    <i class="fa fa-caret-down ms-auto"></i>
+                </div>
             </div>
         </div>
         <style>
@@ -94,53 +98,472 @@
             </div>
         </div> --}}
 
+        <div class="row mb-3">
+            <!-- TOTAL STOCK -->
+            <div class="col-xl-2 mb-6">
+                <div class="card">
+                    <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
+                        <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                            <div class="mb-1 text-default fw-bold text-center"">TOTAL ORDER</div>
+                            <h4 class="text-white fs-14px text-center"">24 NOTA</h4>
+                        </div>
+
+                    </div>
+
+                    <!-- card-arrow -->
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- END -->
+            <div class="col-xl-2 mb-6">
+                <div class="card">
+                    <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
+                        <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                            <div class="mb-1 text-default fw-bold text-center">TOTAL QTY</div>
+                            <h4 class="text-white fs-14px text-center">224 PCS</h4>
+                        </div>
+
+                    </div>
+
+                    <!-- card-arrow -->
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-2 mb-6">
+                <div class="card">
+                    <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
+                        <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                            <div class="text-default mb-1 fw-bold text-center"">GROSS SALE</div>
+                            <h4 class="text-white fs-14px text-center"">Rp 554.546.434</h4>
+                        </div>
+                    </div>
+
+                    <!-- card-arrow -->
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-2 mb-6">
+                <div class="card">
+                    <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
+                        <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                            <div class="text-default mb-1 fw-bold text-center"">EXPENSES</div>
+                            <h4 class="text-indigo fs-14px text-center"">Rp 4.546.434</h4>
+                        </div>
+                    </div>
+
+                    <!-- card-arrow -->
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-2 mb-6">
+                <div class="card">
+                    <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
+                        <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                            <div class="text-default mb-1 fw-bold text-center"">DISCOUNT</div>
+                            <h4 class="text-yellow fs-14px text-center"">Rp 11.846.434</h4>
+                        </div>
+                    </div>
+
+                    <!-- card-arrow -->
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-2 mb-6">
+                <div class="card">
+                    <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
+                        <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                            <div class="text-default mb-1 fw-bold text-center"">NET SALES</div>
+                            <h4 class="text-info fs-14px text-center"">Rp 513.845.434</h4>
+                        </div>
+                    </div>
+
+                    <!-- card-arrow -->
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <div class="row">
             <!-- DATA ASSSET -->
             <div class="col-xl-12">
                 <div class="card">
-                    <div class="card-body p-3" style="height: 490px;">
+                    <div class="card-body p-3" style="height: auto;">
                         <!-- BEGIN input-group -->
-                        <div class="d-flex fw-bold small mb-3">
-                            <span class="flex-grow-1">DATA ORDERS RETAIL</span>
-                            <a href="#" data-toggle="card-expand"
-                                class="text-white text-opacity-50 text-decoration-none"><i
-                                    class="bi bi-fullscreen"></i></a>
-                        </div>
                         <div class="input-group mb-4">
                             <div class="flex-fill position-relative">
                                 <div class="input-group">
-                                    <div class="input-group-text position-absolute top-0 bottom-0 bg-none border-0 pe-0"
-                                        style="z-index: 1020;">
-                                        <i class="fa fa-search opacity-5"></i>
+
+                                    <div style="width: 94%;margin-right:1%;">
+                                        <div class="input-group-text position-absolute top-0 bottom-0 bg-none border-0 pe-0"
+                                            style="z-index: 1020;">
+                                            <i class="fa fa-search opacity-5"></i>
+                                        </div>
+                                        <style>
+                                            #search_purchaseOrder::-webkit-search-cancel-button {}
+                                        </style>
+                                        <input type="search" class="form-control ps-35px" id="search_purchaseOrder"
+                                            placeholder="Search Order Retail.." />
                                     </div>
-                                    <input type="text" class="form-control ps-35px" id="search_reseller"
-                                        placeholder="Search orders.." />
+                                    <div style="width: 5%;">
+                                        <button type="button" id="btn_search" class="btn btn-theme">Search</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <table class="table-sm table-bordered mb-0" style="width: 100%" id="tb_reseller">
-                            <thead style="font-size: 11px;">
-                                <tr>
-                                    <th class="text-center" width="2%" style="color: #a8b6bc !important;">NO
+                        {{-- tb awal --}}
+                        <table class="table-sm mb-0" style="width: 100%">
+                            <thead class="thead-custom">
+                                <tr class="text-white">
+                                    <th class="text-center text-white" width="2%">NO
                                     </th>
-                                    <th class="text-center" width="2%" style="color: #a8b6bc !important;">IMAGE
+                                    <th class="text-center text-white" width="30%">
+                                        PRODUCT
                                     </th>
-                                    <th class="text-center" width="40%" style="color: #a8b6bc !important;">NAME
+                                    <th class="text-center text-white" width="5%">ID
                                     </th>
+                                    <th class="text-center text-white" width="5%">
+                                        SIZE
                                     </th>
-                                    <th class="text-center" width="10%" style="color: #a8b6bc !important;">WAREHOUSE
+                                    <th class="text-center text-white" width="3%">
+                                        QTY
                                     </th>
-                                    <th class="text-center" width="20%" style="color: #a8b6bc !important;">SIZE
+                                    <th class="text-center text-white" width="7%">PRICE
                                     </th>
-                                    <th class="text-center" width="7%" style="color: #a8b6bc !important;">ACT
+                                    <th class="text-center text-white" width="7%">
+                                        DISC ITEM
+                                    </th>
+                                    <th colspan="3" class="text-center text-white" width="25%">SUB
+                                        TOTAL
                                     </th>
                                 </tr>
                             </thead>
+                            <tbody class="table-bordered" style="font-size: 11px;">
 
-                            <tbody style="font-size: 11px;">
+                                <tr>
+                                    <td colspan="6" class="fw-bold " style="padding-top: 20px;">
+                                        <span class="fs-12px">1) </span>
+                                        <span class="fs-12px text-theme">#351354246404</span> | 2022-11-14<span
+                                            style="padding-left: 5px;cursor: pointer;"><i
+                                                class="fa fa-print fa-lg text-info me-2 ms-2"></i></span><span
+                                            style="padding-left: 5px;cursor: pointer;"><i
+                                                class="fa fa-times-circle fa-lg text-danger"></i></span><br>
+                                        <span class="fs-11px text-white me-2">FOOTBOX</span><br>
+                                        <span class="text-default">KASIR : Nando</span>
+                                    </td>
+                                    <td colspan="4" class="fw-bold fs-12px" align="right"
+                                        style="padding-top: 20px;">
+                                        <span><a class="btn  btn-primary btn-sm me-2 fw-bold text-white fs-10px"><i
+                                                    class="bi bi-arrow-counterclockwise me-1 fa-1x"></i>TUKER
+                                                SIZE</a></span>
+                                        <span><a class="btn btn-danger btn-sm fw-bold text-white fs-10px"><i
+                                                    class="fa fa-times me-1 fa-1x"></i>REFUND</a></span>
+                                    </td>
+                                </tr>
+
+                                <tr class="tr-custom">
+                                    <td class="text-center fw-bold" style="border-right-width: 1px;">
+                                        1
+                                    </td>
+                                    <td class="text-left fw-bold" style="border-right-width: 1px;">
+                                        <a style="cursor: pointer;" onclick="openmodaldetail()">
+                                            <span>SLIP ON CLASSICS BLACK WHITE</span>
+                                        </a>
+                                    </td>
+                                    <td class="text-center" style="border-right-width: 1px;">
+                                        1351351351
+                                    </td>
+                                    <td class="text-center text-lime fw-bold" style="border-right-width: 1px;">
+                                        35
+                                    </td>
+                                    <td class="text-center fw-bold" style="border-right-width: 1px;">
+                                        2
+                                    </td>
+                                    <td class="text-center fw-bold" style="border-right-width: 1px;">
+                                        RP 350.000</td>
+                                    <td class="text-center fw-bold" style="border-right-width: 1px;">
+                                        Rp 350.000
+                                    </td>
+                                    <td colspan="4" class="text-center fw-bold" style="border-right-width: 1px;">
+                                        Rp 500.000
+                                    </td>
+                                </tr>
+
+                                <tr class="tr-custom">
+                                    <td colspan="7" style="border-bottom: hidden;border-left: hidden;"></td>
+                                    <td class="text-center text-theme fw-bold fs-11px"
+                                        style="border-left-width: 1px;border-right-width: 1px;">
+                                        CASH
+                                    </td>
+                                    <td class="text-center text-primary fw-bold fs-11px"
+                                        style="border-left-width: 1px;border-right-width: 1px;">
+                                        BCA
+                                    </td>
+                                    <td class="text-center text-info fw-bold fs-11px"
+                                        style="border-left-width: 1px;border-right-width: 1px;">
+                                        QRIS
+                                    </td>
+                                </tr>
+                                <tr class="tr-custom">
+                                    <td colspan="7" style="border-bottom: hidden;border-left: hidden;"></td>
+                                    <td class="text-center fw-bold fs-11px"
+                                        style="border-left-width: 1px;border-right-width: 1px;">
+                                        Rp 350.000
+                                    </td>
+                                    <td class="text-center fw-bold fs-11px"
+                                        style="border-left-width: 1px;border-right-width: 1px;">
+                                        Rp 350.000
+                                    </td>
+                                    <td class="text-center fw-bold fs-11px"
+                                        style="border-left-width: 1px;border-right-width: 1px;">
+                                        Rp 350.000
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="8" style="border-bottom: hidden;border-left: hidden;"></td>
+                                    <td class="fw-bold fs-12px" align="right"
+                                        style="border-bottom: hidden;border-left: hidden;">
+                                        Ongkir :
+                                    </td>
+                                    <td class="fw-bold fs-12px" align="right"
+                                        style="border-bottom: hidden;border-left: hidden;">
+                                        Rp 354.453
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8" style="border-bottom: hidden;border-left: hidden;"></td>
+                                    <td class="fw-bold fs-12px" align="right"
+                                        style="border-bottom: hidden;border-left: hidden;">
+                                        Discount Nota :
+                                    </td>
+                                    <td class="fw-bold fs-12px" align="right"
+                                        style="border-bottom: hidden;border-left: hidden;">
+                                        Rp 354.453
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8" style="border-bottom: hidden;border-left: hidden;"></td>
+                                    <td class="fw-bold fs-12px" align="right"
+                                        style="border-bottom: hidden;border-left: hidden;">
+                                        Amount :
+                                    </td>
+                                    <td class="fw-bold fs-12px" align="right"
+                                        style="border-bottom: hidden;border-left: hidden;">
+                                        Rp 354.453
+                                    </td>
+                                </tr>
+
+                                <tr style="border-bottom: 3px solid #797979;">
+                                    <td colspan="8" style="padding-top: 5px;padding-bottom: 20px;">
+                                    </td>
+                                </tr>
+
+                                {{-- data reseller --}}
+                                <tr>
+                                    <td colspan="6" class="fw-bold " style="padding-top: 20px;">
+                                        <span class="fs-12px">2) </span>
+                                        <span class="fs-12px text-theme">#351354246404</span> | 2022-11-14<span
+                                            style="padding-left: 5px;cursor: pointer;"><i
+                                                class="fa fa-print fa-lg text-info me-2 ms-2"></i></span><span
+                                            style="padding-left: 5px;cursor: pointer;"><i
+                                                class="fa fa-times-circle fa-lg text-danger"></i></span><br>
+                                        <span class="fs-11px text-white me-1">FOOTBOX</span> | <span
+                                            class="ms-1 text-yellow">ASWIN
+                                            SUBAGJA</span><br>
+                                        <span class="text-default">KASIR : NANDO</span>
+                                    </td>
+                                    <td colspan="4" class="fw-bold fs-12px" align="right"
+                                        style="padding-top: 20px;">
+                                        <span><a class="btn btn-primary btn-sm me-2 fw-bold text-white fs-10px"><i
+                                                    class="bi bi-arrow-counterclockwise me-1 fa-1x"></i>TUKER
+                                                SIZE</a></span>
+                                        <span><a class="btn btn-danger btn-sm fw-bold text-white fs-10px"><i
+                                                    class="fa fa-times me-1 fa-1x"></i>REFUND</a></span>
+                                    </td>
+                                </tr>
+
+                                <tr class="tr-custom">
+                                    <td class="text-center fw-bold" style="border-right-width: 1px;">
+                                        1
+                                    </td>
+                                    <td class="text-left fw-bold" style="border-right-width: 1px;">
+                                        <a style="cursor: pointer;" onclick="openmodaldetail()">
+                                            <span>SLIP ON CLASSICS BLACK WHITE</span>
+                                        </a>
+                                    </td>
+                                    <td class="text-center" style="border-right-width: 1px;">
+                                        1351351351
+                                    </td>
+                                    <td class="text-center text-lime fw-bold" style="border-right-width: 1px;">
+                                        35
+                                    </td>
+                                    <td class="text-center fw-bold" style="border-right-width: 1px;">
+                                        2
+                                    </td>
+                                    <td class="text-center fw-bold" style="border-right-width: 1px;">
+                                        RP 350.000</td>
+                                    <td class="text-center fw-bold" style="border-right-width: 1px;">
+                                        Rp 350.000
+                                    </td>
+                                    <td colspan="4" class="text-center fw-bold" style="border-right-width: 1px;">
+                                        Rp 500.000
+                                    </td>
+                                </tr>
+
+                                <tr class="tr-custom">
+                                    <td colspan="7" style="border-bottom: hidden;border-left: hidden;"></td>
+                                    <td class="text-center text-theme fw-bold fs-11px"
+                                        style="border-left-width: 1px;border-right-width: 1px;">
+                                        CASH
+                                    </td>
+                                    <td class="text-center text-primary fw-bold fs-11px"
+                                        style="border-left-width: 1px;border-right-width: 1px;">
+                                        BCA
+                                    </td>
+                                    <td class="text-center text-info fw-bold fs-11px"
+                                        style="border-left-width: 1px;border-right-width: 1px;">
+                                        QRIS
+                                    </td>
+                                </tr>
+                                <tr class="tr-custom">
+                                    <td colspan="7" style="border-bottom: hidden;border-left: hidden;"></td>
+                                    <td class="text-center fw-bold fs-11px"
+                                        style="border-left-width: 1px;border-right-width: 1px;">
+                                        Rp 350.000
+                                    </td>
+                                    <td class="text-center fw-bold fs-11px"
+                                        style="border-left-width: 1px;border-right-width: 1px;">
+                                        Rp 350.000
+                                    </td>
+                                    <td class="text-center fw-bold fs-11px"
+                                        style="border-left-width: 1px;border-right-width: 1px;">
+                                        Rp 350.000
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="8" style="border-bottom: hidden;border-left: hidden;"></td>
+                                    <td class="fw-bold fs-12px" align="right"
+                                        style="border-bottom: hidden;border-left: hidden;">
+                                        Ongkir :
+                                    </td>
+                                    <td class="fw-bold fs-12px" align="right"
+                                        style="border-bottom: hidden;border-left: hidden;">
+                                        Rp 354.453
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8" style="border-bottom: hidden;border-left: hidden;"></td>
+                                    <td class="fw-bold fs-12px" align="right"
+                                        style="border-bottom: hidden;border-left: hidden;">
+                                        Discount Nota :
+                                    </td>
+                                    <td class="fw-bold fs-12px" align="right"
+                                        style="border-bottom: hidden;border-left: hidden;">
+                                        Rp 354.453
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8" style="border-bottom: hidden;border-left: hidden;"></td>
+                                    <td class="fw-bold fs-12px" align="right"
+                                        style="border-bottom: hidden;border-left: hidden;">
+                                        Amount :
+                                    </td>
+                                    <td class="fw-bold fs-12px" align="right"
+                                        style="border-bottom: hidden;border-left: hidden;">
+                                        Rp 354.453
+                                    </td>
+                                </tr>
+
                             </tbody>
                         </table>
+                        <br>
+                        {{-- tb awal --}}
+                        <style>
+                            .thead-custom {
+                                font-size: 11px;
+                                background-color: darkslategray;
+                            }
+
+                            .tr-custom {
+                                font-size: 11px;
+                                border-left-width: 1px;
+                                border-right-width: 1px;
+                                border-bottom-width: 1px;
+                                border-top-width: 1px;
+                            }
+                        </style>
+
+                        {{-- <table class="table-sm mb-0" style="width: 100%" data-search="true">
+                            <thead class="thead-custom">
+                                <tr class="text-white">
+                                    <th class="text-center text-white" width="2%">NO
+                                    </th>
+                                    <th class="text-center text-white" width="50%">
+                                        PRODUCT
+                                    </th>
+                                    <th class="text-center text-white" width="4%">ACT
+                                    </th>
+                                    <th class="text-center text-white" width="5%">
+                                        TYPE
+                                    </th>
+                                    <th class="text-center text-white" width="10%">
+                                        SUPPLIER
+                                    </th>
+                                    <th class="text-center text-white" width="3%">QTY
+                                    </th>
+                                    <th class="text-center text-white" width="10%">
+                                        COST
+                                    </th>
+                                    <th class="text-center text-white" width="12%">SUB
+                                        TOTAL
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="tb_po">
+                            </tbody>
+                        </table> --}}
+
                     </div>
+                    <!-- Data Loader -->
+                    {{-- <div class="auto-load text-center">
+                        <div class="spinner-border"></div>
+                    </div> --}}
                     <div class="card-arrow">
                         <div class="card-arrow-top-left"></div>
                         <div class="card-arrow-top-right"></div>
@@ -154,124 +577,6 @@
 
         {{-- @include('store_expense.delete')
         @include('store_expense.edit') --}}
-
-        {{-- <link href="{{ URL::asset('/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"
-            rel="stylesheet" />
-        <link href="{{ URL::asset('/assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
-            rel="stylesheet" />
-        <link href="{{ URL::asset('/assets/plugins/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}"
-            rel="stylesheet" />
-
-        <script src="{{ URL::asset('/assets/plugins/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-        <script src="{{ URL::asset('/assets/plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}">
-        </script> --}}
-
-        {{-- <script type="text/javascript">
-            $(function() {
-                var table = $('#tb_reseller').DataTable({
-                    lengthMenu: [10],
-                    responsive: true,
-                    processing: false,
-                    serverSide: true,
-                    ajax: "/tableexpenses",
-                    columns: [{
-                            data: 'DT_RowIndex',
-                            name: 'id',
-                            class: 'text-center fw-bold',
-                            searchable: false
-                        }, {
-                            data: 'tanggal',
-                            name: 'tanggal',
-                            class: 'text-center',
-                            searchable: true
-                        }, {
-                            data: 'store',
-                            name: 'store',
-                            class: 'text-center text-theme fw-bold',
-                            searchable: true
-                        }, {
-                            data: 'item',
-                            name: 'item',
-                            class: 'text-center',
-                            searchable: true
-                        },
-                        {
-                            data: 'desc',
-                            name: 'desc',
-                            class: 'text-center',
-                            searchable: true,
-                            "render": function(data, type, row) {
-                                if (row.desc === "" || row.desc === null) {
-                                    return '<span>-</span>';
-                                } else {
-                                    return '<span>' + row.desc + '</span>';
-                                }
-
-                            },
-                        },
-                        {
-                            data: 'total_price',
-                            render: $.fn.dataTable.render.number('.', ',', 0, 'Rp '),
-                            name: 'total_price',
-                            class: 'text-center fw-bold text-yellow',
-                            searchable: true
-                        },
-                        {
-                            data: 'users',
-                            name: 'users',
-                            class: 'text-center fw-bold text-theme',
-                            searchable: true
-                        },
-                        {
-                            data: 'action',
-                            name: 'action',
-                            class: 'text-center fw-bold',
-                            "render": function(data, type, row) {
-                                return '<span><a class="text-info" style="cursor: pointer;margin-right: 10px;" onclick="openmodaledit(' +
-                                    "'" + row.id + "'" +
-                                    ',' +
-                                    "'" + row.id_costs + "'" +
-                                    ',' +
-                                    "'" + row.store + "'" +
-                                    ',' +
-                                    "'" + row.item + "'" +
-                                    ',' +
-                                    "'" + row.desc + "'" +
-                                    ',' +
-                                    "'" + row.total_price + "'" +
-                                    ')"><i class="fas fa-xl fa-edit"></i></a><a class="text-danger" style="cursor: pointer;" onclick="openmodaldelete(' +
-                                    "'" + row.id + "'" +
-                                    ')"><i class="fas fa-xl fa-times-circle"></i></a></span>';
-                            },
-                        },
-                    ],
-                    dom: 'tip',
-                    // "ordering" : true,
-                    order: [
-                        [1, 'desc']
-                    ],
-                    columnDefs: [{
-                            orderable: false,
-                            targets: [4]
-                        },
-
-                    ],
-                });
-
-                $('#search_reseller').on('keyup', function() {
-                    table.search(this.value).draw();
-                });
-            });
-            // end
-        </script> --}}
 
         {{-- <script>
             // edit
@@ -342,6 +647,58 @@
                         this.setSelectionRange(cursorPostion, cursorPostion);
                     }
                 });
+            });
+        </script> --}}
+        <script src="{{ URL::asset('assets/plugins/jquery/dist/jquery.js') }}"></script>
+        <link href="{{ URL::asset('assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}"
+            rel="stylesheet" />
+        <script src="{{ URL::asset('assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+
+        <script src="{{ URL::asset('assets/daterangepicker/moment.min.js') }}"></script>
+        <script src="{{ URL::asset('assets/daterangepicker/daterangepicker.js') }}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/daterangepicker/daterangepicker.css') }}" />
+        {{-- <script type="text/javascript">
+            $(document).ready(function() {
+                var start = moment().startOf('month');
+                var end = moment().endOf('month');
+
+                document.getElementById('getbulan').value = start.format('YYYY-MMMM');
+                var bulan = document.getElementById('getbulan').value;
+
+                function cb(start, end) {
+                    $('#reportrange span').html(start.format('DD MMMM YYYY') + ' - ' + end.format('DD MMMM YYYY'));
+                    load_data(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+                    // load_data_barging(bulan.format('yyyy-MM'));
+                }
+
+                $('#reportrange').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                            'month').endOf('month')]
+                    }
+                }, cb);
+
+                $('#getbulan').datepicker({
+                    format: "yyyy-MM",
+                    startView: "year",
+                    minViewMode: "months",
+                    autoclose: true
+                });
+
+                cb(start, end);
+                load_data_barging(bulan)
+
+                $("#getbulan").change(function() {
+                    load_data_barging(this.value)
+                });
+
             });
         </script> --}}
     @endsection
