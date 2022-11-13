@@ -90,30 +90,25 @@
                                                 Silahkan pilih kualitas yang sesuai.
                                             </div>
                                         </div>
-                                        <div class="col-6 form-group mb-3">
-                                            <label class="form-label">Modal</label>
-                                            <input class="form-control form-control-sm text-theme is-invalid"
-                                                type="text" name="edit_m_price" id="m_price" required
-                                                placeholder="0" autocomplete="OFF" type-currency="IDR">
-                                        </div>
-                                        <div class="col-6 form-group mb-3">
+
+                                        <div class="col-4 form-group mb-3">
                                             <label class="form-label">Reseller</label>
                                             <input class="form-control form-control-sm text-theme is-invalid"
                                                 type="text" name="edit_r_price" id="r_price" required
-                                                placeholder="0" autocomplete="OFF">
+                                                placeholder="0" autocomplete="OFF" type-currency="IDR">
                                         </div>
-                                        <div class="col-6 form-group mb-3">
+                                        <div class="col-4 form-group mb-3">
                                             <label class="form-label">Normal</label>
                                             <input class="form-control form-control-sm text-theme is-invalid"
                                                 type="text" name="edit_n_price" id="n_price" required
-                                                placeholder="0" autocomplete="OFF">
+                                                placeholder="0" autocomplete="OFF" type-currency="IDR">
                                         </div>
-                                        <div class="col-6 form-group mb-3">
+                                        <div class="col-4 form-group mb-3">
                                             <label class="form-label">Grosir</label>
                                             <input
                                                 class="form-control form-select-sm form-control-sm text-theme is-invalid"
                                                 type="text" name="edit_g_price" id="g_price" required
-                                                placeholder="0" autocomplete="OFF">
+                                                placeholder="0" autocomplete="OFF" type-currency="IDR">
                                         </div>
                                     </div>
                                 </div>
@@ -135,7 +130,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group mt-3" align="right">
+                    <div class="form-group mt-2" align="right">
                         <button class="btn btn-theme" type="button" onclick="submitformedit()">Save</button>
                     </div>
 

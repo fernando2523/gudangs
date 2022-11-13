@@ -7,9 +7,9 @@
 @foreach ($dataimg as $data)
     @if ($data->id_produk === $id_produk)
         @if ($data->img === null or $data->img === '')
-            <img class="mb-2" id="previewimg2" width="295px" src="/product/defaultimg.png">
+            <img class="mb-2" id="previewimg2" width="221px" src="/product/defaultimg.png">
         @else
-            <img class="mb-2" id="previewimg2" width="295px" src="/product/{{ $data->img }}">
+            <img class="mb-2" id="previewimg2" width="221px" src="/product/{{ $data->img }}">
         @endif
     @endif
 @endforeach

@@ -44,16 +44,17 @@ class ProductController extends Controller
         $get_totalqty = variation::all()->sum('qty');
 
         $getsproduct = DB::table('products')
-            ->select(DB::raw('id_area'),)->groupBy('id_area')->get();
+            ->select(DB::raw('id_area'), DB::raw('id_ware'), DB::raw('id_produk'))->groupBy('id_ware')->get();
+
+        $getnamewarehouse = Warehouse::all();
 
         $get_perware = DB::table('variations')
             ->select(
-                DB::raw('COUNT(variations.id_produk) as countidproduk'),
-                DB::raw('SUM(variations.qty) as totalQty'),
-                DB::raw('id_area'),
-            )->where('qty', '!=', '0')->groupBy('id_area')->get();
+                DB::raw('COUNT(DISTINCT id_produk) as countidproduk'),
+                DB::raw('SUM(qty) as totalQty'),
+                DB::raw('id_ware'),
+            )->where('qty', '!=', '0')->groupBy('id_produk')->get();
 
-        $getnamewarehouse = Warehouse::all();
 
         $get_Supplier_Order = DB::table('supplier_orders')->select(DB::raw('idpo'), DB::raw('tanggal'), DB::raw('id_sup'),)->groupBy('idpo', 'tanggal', 'id_sup')->orderBy('idpo', 'desc')->limit(10)->get();
 
@@ -389,7 +390,7 @@ class ProductController extends Controller
                 'brand' => $request->edit_id_brand,
                 'category' => $request->edit_category,
                 'quality' => $request->edit_quality,
-                'm_price' => preg_replace("/[^0-9]/", "", $request->edit_m_price),
+                // 'm_price' => preg_replace("/[^0-9]/", "", $request->edit_m_price),
                 'r_price' => preg_replace("/[^0-9]/", "", $request->edit_r_price),
                 'n_price' => preg_replace("/[^0-9]/", "", $request->edit_n_price),
                 'g_price' => preg_replace("/[^0-9]/", "", $request->edit_g_price),
