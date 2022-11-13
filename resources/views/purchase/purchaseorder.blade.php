@@ -557,26 +557,28 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
             var query_awal = '';
+            var page = 1;
 
             $(document).ready(function() {
-                load_tb_po(query_awal);
+                load_tb_po(query_awal, 1);
             });
 
             $('#search_purchaseOrder').on('input', function(e) {
                 if ('' == this.value) {
-                    load_tb_po(query_awal);
+                    load_tb_po(query_awal, 1);
                 }
             });
 
             $('#btn_search').click(function() {
                 var query = $('#search_purchaseOrder').val();
-                load_tb_po(query);
+                load_tb_po(query, 1);
             });
 
-            function load_tb_po(querys) {
+            function load_tb_po(querys, pages) {
+                $("#tb_po").html('');
                 $.ajax({
                     type: 'GET',
-                    url: "/load_tb_po?page=" + page,
+                    url: "/load_tb_po?page=" + pages,
                     data: {
                         querys: querys
                     },
@@ -594,8 +596,6 @@
                 });
             }
 
-
-            var page = 1;
             $(window).scroll(function() {
                 if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
                     page++;
