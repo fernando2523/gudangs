@@ -52,29 +52,19 @@ class PurchaseOrderController extends Controller
 
     public function load_table_po(Request $request)
     {
-        if ($request->ajax()) {
+        // if ($request->ajax()) {
+        $query = $request->querys;
 
-
-            $query = $request->querys;
-            $limit = $request->limit;
-
-            // if ($query == '') {
-            //     $datapo = Supplier_order::with('suppliers_details')->groupBy('idpo', 'tanggal', 'users')->limit($limit)->get();
-            // } else {
-            //     $datapo = Supplier_order::with('suppliers_details')->where('idpo', 'LIKE', '%' . $query . '%')->groupBy('idpo', 'tanggal', 'users')->limit($limit)->get();
-            // }
-
-            if ($query == '') {
-                $datapo = Supplier_order::with('suppliers_details')->groupBy('idpo', 'tanggal', 'users')->paginate(10);
-            } else {
-                $datapo = Supplier_order::with('suppliers_details')->where('idpo', 'LIKE', '%' . $query . '%')->groupBy('idpo', 'tanggal', 'users')->paginate(10);
-            }
-
-
-            return view('load.load_tb_po', compact(
-                'datapo',
-            ));
+        if ($query == '') {
+            $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation')->groupBy('idpo', 'tanggal', 'users')->paginate(10);
+        } else {
+            $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation')->whereFullText('idpo', $query)->orwhereFullText('produk', $query)->groupBy('idpo', 'tanggal', 'users')->paginate(10);
         }
+
+        return view('load.load_tb_po', compact(
+            'datapo',
+        ));
+        // }
     }
 
     public function load_purchase_order(Request $request)
@@ -92,6 +82,43 @@ class PurchaseOrderController extends Controller
                 'id_ware',
                 'produk',
                 'get_variation'
+            ));
+        }
+    }
+
+    public function load_details_po(Request $request)
+    {
+        if ($request->ajax()) {
+            $idpo = $request->idpo;
+            $id_produk = $request->id_produk;
+            $id_ware = $request->id_ware;
+
+            $data = Supplier_variation::where('idpo', $idpo)->where('id_produk', $id_produk)->where('id_ware', $id_ware)->get();
+
+            return view('load.load_detailspo', compact(
+                'data'
+            ));
+        }
+    }
+
+    public function load_edit_po(Request $request)
+    {
+        if ($request->ajax()) {
+            $idpo = $request->idpo;
+            $id_produk = $request->id_produk;
+            $id_ware = $request->id_ware;
+
+            $datapo = Supplier_order::with('suppliers_detail')->where('idpo', $idpo)->where('id_produk', $id_produk)->where('id_ware', $id_ware)->get();
+            $supplier = Supplier::where('id_sup', '!=', $datapo[0]['id_sup'])->get();
+            $data = Supplier_variation::where('idpo', $idpo)->where('id_produk', $id_produk)->where('id_ware', $id_ware)->get();
+
+            return view('load.load_editdetailspo', compact(
+                'data',
+                'datapo',
+                'supplier',
+                'idpo',
+                'id_produk',
+                'id_ware'
             ));
         }
     }
@@ -119,5 +146,79 @@ class PurchaseOrderController extends Controller
                 'variationss'
             ));
         }
+    }
+
+    public function deleteItem(Request $request)
+    {
+        $id = $request->d_id;
+        Supplier_order::where('id', $id)->delete();
+
+        return redirect('purchase/purchaseorder');
+    }
+
+    public function deletePo(Request $request)
+    {
+        $idpo = $request->d_idpo;
+        Supplier_order::where('idpo', $idpo)->delete();
+
+        return redirect('purchase/purchaseorder');
+    }
+
+    public function edit_po(Request $request)
+    {
+        $idpo = $request->idpo;
+        $idpo_new = $request->idpo_new;
+        $id_produk = $request->id_produk;
+        $id_sup = $request->id_sup;
+        $m_price = $request->m_price;
+        $tipe_order = $request->tipe_order;
+        $size = $request->size;
+        $qty_old = $request->qty_old;
+        $qty_new = $request->qty_new;
+
+        $total_qty = 0;
+
+        for ($i = 0; $i < count($request->size); $i++) {
+            $total_qty = $total_qty + intval($qty_new[$i]);
+
+            Supplier_variation::where('idpo', $idpo)
+                ->where('id_produk', $id_produk)
+                ->where('size', $size[$i])
+                ->update([
+                    'idpo' =>  $idpo_new,
+                    'id_sup' =>  $id_sup,
+                    'qty' =>  $qty_new[$i],
+                    'tipe_order' =>  $tipe_order,
+                ]);
+
+            $data_var = variation::where('idpo', $idpo)
+                ->where('id_produk', $id_produk)
+                ->where('size', $size[$i])
+                ->get();
+
+
+            $qty_result = intval($qty_new[$i]) - intval($qty_old[$i]);
+
+            variation::where('idpo', $idpo)
+                ->where('id_produk', $id_produk)
+                ->where('size', $size[$i])
+                ->update([
+                    'idpo' =>  $idpo_new,
+                    'qty' =>  intval($data_var[0]['qty'])  + intval($qty_result),
+                ]);
+        }
+
+        Supplier_order::where('idpo', $idpo)
+            ->where('id_produk', $id_produk)
+            ->update([
+                'idpo' =>  $idpo_new,
+                'id_sup' =>  $id_sup,
+                'm_price' =>  $m_price,
+                'subtotal' =>  intval($m_price) * intval($total_qty),
+                'tipe_order' =>  $tipe_order,
+                'qty' => $total_qty,
+            ]);
+
+        return redirect('purchase/purchaseorder');
     }
 }

@@ -49,7 +49,7 @@ class SaleController extends Controller
     {
         if ($request->ajax()) {
             $id_area = $request->area;
-            $data = Product::with('warehouse', 'image_product', 'product_variation')->where('products.id_area', $id_area)->get();
+            $data = Product::with('warehouse', 'image_product', 'product_variation')->where('products.id_area', $id_area)->groupBy('products.id_produk')->get();
 
             return view('load.load_catalog', compact(
                 'data'
@@ -157,7 +157,7 @@ class SaleController extends Controller
                 ->where('id_ware', $warehouse[$i])
                 ->where('size', $size[$i])
                 ->where('qty', '!=', '0')
-                ->orderBy('id_po', 'ASC')
+                ->orderBy('idpo', 'ASC')
                 ->get();
 
             $qty_sales = $qty[$i];
@@ -166,7 +166,9 @@ class SaleController extends Controller
                 $get_qty = $get_var[$b]['qty'];
                 $qty_baru = intval($get_qty) - intval($qty_sales);
 
-                $get_modal = Supplier_order::where('idpo', $get_var[$b]['id_po'])->get('m_price');
+                $get_modal = Supplier_order::where('idpo', $get_var[$b]['idpo'])
+                    ->where('id_produk', $idproduk[$i])
+                    ->get('m_price');
 
                 if ($qty_baru >= 0) {
                     // print_r(' SIZE : ' . $size[$i]);
@@ -182,7 +184,7 @@ class SaleController extends Controller
                     $data->tanggal = $tanggal;
                     $data->id_invoice = $idinvoice;
                     $data->id_produk = $idproduk[$i];
-                    $data->id_po = $get_var[$b]['id_po'];
+                    $data->idpo = $get_var[$b]['idpo'];
                     $data->id_area = $id_area;
                     $data->id_ware = $warehouse[$i];
                     $data->id_store = $store;
@@ -214,7 +216,7 @@ class SaleController extends Controller
                         ->where('id_area', $id_area)
                         ->where('id_ware', $warehouse[$i])
                         ->where('size', $size[$i])
-                        ->where('id_po', $get_var[$b]['id_po'])
+                        ->where('idpo', $get_var[$b]['idpo'])
                         ->update([
                             'qty' => $qty_baru,
                         ]);
@@ -238,7 +240,7 @@ class SaleController extends Controller
                     $data->tanggal = $tanggal;
                     $data->id_invoice = $idinvoice;
                     $data->id_produk = $idproduk[$i];
-                    $data->id_po = $get_var[$b]['id_po'];
+                    $data->idpo = $get_var[$b]['idpo'];
                     $data->id_area = $id_area;
                     $data->id_ware = $warehouse[$i];
                     $data->id_store = $store;
@@ -270,7 +272,7 @@ class SaleController extends Controller
                         ->where('id_area', $id_area)
                         ->where('id_ware', $warehouse[$i])
                         ->where('size', $size[$i])
-                        ->where('id_po', $get_var[$b]['id_po'])
+                        ->where('idpo', $get_var[$b]['idpo'])
                         ->update([
                             'qty' => $qty_sisa,
                         ]);

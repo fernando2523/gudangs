@@ -129,7 +129,12 @@ route::any('/repeat/repeats/{id}', [RepeatOrderController::class, 'repeats'])->m
 route::get('/purchase/purchaseorder', [PurchaseOrderController::class, 'purchaseorder'])->middleware('auth');
 route::any('/load_purchase_order', [PurchaseOrderController::class, 'load_purchase_order']);
 route::any('/load_tb_po', [PurchaseOrderController::class, 'load_table_po']);
+route::any('/load_details_po', [PurchaseOrderController::class, 'load_details_po']);
+route::any('/load_edit_po', [PurchaseOrderController::class, 'load_edit_po']);
 route::any('/purchase_variation', [PurchaseOrderController::class, 'purchase_variation']);
+route::any('/deleteitem_po', [PurchaseOrderController::class, 'deleteItem']);
+route::any('/deleted_po', [PurchaseOrderController::class, 'deletePo']);
+route::any('/edit_po', [PurchaseOrderController::class, 'edit_po']);
 
 route::get('/asset/assets', [AssetController::class, 'assets'])->middleware('auth');
 route::any('/tableassets', [AssetController::class, 'tableassets'])->middleware('auth');

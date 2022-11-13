@@ -6,7 +6,7 @@
 </select>
 
 <script>
-     $('#mdl_warehouse').on('change', function() {
+    $('#mdl_warehouse').on('change', function() {
         var id_produk = $('#mdl_id_produk').val();
         var id_ware = $(this).val();
         load_size(id_produk, id_ware);

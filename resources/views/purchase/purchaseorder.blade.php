@@ -115,12 +115,21 @@
                         <div class="input-group mb-4">
                             <div class="flex-fill position-relative">
                                 <div class="input-group">
-                                    <div class="input-group-text position-absolute top-0 bottom-0 bg-none border-0 pe-0"
-                                        style="z-index: 1020;">
-                                        <i class="fa fa-search opacity-5"></i>
+
+                                    <div style="width: 94%;margin-right:1%;">
+                                        <div class="input-group-text position-absolute top-0 bottom-0 bg-none border-0 pe-0"
+                                            style="z-index: 1020;">
+                                            <i class="fa fa-search opacity-5"></i>
+                                        </div>
+                                        <style>
+                                            #search_purchaseOrder::-webkit-search-cancel-button {}
+                                        </style>
+                                        <input type="search" class="form-control ps-35px" id="search_purchaseOrder"
+                                            placeholder="Search Data Purchase Order.." />
                                     </div>
-                                    <input type="text" class="form-control ps-35px" id="search_purchaseOrder"
-                                        placeholder="Search Data Purchase Order.." />
+                                    <div style="width: 5%;">
+                                        <button type="button" id="btn_search" class="btn btn-theme">Search</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -275,7 +284,8 @@
                                 border-top-width: 1px;
                             }
                         </style>
-                        <table class="table-sm mb-0" style="width: 100%">
+
+                        <table class="table-sm mb-0" style="width: 100%" data-search="true">
                             <thead class="thead-custom">
                                 <tr class="text-white">
                                     <th class="text-center text-white" width="2%">NO
@@ -304,11 +314,12 @@
                             <tbody id="tb_po">
                             </tbody>
                         </table>
+
                     </div>
                     <!-- Data Loader -->
-                    <div class="auto-load text-center">
+                    {{-- <div class="auto-load text-center">
                         <div class="spinner-border"></div>
-                    </div>
+                    </div> --}}
                     <div class="card-arrow">
                         <div class="card-arrow-top-left"></div>
                         <div class="card-arrow-top-right"></div>
@@ -319,6 +330,155 @@
             </div>
             <!-- END -->
         </div>
+
+        <form class="was-validated" method="POST" action="/deleted_po">
+            <input type="hidden" name="_method" value="PATCH">
+            @csrf
+            <div class="modal fade" id="modaldelete" data-bs-backdrop="static" style="padding-top:3%;">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-warning">DELETE</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center text-warning" style="padding-bottom: 0px;font-weight: bold;">
+                            <p>Are You Sure Want To Delete This Item?</p>
+                        </div>
+                        <input type="hidden" id="d_idpo" name="d_idpo">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-default"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button class="btn btn-outline-warning" type="submit">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form class="was-validated" method="POST" action="/deleteitem_po">
+            @csrf
+            <div class="modal fade" id="modalitemdelete" data-bs-backdrop="static" style="padding-top:3%;">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-warning">DELETE</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center text-warning" style="padding-bottom: 0px;font-weight: bold;">
+                            <p>Are You Sure Want To Delete This Item?</p>
+                        </div>
+                        <input type="hidden" id="d_id" name="d_id">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-default"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button class="btn btn-outline-warning" type="submit">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="modal fade" id="showQty" data-bs-backdrop="static" style="margin-top:3%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-success"><span id="name_produk"></span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body text-center">
+                        <div id="load_details">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-default" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form method="POST" action="/edit_po">
+            @csrf
+            <div class="modal fade" id="editPo" data-bs-backdrop="static">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span class="modal-title text-warning">Edit : <span id="name_produk_edit"></span></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body text-center" style="padding-bottom: 0px;">
+                            <div id="edit_details">
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-default"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button id="btn_edit" class="btn btn-outline-warning" type="submit">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <script>
+            function deleteModal(idpo) {
+                document.getElementById('d_idpo').value = idpo;
+                $('#modaldelete').modal('show');
+            }
+
+            function deleteitemModal(id) {
+                document.getElementById('d_id').value = id;
+                $('#modalitemdelete').modal('show');
+            }
+
+            function showQty(id_produk, idpo, id_ware, produk) {
+                $("#name_produk").html(produk);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ URL::to('/load_details_po') }}",
+                    data: {
+                        id_produk: id_produk,
+                        idpo: idpo,
+                        id_ware: id_ware
+                    },
+                    beforeSend: function() {
+                        $("#load_details").html('<div class="spinner-border"></div>');
+                    },
+                    success: function(data) {
+                        $("#load_details").html(data);
+                    }
+                });
+
+                $('#showQty').modal('show');
+            }
+
+            function editPo(id_produk, idpo, id_ware, produk) {
+                $("#name_produk_edit").html(produk);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ URL::to('/load_edit_po') }}",
+                    data: {
+                        id_produk: id_produk,
+                        idpo: idpo,
+                        id_ware: id_ware
+                    },
+                    beforeSend: function() {
+                        $("#edit_details").html('<div class="spinner-border"></div>');
+                        $("#btn_edit").prop("disabled", true);
+                    },
+                    success: function(data) {
+                        $("#btn_edit").prop("disabled", false);
+                        $("#edit_details").html(data);
+                    }
+                });
+
+                $('#editPo').modal('show');
+            }
+        </script>
+
         @include('purchase.edit')
 
         <script>
@@ -397,58 +557,59 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
             var query_awal = '';
-            var limit = 10;
 
             $(document).ready(function() {
-                load_tb_po(limit, query_awal);
+                load_tb_po(query_awal);
             });
 
-            $("#search_purchaseOrder").bind("enterKey", function(e) {
-                var query = $(this).val();
-                load_tb_po(limit, query);
-            });
-
-            $('#search_purchaseOrder').keyup(function(e) {
-                if (e.keyCode == 13) {
-                    $(this).trigger("enterKey");
+            $('#search_purchaseOrder').on('input', function(e) {
+                if ('' == this.value) {
+                    load_tb_po(query_awal);
                 }
             });
 
-            function load_tb_po(limit, query) {
+            $('#btn_search').click(function() {
+                var query = $('#search_purchaseOrder').val();
+                load_tb_po(query);
+            });
+
+            function load_tb_po(querys) {
                 $.ajax({
-                    type: 'POST',
-                    url: "{{ URL::to('/load_tb_po') }}",
+                    type: 'GET',
+                    url: "/load_tb_po?page=" + page,
                     data: {
-                        limit: limit,
-                        querys: query
+                        querys: querys
                     },
                     beforeSend: function() {
-                        $('.auto-load').show();
+                        $("#tb_po").html(
+                            `<tr style="width:100%;">
+                                <td colspan="8" align="center" style="padding: 30px 0px 20px 0px;">
+                                    <div class="spinner-border"></div>
+                                </td>
+                            </tr>`);
                     },
                     success: function(data) {
                         $("#tb_po").html(data);
-                        $('.auto-load').hide();
                     }
                 });
             }
 
+
             var page = 1;
-            var querys = $('#search_purchaseOrder').val();
             $(window).scroll(function() {
                 if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
                     page++;
-                    var limit_new = limit * page;
-                    append_tb_po(limit_new, querys);
+                    var query = $('#search_purchaseOrder').val();
+                    loadmore_tb_po(query, page);
                 }
             });
 
-            function append_tb_po(limit, query) {
+            function loadmore_tb_po(querys, page) {
                 $.ajax({
-                        type: 'POST',
-                        url: "{{ URL::to('/load_tb_po?page=') }}" + page,
+                        url: "/load_tb_po?page=" + page,
+                        type: "GET",
                         data: {
-                            limit: limit,
-                            querys: query
+                            querys: querys
                         },
                         beforeSend: function() {
                             $('.auto-load').show();
