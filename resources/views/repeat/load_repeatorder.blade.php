@@ -4,6 +4,7 @@
             <div class="card-body  was-validated ">
                 <div>
                     <input type="hidden" value="{{ $id_produk }}" name="id_produk">
+                    <input type="hidden" value="{{ $id_area }}" name="id_area">
                     <input type="hidden" value="{{ $id_ware }}" name="id_ware">
                     <input type="hidden" value="{{ $produk }}" name="produk">
                     <input type="hidden" value="{{ $brand }}" name="brand">
@@ -85,16 +86,9 @@
                                             value="{{ $value->size }}" readonly style="width: 100%;height: 21px;">
                                     </td>
                                     <td>
-                                        {{-- @if ($value->qty === '0')
-                                            <input class="form-control text-center fw-bold text-danger" type="number"
-                                                name="qty_old[]" value="{{ $value->qty }}" readonly
-                                                style="width: 100%;height: 21px;">
-                                        @else --}}
                                         <input class="form-control text-center fw-bold text-success" type="number"
                                             name="qty_old[]" value="{{ $value->qty }}" readonly
                                             style="width: 100%;height: 21px;">
-                                        {{-- @endif --}}
-
                                     </td>
                                     <td>
                                         <input class="form-control text-center text-theme is-invalid" type="number"
@@ -235,14 +229,11 @@
                     "render": function(data, type, row) {
                         size = '';
                         length = data.length;
-                        // ware_count = data.warehouse.length;
                         i = 0;
                         b = 1;
 
                         while (i < length) {
-                            if (row.id_produk === row.supplier_variation[i][
-                                    'id_produk'
-                                ] && row.id_ware === row.supplier_variation[i][
+                            if (row.id_ware === row.supplier_variation[i][
                                     'id_ware'
                                 ]) {
                                 if (row.supplier_variation[i]['qty'] === '0') {
@@ -271,6 +262,9 @@
                                     b = 0;
                                 }
                                 b++;
+                            } else {
+                                size =
+                                    '<span class="fw-bold text-warning">STOK TIDAK TERSEDIA</span>';
                             }
                             i++;
                         }

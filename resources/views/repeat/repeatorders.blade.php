@@ -133,12 +133,12 @@
                         searchable: true,
                         "render": function(data, type, row) {
                             if (row.image_product[0]['img'] === "") {
-                                return '<span><img src="/product/defaultimg.png" alt="" width="100" height="100" class="rounded"></span><span class="fw-bold text-yellow"><br>' +
+                                return '<span><img src="/product/defaultimg.png" alt="" width="100" height="100" class="rounded"></span><span class="fw-bold text-default"><br>' +
                                     row
                                     .id_produk + '</span>';
                             } else {
                                 return '<span><img src="/product/' + row.image_product[0]['img'] +
-                                    '" alt="" width="95"  height="95" class="rounded"></span><span class="fw-bold text-yellow"><br>' +
+                                    '" alt="" width="95"  height="95" class="rounded"></span><span class="fw-bold text-default"><br>' +
                                     row
                                     .id_produk + '</span>';
                             }
@@ -164,6 +164,8 @@
                             return '<span class="fw-bold text-indigo">' + row.warehouse[0][
                                     'warehouse'
                                 ] +
+                                '</span><br><span class="fw-bold">' + row
+                                .quality +
                                 '</span>';
                         },
                     }, {
@@ -175,7 +177,6 @@
                         "render": function(data, type, row) {
                             size = '';
                             length = data.length;
-                            // ware_count = data.warehouse.length;
                             i = 0;
                             b = 1;
 
@@ -183,7 +184,7 @@
                                 if (row.warehouse[0]['id_ware'] === row.product_variation[i][
                                         'id_ware'
                                     ]) {
-                                    if (row.product_variation[i]['qty'] === '0') {
+                                    if (row.product_variation[i]['qty'] === 0) {
                                         size = size + '<span class="text-danger"> ' + '[<i>' +
                                             row
                                             .product_variation[i]['size'] +
@@ -209,6 +210,9 @@
                                         b = 0;
                                     }
                                     b++;
+                                } else {
+                                    size =
+                                        '<span class="fw-bold text-warning">STOK TIDAK TERSEDIA</span>';
                                 }
                                 i++;
                             }
@@ -223,10 +227,9 @@
                                 "'" + row.id + "'" +
                                 ',' +
                                 "'" + row.id_produk + "'" + ',' +
+                                "'" + row.id_area + "'" + ',' +
                                 "'" + row.id_ware + "'" + ',' +
-                                "'" + row.produk + "'" + ',' +
-                                "'" + row.m_price + "'" +
-                                ',' + "'" + row.brand + "'" +
+                                "'" + row.produk + "'" + ',' + "'" + row.brand + "'" +
                                 ',' + "'" + row.id_sup + "'" +
                                 ')"><i class="fas fa-xl bi bi-plus-square"></i></a>';
                         },
@@ -242,19 +245,6 @@
                         },
 
                     ],
-                    // 'rowsGroup': [0],
-                    // 'createdRow': function(row, data, dataIndex) {
-                    //     // Use empty value in the "Office" column
-                    //     // as an indication that grouping with COLSPAN is needed
-                    //     if (data[0] != '') {
-                    //         // Add COLSPAN attribute
-                    //         $('td:eq(1)', row).attr('colspan', 4);
-
-                    //         // Hide required number of columns
-                    //         // next to the cell with COLSPAN attribute
-                    //         $('td:eq(3)', row).css('display', 'none');
-                    //     }
-                    // }
                 });
                 $('#search_repeatorder').on('keyup', function() {
                     table.search(this.value).draw();
@@ -265,23 +255,23 @@
 
         <script>
             // edit
-            function openmodaledit(id, id_produk, id_ware, produk, m_price, brand) {
+            function openmodaledit(id, id_produk, id_area, id_ware, produk, brand) {
                 $('#modaledit').modal('show');
                 document.getElementById('id').value = id;
                 document.getElementById("produk").innerHTML = produk;
                 document.getElementById("brand").innerHTML = brand;
 
 
-                var convert_m_price = m_price;
-                var number_string = convert_m_price.toString(),
-                    sisa = number_string.length % 3,
-                    hasil_m_price = number_string.substr(0, sisa),
-                    ribuan = number_string.substr(sisa).match(/\d{3}/g);
+                // var convert_m_price = m_price;
+                // var number_string = convert_m_price.toString(),
+                //     sisa = number_string.length % 3,
+                //     hasil_m_price = number_string.substr(0, sisa),
+                //     ribuan = number_string.substr(sisa).match(/\d{3}/g);
 
-                if (ribuan) {
-                    separator = sisa ? '' : '';
-                    hasil_m_price += separator + ribuan.join('.');
-                }
+                // if (ribuan) {
+                //     separator = sisa ? '' : '';
+                //     hasil_m_price += separator + ribuan.join('.');
+                // }
 
 
                 $.ajax({
@@ -290,9 +280,10 @@
                     data: {
                         id: id,
                         id_produk: id_produk,
+                        id_area: id_area,
                         id_ware: id_ware,
                         produk: produk,
-                        m_price: hasil_m_price,
+                        // m_price: hasil_m_price,
                         brand: brand,
                     },
                     success: function(data) {

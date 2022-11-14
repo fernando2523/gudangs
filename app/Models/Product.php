@@ -43,4 +43,9 @@ class Product extends Model
     {
         return $this->hasMany(supplier_variation::class, 'id_produk', 'id_produk');
     }
+
+    public function areas()
+    {
+        return $this->hasMany(City::class, 'id_area', 'id_area');
+    }
 }

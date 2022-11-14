@@ -76,7 +76,7 @@ class ProductController extends Controller
     public function tableproduct(Request $request)
     {
         if ($request->ajax()) {
-            $product = Product::with('warehouse', 'image_product', 'product_variation')->get();
+            $product = Product::with('warehouse', 'image_product', 'product_variation', 'areas')->get();
             return DataTables::of($product)
                 ->addIndexColumn()
                 ->addColumn('action', function () {

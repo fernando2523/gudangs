@@ -29,11 +29,8 @@ class RepeatOrderController extends Controller
     {
         $title = "Repeat Order";
 
-        // $getsupplier = Supplier::all()->where('id_sup', '=', 'SUP-2')->pluck('supplier');
-        // $getsupplier2 = $getsupplier->toArray();
-        // $getsupplier3 = implode(" ", $getsupplier2);
-
-        // dd($getsupplier3);
+        // $get_m_price = Supplier_order::all()->last();
+        // dd($get_m_price);
 
         return view('repeat/repeatorders', compact(
             'title'
@@ -58,21 +55,24 @@ class RepeatOrderController extends Controller
         if ($request->ajax()) {
             $id = $request->id;
             $id_produk = $request->id_produk;
+            $id_area = $request->id_area;
             $id_ware = $request->id_ware;
             $produk = $request->produk;
-            $m_price = $request->m_price;
+            // $m_price = $request->m_price;
             $brand = $request->brand;
 
             $getsupplier = Supplier::all();
-            $variationss = variation::all();
+            $variationss = DB::table('variations')->select(DB::raw('SUM(qty) as qty'), DB::raw('id_produk'), DB::raw('id_ware'), DB::raw('size'))->groupBy('id_produk', 'id_ware', 'size')->get();
             $get_Supplier_Order = DB::table('supplier_orders')->select(DB::raw('idpo'), DB::raw('tanggal'), DB::raw('id_sup'),)->groupBy('idpo', 'tanggal', 'id_sup')->orderBy('idpo', 'desc')->limit(10)->get();
+            $get_m_price = DB::table('supplier_orders')->select(DB::raw('m_price'))->latest();
 
             return view('repeat/load_repeatorder', compact(
                 'id',
                 'id_produk',
+                'id_area',
                 'id_ware',
                 'produk',
-                'm_price',
+                // 'm_price',
                 'brand',
                 'getsupplier',
                 'variationss',
@@ -128,33 +128,34 @@ class RepeatOrderController extends Controller
             $get_idhistory = $thn_bln_tgl . sprintf("%04s", + ($hitung2));
         }
         //END ID HISTORY
-        $get_supplier_Lama = Supplier_order::all()->where('idpo', '=', $request->id_po_lama)->pluck('id_sup');
+        $get_supplier_Lama = DB::table('supplier_orders')->select(DB::raw('idpo'), DB::raw('id_sup'),)->where('idpo', '=', $request->id_po_lama)->groupBy('idpo', 'id_sup')->pluck('id_sup');
         $get_supplier_Lama2 = $get_supplier_Lama->toArray();
         $get_supplier_Lama3 = implode(" ", $get_supplier_Lama2);
 
-
+        $getselectedwarehouse = DB::table('warehouses')->where('id_ware', '=', $request->id_ware)->select(DB::raw('id_ware'), DB::raw('id_area'),)->get();
         $qtys = 0;
         if ($request->type_po === "baru") {
             for ($i = 0; $i < Count($request->size); $i++) {
                 //DB VARIATION
-
+                $data2 = new variation();
+                $data2->tanggal = $tanggalskrg;
+                $data2->id_produk = $request->id_produk;
+                $data2->idpo = $get_idpo;
+                $data2->id_area = $getselectedwarehouse[0]->id_area;
+                $data2->id_ware = $request->id_ware;
+                $data2->users = $getuser;
+                $data2->size = $request->size[$i];
+                $data2->qty = $request->qty[$i];
+                $data2->save();
                 $qtys =  $qtys + $request->qty[$i];
                 //END DB VARIATION
-                variation::where('id_produk', $request->id_produk)->where('id_ware', $request->id_ware)->where('size', $request->size[$i])
-                    ->update([
-                        'qty' => $request->qty_old[$i] + $request->qty[$i],
-                    ]);
-
-                Product::where('id_produk', $request->id_produk)
-                    ->update([
-                        'm_price' => preg_replace("/[^0-9]/", "", $request->m_price),
-                    ]);
 
                 //DB SUPPLIER VARIATIONS
                 $data4 = new Supplier_variation();
                 $data4->idpo = $get_idpo;
                 $data4->id_sup = $request->id_sup;
                 $data4->id_produk = $request->id_produk;
+                $data4->id_area = $getselectedwarehouse[0]->id_area;
                 $data4->id_ware = $request->id_ware;
                 $data4->tanggal = $tanggalskrg;
                 $data4->size = $request->size[$i];
@@ -181,7 +182,7 @@ class RepeatOrderController extends Controller
             $data3->idpo = $get_idpo;
             $data3->id_sup = $request->id_sup;
             $data3->id_produk = $request->id_produk;
-            $data3->id_ware = $request->id_ware;
+            $data3->id_ware = $getselectedwarehouse[0]->id_ware;
             $data3->brand = $request->brand;
             $data3->tanggal = $tanggalskrg;
             $data3->produk = Str::headline($request->produk);
@@ -196,23 +197,25 @@ class RepeatOrderController extends Controller
             for ($i = 0; $i < Count($request->size); $i++) {
                 //DB VARIATION
 
+                $data2 = new variation();
+                $data2->tanggal = $tanggalskrg;
+                $data2->id_produk = $request->id_produk;
+                $data2->idpo = $request->id_po_lama;
+                $data2->id_area = $getselectedwarehouse[0]->id_area;
+                $data2->id_ware = $request->id_ware;
+                $data2->users = $getuser;
+                $data2->size = $request->size[$i];
+                $data2->qty = $request->qty[$i];
+                $data2->save();
                 $qtys =  $qtys + $request->qty[$i];
                 //END DB VARIATION
-                variation::where('id_produk', $request->id_produk)->where('id_ware', $request->id_ware)->where('size', $request->size[$i])
-                    ->update([
-                        'qty' => $request->qty_old[$i] + $request->qty[$i],
-                    ]);
-
-                Product::where('id_produk', $request->id_produk)
-                    ->update([
-                        'm_price' => preg_replace("/[^0-9]/", "", $request->m_price),
-                    ]);
 
                 //DB SUPPLIER VARIATIONS
                 $data4 = new Supplier_variation();
                 $data4->idpo = $request->id_po_lama;
                 $data4->id_sup = $get_supplier_Lama3;
                 $data4->id_produk = $request->id_produk;
+                $data4->id_area = $getselectedwarehouse[0]->id_area;
                 $data4->id_ware = $request->id_ware;
                 $data4->tanggal = $tanggalskrg;
                 $data4->size = $request->size[$i];

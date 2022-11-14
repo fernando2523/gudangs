@@ -443,13 +443,11 @@
                                     <th class="text-center" width="40%" style="color: #a8b6bc !important;">NAME
                                     </th>
                                     </th>
-                                    <th class="text-center" width="5%" style="color: #a8b6bc !important;">PRICE
-                                    </th>
                                     <th class="text-center" width="10%" style="color: #a8b6bc !important;">DETAIL
                                     </th>
                                     <th class="text-center" width="20%" style="color: #a8b6bc !important;">SIZE
                                     </th>
-                                    <th class="text-center" width="7%" style="color: #a8b6bc !important;">ACT
+                                    <th class="text-center" width="5%" style="color: #a8b6bc !important;">ACT
                                     </th>
                                 </tr>
                             </thead>
@@ -510,12 +508,12 @@
                             class: 'text-center',
                             "render": function(data, type, row) {
                                 if (row.image_product[0]['img'] === "") {
-                                    return '<span><img src="/product/defaultimg.png" alt="" width="100" height="100" class="rounded"></span><span class="fw-bold text-yellow"><br>' +
+                                    return '<span><img src="/product/defaultimg.png" alt="" width="100" height="100" class="rounded"></span><span class="fw-bold text-default"><br>' +
                                         row
                                         .id_produk + '</span>';
                                 } else {
                                     return '<span><img src="/product/' + row.image_product[0]['img'] +
-                                        '" alt="" width="95"  height="95" class="rounded"></span><span class="fw-bold text-yellow"><br>' +
+                                        '" alt="" width="95"  height="95" class="rounded"></span><span class="fw-bold text-default"><br>' +
                                         row
                                         .id_produk + '</span>';
                                 }
@@ -526,26 +524,34 @@
                             class: 'text-left',
                             searchable: true,
                             "render": function(data, type, row, meta) {
-                                return '<span class="fw-bold fs-14px text-white">' + row.produk +
-                                    '</span><br><span class="fw-bold"><span class="fw-bold">' +
-                                    row.category +
-                                    '</span>';
-                            },
-                        },
-                        {
-                            data: 'n_price',
-                            name: 'n_price',
-                            class: 'text-center',
-                            searchable: true,
-                            "render": function(data, type, row, meta) {
                                 let rupiah = Intl.NumberFormat('id-ID');
+                                retail = 0;
+                                reseller = 0;
+                                grosir = 0;
+                                hasil = '';
+                                if (row.id_area === row.areas[0]['id_area']) {
+                                    let retail = parseInt(row.n_price) + parseInt(row.areas[0][
+                                        'up_price'
+                                    ]);
+                                    let reseller = parseInt(row.r_price) + parseInt(row.areas[0][
+                                        'up_price'
+                                    ]);
+                                    let grosir = parseInt(row.g_price) + parseInt(row.areas[0][
+                                        'up_price'
+                                    ]);
 
-                                return '</span> <br><span class="badge border fw-bold" style="width: 120px;margin-bottom: 7px;font-size: 11px;" >Normal : ' +
-                                    rupiah.format(row.n_price) +
-                                    '</span> <br><span class="badge border fw-bold" style="width: 120px;font-size: 11px;margin-bottom: 7px;" >Reseller : ' +
-                                    rupiah.format(row.r_price) +
-                                    '</span>  <br><span class="badge border fw-bold" style="width: 120px;font-size: 11px;margin-bottom: 3px;" >Grosir : ' +
-                                    rupiah.format(row.g_price) + '</span>';
+                                    hasil = hasil + '<span class="fw-bold fs-14px text-white">' + row
+                                        .produk +
+                                        '</span><br><span class="fw-bold"><span class="fw-bold">' +
+                                        row.brand +
+                                        '</span><hr style="margin-top: 15px;margin-bottom: 17px;"><span class="fw-bold me-3 text-white text-opacity-75 fw-bold" style="font-size: 11px;" >RETAIL : ' +
+                                        rupiah.format(retail) +
+                                        '</span><span class="fw-bold me-3 text-yellow text-opacity-75 fw-bold" style="font-size: 11px;" >RESELLER : ' +
+                                        rupiah.format(reseller) +
+                                        '</span><span class="fw-bold text-info text-opacity-75 fw-bold" style="font-size: 11px;" >GROSIR : ' +
+                                        rupiah.format(grosir) + '</span>';
+                                }
+                                return hasil;
                             },
                         },
                         {
@@ -554,8 +560,10 @@
                             class: 'text-center',
                             searchable: true,
                             "render": function(data, type, row, meta) {
-                                return '<span class="fw-bold text-indigo">' + row
+                                return '<span class="fw-bold text-success">' + row
                                     .warehouse[0]['warehouse'] +
+                                    '</span><br><span class="fw-bold">' + row
+                                    .category +
                                     '</span><br><span class="fw-bold">' + row
                                     .quality +
                                     '</span>';
@@ -570,7 +578,6 @@
                             "render": function(data, type, row) {
                                 size = '';
                                 length = data.length;
-                                // ware_count = data.warehouse.length;
                                 i = 0;
                                 b = 1;
 
@@ -605,7 +612,8 @@
                                         }
                                         b++;
                                     } else {
-                                        size = 'STOCK BELUM ADA';
+                                        size =
+                                            '<span class="fw-bold text-warning">STOK TIDAK TERSEDIA</span>';
                                     }
                                     i++;
                                 }

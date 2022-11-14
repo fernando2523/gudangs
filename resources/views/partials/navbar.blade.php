@@ -52,6 +52,12 @@
                     <span class="menu-caret"><b class="caret"></b></span>
                 </a>
                 <div class="menu-submenu">
+                    <div class="menu-item {{ Request::is('area/areas') ? 'active' : '' }}">
+                        <a href="/area/areas" class="menu-link">
+                            <span class="menu-icon"><i class="bi bi-geo-alt-fill text-theme"></i></span>
+                            <span class="menu-text">Area</span>
+                        </a>
+                    </div>
                     <div class="menu-item {{ Request::is('warehouse/warehouses') ? 'active' : '' }}">
                         <a href="/warehouse/warehouses" class="menu-link">
                             <span class="menu-icon"><i class="bi bi-house-door-fill text-theme"></i></span>
