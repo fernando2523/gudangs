@@ -15,13 +15,13 @@ class Product extends Model
     public function product_variation()
     {
 
-        return $this->hasMany(variation::class, 'id_produk', 'id_produk')->selectRaw('*,SUM(qty) as qty')->orderBy('size')->groupBy('size', 'id_produk', 'id_ware');
+        return $this->hasMany(variation::class, 'id_produk', 'id_produk')->selectRaw('*,SUM(qty) as qty')->orderBy('size')->groupBy('size', 'id_produk');
     }
 
     public function product_variation2()
     {
 
-        return $this->hasMany(variation::class, 'id_produk', 'id_produk')->selectRaw('*,SUM(qty) as qty')->orderBy('size')->groupBy('size', 'id_produk', 'id_ware');
+        return $this->hasMany(variation::class, 'id_produk', 'id_produk')->selectRaw('*,SUM(qty) as qty')->orderBy('size')->groupBy('size', 'id_produk');
     }
 
     public function warehouse()

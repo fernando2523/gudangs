@@ -162,7 +162,7 @@
                         searchable: true,
                         "render": function(data, type, row, meta) {
                             return '<span class="fw-bold text-indigo">' + row.warehouse[0][
-                                    'warehouse'
+                                    'id_ware'
                                 ] +
                                 '</span><br><span class="fw-bold">' + row
                                 .quality +
@@ -217,9 +217,7 @@
                                 }
                                 i++;
                             }
-                            return row.warehouse[0][
-                                'id_ware'
-                            ];
+                            return size;
                         },
                     }, {
                         data: 'action',
