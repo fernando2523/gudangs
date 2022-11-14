@@ -19,6 +19,7 @@ use App\Http\Controllers\asset\AssetController;
 use App\Http\Controllers\barcode\BarcodeController;
 use App\Http\Controllers\order\OrderController;
 use App\Http\Controllers\orderreseller\OrderResellerController;
+use App\Http\Controllers\area\AreaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -150,3 +151,11 @@ route::get('/barcode/barcodes', [BarcodeController::class, 'barcodes'])->middlew
 route::get('/order/orders', [OrderController::class, 'orders'])->middleware('auth');
 route::get('/orderreseller/orderresellers', [OrderResellerController::class, 'orderresellers'])->middleware('auth');
 // nando baru 9 nov
+
+// nando 14 nov
+route::get('/area/areas', [AreaController::class, 'area'])->middleware('auth');
+route::any('/tablearea', [AreaController::class, 'tablearea'])->middleware('auth');
+route::any('/area/editact/{id}', [AreaController::class, 'editact'])->middleware('auth');
+// end nando 14 nov
+
+route::any('/load_tborders', [OrderController::class, 'load_tborders'])->middleware('auth');
