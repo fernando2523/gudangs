@@ -42,7 +42,8 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="mb-1 text-default fw-bold text-center">NOTA</div>
-                                    <h4 class="text-white fs-12px text-center"">24 NOTA</h4>
+                                    <h4 class="text-white fs-12px text-center">{{ number_format($nota, 0, ',', '.') }} NOTA
+                                    </h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -59,7 +60,8 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="mb-1 text-default fw-bold text-center">QTY</div>
-                                    <h4 class="text-white fs-12px text-center">224 PCS</h4>
+                                    <h4 class="text-white fs-12px text-center">{{ number_format($qty, 0, ',', '.') }} PCS
+                                    </h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -80,7 +82,7 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">ONGKIR</div>
-                                    <h4 class="text-default fs-12px text-center">Rp 4.546.434</h4>
+                                    <h4 class="text-default fs-12px text-center">@currency($ongkir)</h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -97,7 +99,7 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">GROSS SALE</div>
-                                    <h4 class="text-white fs-12px text-center">Rp 554.546.434</h4>
+                                    <h4 class="text-white fs-12px text-center">@currency($gross_sale)</h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -114,7 +116,7 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">EXPENSES</div>
-                                    <h4 class="text-red fs-12px text-center">Rp 4.546.434</h4>
+                                    <h4 class="text-red fs-12px text-center">@currency($expenses)</h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -131,7 +133,7 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">DISCOUNT</div>
-                                    <h4 class="text-yellow fs-12px text-center">Rp 11.846.434</h4>
+                                    <h4 class="text-yellow fs-12px text-center">@currency($discount)</h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -148,7 +150,7 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">NET SALES</div>
-                                    <h4 class="text-info fs-12px text-center">Rp 513.845.434</h4>
+                                    <h4 class="text-info fs-12px text-center">@currency($net_sales)</h4>
                                 </div>
                             </div>
                             <div class="card-arrow">

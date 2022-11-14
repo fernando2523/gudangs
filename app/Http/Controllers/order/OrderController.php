@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Sale;
+use App\Models\Store_equipment_cost;
 
 class OrderController extends Controller
 {
@@ -17,8 +18,23 @@ class OrderController extends Controller
     {
         $title = "Orders Retail";
 
+        $nota = Sale::count('id');
+        $qty = Sale::sum('qty');
+        $ongkir = Sale::sum('ongkir');
+        $gross_sale = Sale::sum('subtotal');
+        $expenses = Store_equipment_cost::sum('total_price');
+        $discount = 123456;
+        $net_sales = 15436565;
+
         return view('order/orders', compact(
-            'title'
+            'title',
+            'nota',
+            'qty',
+            'ongkir',
+            'gross_sale',
+            'expenses',
+            'discount',
+            'net_sales',
         ));
     }
 
