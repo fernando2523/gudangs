@@ -40,7 +40,7 @@ class RepeatOrderController extends Controller
     public function tablerepeatorder(Request $request)
     {
         if ($request->ajax()) {
-            $product = Product::with('warehouse', 'image_product', 'product_variation')->get();
+            $product = Product::with('warehouse', 'image_product', 'product_variation2')->get();
 
             return DataTables::of($product)
                 ->addIndexColumn()

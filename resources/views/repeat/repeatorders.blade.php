@@ -169,8 +169,8 @@
                                 '</span>';
                         },
                     }, {
-                        data: 'product_variation',
-                        name: 'product_variation',
+                        data: 'product_variation2',
+                        name: 'product_variation2',
                         class: 'text-center',
                         searchable: true,
                         // Edit Tian
@@ -181,15 +181,16 @@
                             b = 1;
 
                             while (i < length) {
-                                if (row.warehouse[0]['id_ware'] === row.product_variation[i][
+
+                                if (row.warehouse[0]['id_ware'] === row.product_variation2[i][
                                         'id_ware'
                                     ]) {
-                                    if (row.product_variation[i]['qty'] === 0) {
+                                    if (row.product_variation2[i]['qty'] === 0) {
                                         size = size + '<span class="text-danger"> ' + '[<i>' +
                                             row
-                                            .product_variation[i]['size'] +
+                                            .product_variation2[i]['size'] +
                                             '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
-                                            row.product_variation[
+                                            row.product_variation2[
                                                 i][
                                                 'qty'
                                             ] +
@@ -197,9 +198,9 @@
 
                                     } else {
                                         size = size + '<span class="text-lime">' + '[<i>' + row
-                                            .product_variation[i]['size'] +
+                                            .product_variation2[i]['size'] +
                                             '</i><span class="text-lime"> = </span><span class="text-lime fw-bold">' +
-                                            row.product_variation[
+                                            row.product_variation2[
                                                 i][
                                                 'qty'
                                             ] +
@@ -216,7 +217,9 @@
                                 }
                                 i++;
                             }
-                            return size;
+                            return row.warehouse[0][
+                                'id_ware'
+                            ];
                         },
                     }, {
                         data: 'action',
