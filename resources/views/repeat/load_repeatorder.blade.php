@@ -63,9 +63,11 @@
                         <label class="text-center fw-bold" style="padding-top: 5px;">Modal : </label>
                     </div>
                     <div class="col-8">
-                        <input class="form-control form-control-sm text-theme is-invalid" type="text" name="m_price"
-                            required placeholder="Silahkan masukan nama produk" value="Rp {{ $m_price }}"
-                            autocomplete="OFF" type-currency="IDR">
+                        @if ($get_m_price->id_produk === $id_produk)
+                            <input class="form-control form-control-sm text-theme is-invalid" type="text"
+                                name="m_price" required placeholder="Silahkan masukan nama produk"
+                                value="@currency($get_m_price->m_price)" autocomplete="OFF" type-currency="IDR">
+                        @endif
                     </div>
                 </div>
 
@@ -92,7 +94,26 @@
                                     </td>
                                     <td>
                                         <input class="form-control text-center text-theme is-invalid" type="number"
-                                            name="qty[]" value="0" onkeypress="return isNumberKey(event)"
+                                            name="qty[]" value="0" min="0"
+                                            onkeypress="return isNumberKey(event)"
+                                            style="width: 100%;height: 21px;font-weight: bold;" autocomplete="off"
+                                            required>
+                                    </td>
+                                </tr>
+                            @else
+                                <tr>
+                                    <td>
+                                        <input class="form-control text-center" type="text" name="size[]"
+                                            value="{{ $value->size }}" readonly style="width: 100%;height: 21px;">
+                                    </td>
+                                    <td>
+                                        <input class="form-control text-center fw-bold text-danger" type="number"
+                                            name="qty_old[]" value="0" readonly style="width: 100%;height: 21px;">
+                                    </td>
+                                    <td>
+                                        <input class="form-control text-center text-theme is-invalid" type="number"
+                                            name="qty[]" value="0" min="0"
+                                            onkeypress="return isNumberKey(event)"
                                             style="width: 100%;height: 21px;font-weight: bold;" autocomplete="off"
                                             required>
                                     </td>
