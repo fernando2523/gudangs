@@ -29,8 +29,8 @@ class RepeatOrderController extends Controller
     {
         $title = "Repeat Order";
 
-        // $get_m_price = Supplier_order::all()->last();
-        // dd($get_m_price);
+        // $get_m_price = DB::table('supplier_orders')->select(DB::raw('m_price'), DB::raw('id_produk'), DB::raw('idpo'))->groupBy('id_produk', 'idpo')->orderBy('idpo', 'desc')->first('m_price');
+        // dd($get_m_price->id_produk);
 
         return view('repeat/repeatorders', compact(
             'title'
@@ -64,7 +64,7 @@ class RepeatOrderController extends Controller
             $getsupplier = Supplier::all();
             $variationss = DB::table('variations')->select(DB::raw('SUM(qty) as qty'), DB::raw('id_produk'), DB::raw('id_ware'), DB::raw('size'))->groupBy('id_produk', 'id_ware', 'size')->get();
             $get_Supplier_Order = DB::table('supplier_orders')->select(DB::raw('idpo'), DB::raw('tanggal'), DB::raw('id_sup'),)->groupBy('idpo', 'tanggal', 'id_sup')->orderBy('idpo', 'desc')->limit(10)->get();
-            $get_m_price = DB::table('supplier_orders')->select(DB::raw('m_price'))->latest();
+            $get_m_price = DB::table('supplier_orders')->select(DB::raw('m_price'), DB::raw('id_produk'), DB::raw('idpo'))->groupBy('id_produk', 'idpo')->orderBy('idpo', 'desc')->first('m_price');
 
             return view('repeat/load_repeatorder', compact(
                 'id',
@@ -77,6 +77,7 @@ class RepeatOrderController extends Controller
                 'getsupplier',
                 'variationss',
                 'get_Supplier_Order',
+                'get_m_price'
             ));
         }
     }
