@@ -580,13 +580,16 @@
                                 length = data.length;
                                 i = 0;
                                 b = 1;
+                                v = '';
 
                                 while (i < length) {
-                                    if (row.warehouse[0]['id_ware'] === row.product_variation[i][
+                                    if (row.warehouse[0]['id_ware'] === row.product_variation[
+                                            i][
                                             'id_ware'
                                         ]) {
                                         if (row.product_variation[i]['qty'] === 0) {
-                                            size = size + '<span class="text-danger"> ' + '[<i>' +
+                                            size = size + '<span class="text-danger"> ' +
+                                                '[<i>' +
                                                 row
                                                 .product_variation[i]['size'] +
                                                 '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
@@ -597,7 +600,8 @@
                                                 '</span><span class="fw-bold text-danger">] </span>';
 
                                         } else {
-                                            size = size + '<span class="text-lime">' + '[<i>' + row
+                                            size = size + '<span class="text-lime">' + '[<i>' +
+                                                row
                                                 .product_variation[i]['size'] +
                                                 '</i><span class="text-lime"> = </span><span class="text-lime fw-bold">' +
                                                 row.product_variation[
@@ -611,13 +615,15 @@
                                             b = 0;
                                         }
                                         b++;
-                                    } else {
-                                        size =
-                                            '<span class="fw-bold text-warning">STOK TIDAK TERSEDIA</span>';
+                                        v = '1';
                                     }
                                     i++;
                                 }
-                                return size;
+                                if (v === '1') {
+                                    return size;
+                                } else {
+                                    return '<span class="fw-bold text-warning">STOK TIDAK TERSEDIA</span>';
+                                }
                             },
                         },
                         {

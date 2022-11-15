@@ -122,119 +122,126 @@
                     serverSide: true,
                     ajax: "/tablerepeatorder",
                     columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'id',
-                        class: 'text-center fw-bold',
-                        searchable: false
-                    }, {
-                        data: 'id_produk',
-                        name: 'id_produk',
-                        class: 'text-center',
-                        searchable: true,
-                        "render": function(data, type, row) {
-                            if (row.image_product[0]['img'] === "") {
-                                return '<span><img src="/product/defaultimg.png" alt="" width="100" height="100" class="rounded"></span><span class="fw-bold text-default"><br>' +
-                                    row
-                                    .id_produk + '</span>';
-                            } else {
-                                return '<span><img src="/product/' + row.image_product[0]['img'] +
-                                    '" alt="" width="95"  height="95" class="rounded"></span><span class="fw-bold text-default"><br>' +
-                                    row
-                                    .id_produk + '</span>';
-                            }
-                        },
-                    }, {
-                        data: 'produk',
-                        name: 'produk',
-                        class: 'text-left',
-                        searchable: true,
-                        "render": function(data, type, row, meta) {
-                            return '<span class="fw-bold fs-14px text-white">' + row.produk +
-                                '</span><br><span class="fw-bold"><span class="fw-bold text-white">' +
-                                row
-                                .category +
-                                '</span>';
-                        },
-                    }, {
-                        data: 'warehouse',
-                        name: 'warehouse',
-                        class: 'text-center',
-                        searchable: true,
-                        "render": function(data, type, row, meta) {
-                            return '<span class="fw-bold text-indigo">' + row.warehouse[0][
-                                    'id_ware'
-                                ] +
-                                '</span><br><span class="fw-bold">' + row
-                                .quality +
-                                '</span>';
-                        },
-                    }, {
-                        data: 'product_variation2',
-                        name: 'product_variation2',
-                        class: 'text-center',
-                        searchable: true,
-                        // Edit Tian
-                        "render": function(data, type, row) {
-                            size = '';
-                            length = data.length;
-                            i = 0;
-                            b = 1;
-
-                            while (i < length) {
-
-                                if (row.warehouse[0]['id_ware'] === row.product_variation2[i][
-                                        'id_ware'
-                                    ]) {
-                                    if (row.product_variation2[i]['qty'] === 0) {
-                                        size = size + '<span class="text-danger"> ' + '[<i>' +
-                                            row
-                                            .product_variation2[i]['size'] +
-                                            '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
-                                            row.product_variation2[
-                                                i][
-                                                'qty'
-                                            ] +
-                                            '</span><span class="fw-bold text-danger">] </span>';
-
-                                    } else {
-                                        size = size + '<span class="text-lime">' + '[<i>' + row
-                                            .product_variation2[i]['size'] +
-                                            '</i><span class="text-lime"> = </span><span class="text-lime fw-bold">' +
-                                            row.product_variation2[
-                                                i][
-                                                'qty'
-                                            ] +
-                                            '</span><span class="fw-bold text-lime">] </span>';
-                                    }
-                                    if (b === 4) {
-                                        size = size + '<br>';
-                                        b = 0;
-                                    }
-                                    b++;
+                            data: 'DT_RowIndex',
+                            name: 'id',
+                            class: 'text-center fw-bold',
+                            searchable: false
+                        }, {
+                            data: 'id_produk',
+                            name: 'id_produk',
+                            class: 'text-center',
+                            searchable: true,
+                            "render": function(data, type, row) {
+                                if (row.image_product[0]['img'] === "") {
+                                    return '<span><img src="/product/defaultimg.png" alt="" width="100" height="100" class="rounded"></span><span class="fw-bold text-default"><br>' +
+                                        row
+                                        .id_produk + '</span>';
                                 } else {
-                                    size =
-                                        '<span class="fw-bold text-warning">STOK TIDAK TERSEDIA</span>';
+                                    return '<span><img src="/product/' + row.image_product[0]['img'] +
+                                        '" alt="" width="95"  height="95" class="rounded"></span><span class="fw-bold text-default"><br>' +
+                                        row
+                                        .id_produk + '</span>';
                                 }
-                                i++;
-                            }
-                            return size;
+                            },
+                        }, {
+                            data: 'produk',
+                            name: 'produk',
+                            class: 'text-left',
+                            searchable: true,
+                            "render": function(data, type, row, meta) {
+                                return '<span class="fw-bold fs-14px text-white">' + row.produk +
+                                    '</span><br><span class="fw-bold"><span class="fw-bold text-white">' +
+                                    row
+                                    .category +
+                                    '</span>';
+                            },
+                        }, {
+                            data: 'warehouse',
+                            name: 'warehouse',
+                            class: 'text-center',
+                            searchable: true,
+                            "render": function(data, type, row, meta) {
+                                return '<span class="fw-bold text-indigo">' + row.warehouse[0][
+                                        'id_ware'
+                                    ] +
+                                    '</span><br><span class="fw-bold">' + row
+                                    .quality +
+                                    '</span>';
+                            },
+                        }, {
+                            data: 'product_variation2',
+                            name: 'product_variation2',
+                            class: 'text-center',
+                            searchable: true,
+                            // Edit Tian
+                            "render": function(data, type, row) {
+                                size = '';
+                                length = data.length;
+                                i = 0;
+                                b = 1;
+                                v = '';
+
+                                while (i < length) {
+                                    if (row.warehouse[0]['id_ware'] === row.product_variation2[
+                                            i][
+                                            'id_ware'
+                                        ]) {
+                                        if (row.product_variation2[i]['qty'] === 0) {
+                                            size = size + '<span class="text-danger"> ' +
+                                                '[<i>' +
+                                                row
+                                                .product_variation2[i]['size'] +
+                                                '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
+                                                row.product_variation2[
+                                                    i][
+                                                    'qty'
+                                                ] +
+                                                '</span><span class="fw-bold text-danger">] </span>';
+
+                                        } else {
+                                            size = size + '<span class="text-lime">' + '[<i>' +
+                                                row
+                                                .product_variation2[i]['size'] +
+                                                '</i><span class="text-lime"> = </span><span class="text-lime fw-bold">' +
+                                                row.product_variation2[
+                                                    i][
+                                                    'qty'
+                                                ] +
+                                                '</span><span class="fw-bold text-lime">] </span>';
+                                        }
+                                        if (b === 4) {
+                                            size = size + '<br>';
+                                            b = 0;
+                                        }
+                                        b++;
+                                        v = '1';
+                                    }
+                                    i++;
+                                }
+                                if (v === '1') {
+                                    return size;
+                                } else {
+                                    return '<span class="fw-bold text-warning">STOK TIDAK TERSEDIA</span>';
+                                }
+                            },
                         },
-                    }, {
-                        data: 'action',
-                        name: 'action',
-                        class: 'text-center fw-bold',
-                        "render": function(data, type, row) {
-                            return '<span><a class="text-lime" style="cursor: pointer;" onclick="openmodaledit(' +
-                                "'" + row.id + "'" +
-                                ',' +
-                                "'" + row.id_produk + "'" + ',' +
-                                "'" + row.id_area + "'" + ',' +
-                                "'" + row.id_ware + "'" + ',' +
-                                "'" + row.produk + "'" + ',' + "'" + row.brand + "'" +
-                                ',' + "'" + row.id_sup + "'" +
-                                ')"><i class="fas fa-xl bi bi-plus-square"></i></a>';
+                        {
+                            data: 'action',
+                            name: 'action',
+                            class: 'text-center fw-bold',
+                            "render": function(data, type, row) {
+                                return '<span><a class="text-lime" style="cursor: pointer;" onclick="openmodaledit(' +
+                                    "'" + row.id + "'" +
+                                    ',' +
+                                    "'" + row.id_produk + "'" + ',' +
+                                    "'" + row.id_area + "'" + ',' +
+                                    "'" + row.id_ware + "'" + ',' +
+                                    "'" + row.produk + "'" + ',' + "'" + row.brand + "'" +
+                                    ',' + "'" + row.id_sup + "'" +
+                                    ')"><i class="fas fa-xl bi bi-plus-square"></i></a>';
+                            },
                         },
-                    }, ],
+                    ],
                     dom: 'tip',
                     // "ordering" : true,
                     order: [
