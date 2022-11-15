@@ -20,6 +20,9 @@ use App\Http\Controllers\barcode\BarcodeController;
 use App\Http\Controllers\order\OrderController;
 use App\Http\Controllers\orderreseller\OrderResellerController;
 use App\Http\Controllers\area\AreaController;
+use App\Http\Controllers\ordercancel\CancelOrderController;
+use App\Http\Controllers\orderrefund\RefundOrderController;
+use App\Http\Controllers\orderreturn\ReturnOrderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -159,3 +162,9 @@ route::any('/area/editact/{id}', [AreaController::class, 'editact'])->middleware
 // end nando 14 nov
 
 route::any('/load_tborders', [OrderController::class, 'load_tborders'])->middleware('auth');
+
+
+route::get('/ordercancel/cancel', [CancelOrderController::class, 'cancel'])->middleware('auth');
+route::any('/tablecancel', [CancelOrderController::class, 'tablecancel']);
+route::any('/table_rincian_cancel/{id_invoice}', [CancelOrderController::class, 'table_rincian_cancel']);
+route::any('/rincian_cancel', [CancelOrderController::class, 'rincian_cancel']);

@@ -62,11 +62,12 @@ class RepeatOrderController extends Controller
             $brand = $request->brand;
 
             $getsupplier = Supplier::all();
-            $variationss = DB::table('variations')->select(DB::raw('SUM(qty) as qty'), DB::raw('id_produk'), DB::raw('id_ware'), DB::raw('size'))->groupBy('id_produk', 'id_ware', 'size')->get();
+            $variationss = DB::table('variations')->select(DB::raw('SUM(qty) as qty'), DB::raw('id_produk'), DB::raw('id_ware'), DB::raw('size'))->where('id_ware', '=', $id_ware)->groupBy('size', 'id_produk')->get();
+            // $variationss = Product::with('product_variation3')->get();
             $get_Supplier_Order = DB::table('supplier_orders')->select(DB::raw('idpo'), DB::raw('tanggal'), DB::raw('id_sup'),)->groupBy('idpo', 'tanggal', 'id_sup')->orderBy('idpo', 'desc')->limit(10)->get();
             $get_m_price = DB::table('supplier_orders')->select(DB::raw('m_price'), DB::raw('id_produk'), DB::raw('idpo'))->groupBy('id_produk', 'idpo')->orderBy('idpo', 'desc')->first('m_price');
 
-            return view('repeat/load_repeatorder', compact(
+            return View('repeat/load_repeatorder', compact(
                 'id',
                 'id_produk',
                 'id_area',

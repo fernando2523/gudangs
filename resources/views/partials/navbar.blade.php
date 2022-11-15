@@ -158,30 +158,6 @@
                 </a>
             </div>
 
-            {{-- <div class="menu-item has-sub">
-                <a href="#" class="menu-link">
-                    <span class="menu-icon">
-                        <i class="bi bi-inboxes-fill text-theme"></i>
-                    </span>
-                    <span class="menu-text">Orders</span>
-                    <span class="menu-caret"><b class="caret"></b></span>
-                </a>
-                <div class="menu-submenu">
-                    <div class="menu-item {{ Request::is('order/orders') ? 'active' : '' }}">
-                        <a href="/order/orders" class="menu-link">
-                            <span class="menu-icon"><i class="bi bi-person text-theme"></i></span>
-                            <span class="menu-text">Retail</span>
-                        </a>
-                    </div>
-                    <div class="menu-item {{ Request::is('orderreseller/orderresellers') ? 'active' : '' }}">
-                        <a href="/orderreseller/orderresellers" class="menu-link">
-                            <span class="menu-icon"><i class="bi bi-people text-theme"></i></span>
-                            <span class="menu-text">Reseller</span>
-                        </a>
-                    </div>
-                </div>
-            </div> --}}
-
             <div class="menu-item has-sub">
                 <a href="#" class="menu-link">
                     <span class="menu-icon">
@@ -191,8 +167,8 @@
                     <span class="menu-caret"><b class="caret"></b></span>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item">
-                        <a href="email_compose.html" class="menu-link">
+                    <div class="menu-item {{ Request::is('ordercancel/cancel') ? 'active' : '' }}">
+                        <a href="/ordercancel/cancel" class="menu-link">
                             <span class="menu-icon"><i class="bi bi-x-circle-fill text-theme"></i></span>
                             <span class="menu-text">Cancel</span>
                         </a>

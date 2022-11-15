@@ -80,46 +80,53 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($variationss as $key => $value)
-                            @if ($value->id_ware === $id_ware and $value->id_produk === $id_produk)
+                        @if (count($variationss) > 0)
+                            @foreach ($variationss as $key => $value)
+                                @if ($value->id_produk === $id_produk)
+                                    <tr>
+                                        <td>
+                                            <input class="form-control text-center" type="text" name="size[]"
+                                                value="{{ $value->size }}" readonly style="width: 100%;height: 21px;">
+                                        </td>
+                                        <td>
+                                            <input class="form-control text-center fw-bold text-success" type="number"
+                                                name="qty_old[]" value="{{ $value->qty }}" readonly
+                                                style="width: 100%;height: 21px;">
+                                        </td>
+                                        <td>
+                                            <input class="form-control text-center text-theme is-invalid" type="number"
+                                                name="qty[]" value="0" min="0"
+                                                onkeypress="return isNumberKey(event)"
+                                                style="width: 100%;height: 21px;font-weight: bold;" autocomplete="off"
+                                                required>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        @else
+                            @php
+                                $i = 0;
+                                $sizes = 35;
+                            @endphp
+                            @while ($i < 11)
                                 <tr>
                                     <td>
                                         <input class="form-control text-center" type="text" name="size[]"
-                                            value="{{ $value->size }}" readonly style="width: 100%;height: 21px;">
-                                    </td>
-                                    <td>
-                                        <input class="form-control text-center fw-bold text-success" type="number"
-                                            name="qty_old[]" value="{{ $value->qty }}" readonly
-                                            style="width: 100%;height: 21px;">
-                                    </td>
-                                    <td>
-                                        <input class="form-control text-center text-theme is-invalid" type="number"
-                                            name="qty[]" value="0" min="0"
-                                            onkeypress="return isNumberKey(event)"
-                                            style="width: 100%;height: 21px;font-weight: bold;" autocomplete="off"
-                                            required>
-                                    </td>
-                                </tr>
-                            @else
-                                <tr>
-                                    <td>
-                                        <input class="form-control text-center" type="text" name="size[]"
-                                            value="{{ $value->size }}" readonly style="width: 100%;height: 21px;">
+                                            value="{{ $sizes + $i }}" readonly style="width: 100%;height: 21px;">
                                     </td>
                                     <td>
                                         <input class="form-control text-center fw-bold text-danger" type="number"
                                             name="qty_old[]" value="0" readonly style="width: 100%;height: 21px;">
                                     </td>
                                     <td>
-                                        <input class="form-control text-center text-theme is-invalid" type="number"
-                                            name="qty[]" value="0" min="0"
-                                            onkeypress="return isNumberKey(event)"
-                                            style="width: 100%;height: 21px;font-weight: bold;" autocomplete="off"
-                                            required>
+                                        <input class="form-control text-center" type="text" name="qty[]"
+                                            value="0" onkeypress="return isNumberKey(event)"
+                                            style="width: 100%;height: 21px;font-weight: bold;" autocomplete="off">
                                     </td>
                                 </tr>
-                            @endif
-                        @endforeach
+                                @php $i++; @endphp
+                            @endwhile
+                        @endif
                     </tbody>
                 </table>
                 <div class="form-group mt-3" align="right">
