@@ -26,7 +26,7 @@
                     <span class="fs-11px text-white">{{ $datas->store[0]['store'] }}</span> | <span
                         class="fs-11px text-yellow">RESELLER
                         :</span><span class="ms-1 text-yellow">{{ $datas->id_reseller }}</span><br>
-                    <span class="badge bg-default text-dark">KASIR : NANDO</span>
+                    <span class="badge bg-default text-dark">KASIR : {{ $datas->users }}</span>
                 </div>
             </td>
         @endif
@@ -46,8 +46,7 @@
             </td>
             <td class="text-left fw-bold" style="border-right-width: 1px;">
                 <a style="cursor: pointer;" onclick="openmodaldetail()">
-                    <span>{{ $datas->details[$i]['produk'] }}
-                        {{ $datas->details[$i]['id'] }}</span>
+                    <span>{{ $datas->details[$i]['produk'] }}</span>
                 </a>
             </td>
             <td class="text-center" style="border-right-width: 1px;">

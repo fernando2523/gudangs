@@ -133,7 +133,8 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">DISCOUNT</div>
-                                    <h4 class="text-yellow fs-12px text-center">@currency($discount)</h4>
+                                    {{-- <h4 class="text-yellow fs-12px text-center">@currency($discount)</h4> --}}
+                                    <h4 class="text-yellow fs-12px text-center">{{ $discount }}</h4>
                                 </div>
                             </div>
                             <div class="card-arrow">

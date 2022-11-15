@@ -23,7 +23,8 @@ class OrderController extends Controller
         $ongkir = Sale::sum('ongkir');
         $gross_sale = Sale::sum('subtotal');
         $expenses = Store_equipment_cost::sum('total_price');
-        $discount = 123456;
+        // $discount = Sale::sum('diskon_all')->groupBy('id_invoice');
+        $discount = 12;
         $net_sales = 15436565;
 
         return view('order/orders', compact(
@@ -40,42 +41,56 @@ class OrderController extends Controller
 
     public function load_tborders(Request $request)
     {
-        $querys = $request->querys;
+        $querys_result = $request->querys;
         $last_id = $request->last_id;
         $pages = $request->pages;
         $limit = 10;
         $current_page = ($pages * $limit) - ($limit - 1);
 
         if ($last_id == '0') {
-            if ($querys == '') {
+            if ($querys_result == '') {
                 $data = Sale::with('details', 'store')
+                    ->selectRaw('*,GROUP_CONCAT(produk SEPARATOR " ") as produk,GROUP_CONCAT(id_produk SEPARATOR " ") as id_produk')
                     ->groupBy('id_invoice')
                     ->orderBy('id_invoice', 'DESC')
                     ->limit(10)
                     ->get();
             } else {
                 $data = Sale::with('details', 'store')
-                    ->where('id_reseller', $querys)
-                    ->orwhere('produk', $querys)
-                    ->orwhere('id_invoice', $querys)
+                    ->selectRaw('*,GROUP_CONCAT(produk SEPARATOR " ") as produk,GROUP_CONCAT(id_produk SEPARATOR " ") as id_produk')
+
+                    ->where('id_reseller', $querys_result)
+                    ->orwhere('produk',  'Like', '%' . $querys_result . '%')
+                    ->orwhere('id_produk',  $querys_result)
+                    ->orwhere('id_invoice', $querys_result)
+                    ->orwhere('users', $querys_result)
+
                     ->orderBy('id_invoice', 'DESC')
                     ->groupBy('id_invoice')
                     ->limit(10)
                     ->get();
             }
         } else {
-            if ($querys == '') {
+            if ($querys_result == '') {
                 $data = Sale::with('details', 'store')
+                    ->selectRaw('*,GROUP_CONCAT(produk SEPARATOR " ") as produk,GROUP_CONCAT(id_produk SEPARATOR " ") as id_produk')
+
                     ->where('id', '<', $last_id)
+
                     ->groupBy('id_invoice')
                     ->orderBy('id_invoice', 'DESC')
                     ->limit(10)
                     ->get();
             } else {
                 $data = Sale::with('details', 'store')
-                    ->where([['id', '<', $last_id], ['id_reseller', $querys]])
-                    ->orwhere([['id', '<', $last_id], ['produk', $querys]])
-                    ->orwhere([['id', '<', $last_id], ['id_invoice', $querys]])
+                    ->selectRaw('*,GROUP_CONCAT(produk SEPARATOR " ") as produk,GROUP_CONCAT(id_produk SEPARATOR " ") as id_produk')
+
+                    ->where([['id', '<', $last_id], ['id_reseller', $querys_result]])
+                    ->orwhere([['id', '<', $last_id], ['produk',  'Like', '%' . $querys_result . '%']])
+                    ->orwhere([['id', '<', $last_id], ['id_produk', $querys_result]])
+                    ->orwhere([['id', '<', $last_id], ['id_invoice', $querys_result]])
+                    ->orwhere([['id', '<', $last_id], ['users', $querys_result]])
+
                     ->orderBy('id_invoice', 'DESC')
                     ->groupBy('id_invoice')
                     ->limit(10)
