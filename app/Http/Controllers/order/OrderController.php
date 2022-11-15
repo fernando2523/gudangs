@@ -43,16 +43,51 @@ class OrderController extends Controller
         $querys = $request->querys;
         $last_id = $request->last_id;
 
-        if ($querys == '') {
-            $data = Sale::with('details', 'store')->where('id', '>', $last_id)->groupBy('id_invoice')->orderBy('id_invoice')->limit(10)->get();
-            $data_max = Sale::where('id', '>', $last_id)->groupBy('id_invoice')->orderBy('id_invoice')->limit(10)->get('id');
+        if ($last_id == '0') {
+            if ($querys == '') {
+                $data = Sale::with('details', 'store')
+                    ->groupBy('id_invoice')
+                    ->orderBy('id_invoice', 'DESC')
+                    ->limit(10)
+                    ->get();
+            } else {
+                $data = Sale::with('details', 'store')
+                    ->where('id_reseller', $querys)
+                    ->orwhere('produk', $querys)
+                    ->orwhere('id_invoice', $querys)
+                    ->orderBy('id_invoice', 'DESC')
+                    ->groupBy('id_invoice')
+                    ->limit(10)
+                    ->get();
+            }
         } else {
-            $data = Sale::with('details', 'store')->where('id', '>', $last_id)->groupBy('id_invoice')->orderBy('id_invoice')->limit(10)->get();
+            if ($querys == '') {
+                $data = Sale::with('details', 'store')
+                    ->where('id', '<', $last_id)
+                    ->groupBy('id_invoice')
+                    ->orderBy('id_invoice', 'DESC')
+                    ->limit(10)
+                    ->get();
+            } else {
+                $data = Sale::with('details', 'store')
+                    ->where([['id', '<', $last_id], ['id_reseller', $querys]])
+                    ->orwhere([['id', '<', $last_id], ['produk', $querys]])
+                    ->orwhere([['id', '<', $last_id], ['id_invoice', $querys]])
+                    ->orderBy('id_invoice', 'DESC')
+                    ->groupBy('id_invoice')
+                    ->limit(10)
+                    ->get();
+            }
         }
 
-        return view('order.load_tborder', compact(
-            'data',
-            'data_max'
-        ));
+        $count = count($data);
+
+        if ($last_id == 'last') {
+        } else {
+            return view('order.load_tborder', compact(
+                'data',
+                'count'
+            ));
+        }
     }
 }

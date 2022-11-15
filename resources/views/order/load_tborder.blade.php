@@ -1,7 +1,7 @@
 @foreach ($data as $key => $datas)
     <tr>
         @if ($datas->id_reseller === '-')
-            <td align="center"><span class="fs-13px mt-2">{{ $key + 1 }}) {{ $datas->id }} </span></td>
+            <td align="center"><span class="fs-13px mt-2">{{ $key + 1 }}) </span></td>
             <td colspan="5" class="fw-bold pt-3 pb-3">
                 <div align="left">
                     <span class="fs-12px text-white">{{ $datas->id_invoice }}</span> | {{ $datas->tanggal }}<span
@@ -15,7 +15,7 @@
                 </div>
             </td>
         @else
-            <td align="center"><span class="fs-13px mt-2">{{ $key + 1 }}) {{ $datas->id }} </span></td>
+            <td align="center"><span class="fs-13px mt-2">{{ $key + 1 }}) </span></td>
             <td colspan="5" class="fw-bold pt-3 pb-3">
                 <div align="left">
                     <span class="fs-12px text-yellow">{{ $datas->id_invoice }}</span> | {{ $datas->tanggal }}<span
@@ -129,4 +129,13 @@
         </td>
     </tr>
 @endforeach
-<input type="hidden" name="last_id[]" value="{{ $data_max[9]['id'] }}">
+@if ($count == 0)
+    <tr style="width: 100%">
+        <td colspan="10" align="center">
+            No More Data...
+        </td>
+    </tr>
+    <input type="hidden" name="last_id[]" value="last">
+@else
+    <input type="hidden" name="last_id[]" value="{{ $datas->id }}">
+@endif

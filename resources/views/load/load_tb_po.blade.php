@@ -94,3 +94,13 @@
         </td>
     </tr>
 @endforeach
+@if ($count == 0)
+    <tr style="width: 100%">
+        <td colspan="10" align="center">
+            No More Data...
+        </td>
+    </tr>
+    <input type="hidden" name="last_id[]" value="last">
+@else
+    <input type="hidden" name="last_id[]" value="{{ $data->id }}">
+@endif

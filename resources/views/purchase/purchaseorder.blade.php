@@ -112,7 +112,7 @@
                 <div class="card">
                     <div class="card-body p-3" style="height: auto;">
                         <!-- BEGIN input-group -->
-                        <div class="input-group mb-4">
+                        <div class="input-group mb-2">
                             <div class="flex-fill position-relative">
                                 <div class="input-group">
 
@@ -122,9 +122,9 @@
                                             <i class="fa fa-search opacity-5"></i>
                                         </div>
                                         <style>
-                                            #search_purchaseOrder::-webkit-search-cancel-button {}
+                                            #search::-webkit-search-cancel-button {}
                                         </style>
-                                        <input type="search" class="form-control ps-35px" id="search_purchaseOrder"
+                                        <input type="search" class="form-control ps-35px" id="search"
                                             placeholder="Search Data Purchase Order.." />
                                     </div>
                                     <div style="width: 5%;">
@@ -284,7 +284,10 @@
                                 border-top-width: 1px;
                             }
                         </style>
-
+                        <div class="mt-2 mb-2" id="search_var" style="display: none;">
+                            <button id="clear_search" class="btn btn-sm btn-theme ms-1 me-1">Clear Search</button>
+                            <span>Searching : <span id="query_search"></span></span>
+                        </div>
                         <table class="table-sm mb-0" style="width: 100%" data-search="true">
                             <thead class="thead-custom">
                                 <tr class="text-white">
@@ -314,7 +317,12 @@
                             <tbody id="tb_po">
                             </tbody>
                         </table>
-
+                        <br>
+                        <center>
+                            {{-- <button type="button" class="btn btn-sm btn-outline-theme" id="load_more">Load
+                                More</button> --}}
+                            <input type="hidden" id="validate" value="0">
+                        </center>
                     </div>
                     <!-- Data Loader -->
                     {{-- <div class="auto-load text-center">
@@ -537,19 +545,19 @@
             }
 
             // Load Table PO
-            function load_po() {
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ URL::to('/load_edit_variation') }}",
-                    data: {
-                        id_area: id_area,
-                        id_produk: id_produk
-                    },
-                    success: function(data) {
-                        $("#edit_variation").html(data);
-                    }
-                });
-            }
+            // function load_po() {
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: "{{ URL::to('/load_edit_variation') }}",
+            //         data: {
+            //             id_area: id_area,
+            //             id_produk: id_produk
+            //         },
+            //         success: function(data) {
+            //             $("#edit_variation").html(data);
+            //         }
+            //     });
+            // }
             // Load Table PO
         </script>
 
@@ -557,30 +565,43 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
             var query_awal = '';
-            var page = 1;
+            var id_awal = 0;
 
             $(document).ready(function() {
-                load_tb_po(query_awal, 1);
-            });
-
-            $('#search_purchaseOrder').on('input', function(e) {
-                if ('' == this.value) {
-                    load_tb_po(query_awal, 1);
-                }
+                load_tb_po(query_awal, 1, id_awal);
             });
 
             $('#btn_search').click(function() {
-                var query = $('#search_purchaseOrder').val();
-                load_tb_po(query, 1);
+                var query = $('#search').val();
+                if (query != '') {
+                    document.getElementById('validate').value = 0;
+                    page = 1;
+                    val_last = '';
+                    load_tb_po(query, page, id_awal);
+                    $("#search_var").css("display", "block");
+                    $("#query_search").html(query);
+                } else {
+                    alert('Masukan Query Pencarian');
+                }
             });
 
-            function load_tb_po(querys, pages) {
+            $("#clear_search").click(function() {
+                document.getElementById('validate').value = 0;
+                page = 1;
+                val_last = '';
+                load_tb_po('', page, id_awal);
+                $("#search_var").css("display", "none");
+                $("#search").val('');
+            });
+
+            function load_tb_po(querys, pages, start_data) {
                 $("#tb_po").html('');
                 $.ajax({
                     type: 'GET',
                     url: "/load_tb_po?page=" + pages,
                     data: {
-                        querys: querys
+                        querys: querys,
+                        last_id: start_data
                     },
                     beforeSend: function() {
                         $("#tb_po").html(
@@ -596,31 +617,40 @@
                 });
             }
 
+            var page = 1;
+            var val_last = '';
+
             $(window).scroll(function() {
-                if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
-                    page++;
-                    var query = $('#search_purchaseOrder').val();
-                    loadmore_tb_po(query, page);
+                if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+                    var validate = document.getElementById('validate').value;
+                    if (validate == '0' && val_last != 'last') {
+                        document.getElementById('validate').value = 1;
+                        index = parseInt(page) - 1;
+                        page++;
+                        var last_id = document.getElementsByName('last_id[]')[index].value;
+                        val_last = last_id;
+                        var query = $('#search').val();
+                        if (val_last != 'last') {
+                            loadmore_tb_po(query, page, last_id);
+                        }
+                    }
                 }
             });
 
-            function loadmore_tb_po(querys, page) {
+            function loadmore_tb_po(querys, pages, start_data) {
                 $.ajax({
                         url: "/load_tb_po?page=" + page,
                         type: "GET",
                         data: {
-                            querys: querys
+                            querys: querys,
+                            last_id: start_data
                         },
                         beforeSend: function() {
                             $('.auto-load').show();
                         }
                     })
                     .done(function(response) {
-                        if (response.length == 0) {
-                            $('.auto-load').html("We don't have more data to display :(");
-                            return;
-                        }
-                        $('.auto-load').hide();
+                        document.getElementById('validate').value = 0;
                         $("#tb_po").append(response);
                     })
                     .fail(function(jqXHR, ajaxOptions, thrownError) {

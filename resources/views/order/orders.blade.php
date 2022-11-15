@@ -171,7 +171,7 @@
                 <div class="card">
                     <div class="card-body p-3" style="height: auto;">
                         <!-- BEGIN input-group -->
-                        <div class="input-group mb-4">
+                        <div class="input-group mb-2">
                             <div class="flex-fill position-relative">
                                 <div class="input-group">
 
@@ -206,8 +206,12 @@
                                 border-top-width: 1px;
                             }
                         </style>
+                        <div class="mt-2 mb-2" id="search_var" style="display: none;">
+                            <button id="clear_search" class="btn btn-sm btn-theme ms-1 me-1">Clear Search</button>
+                            <span>Searching : <span id="query_search"></span></span>
+                        </div>
                         {{-- tb awal --}}
-                        <table class="table-sm mb-0" style="width: 100%">
+                        <table class="table-sm mb-0 mt-2" style="width: 100%">
                             <thead class="thead-custom">
                                 <tr class="text-white">
                                     <th class="text-center text-white" width="2%">NO
@@ -267,6 +271,29 @@
                 load_tborders(query_awal, 1, id_awal);
             });
 
+            $("#btn_search").click(function() {
+                var query = $('#search').val();
+                if (query != '') {
+                    document.getElementById('validate').value = 0;
+                    page = 1;
+                    val_last = '';
+                    load_tborders(query, page, id_awal);
+                    $("#search_var").css("display", "block");
+                    $("#query_search").html(query);
+                } else {
+                    alert('Masukan Query Pencarian');
+                }
+            });
+
+            $("#clear_search").click(function() {
+                document.getElementById('validate').value = 0;
+                page = 1;
+                val_last = '';
+                load_tborders('', page, id_awal);
+                $("#search_var").css("display", "none");
+                $("#search").val('');
+            });
+
             function load_tborders(querys, pages, start_data) {
                 $("#load_tborder").html('');
                 $.ajax({
@@ -291,53 +318,24 @@
             }
 
             var page = 1;
-            // $(window).scroll(function() {
-            //     if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
-            //         page++;
-            //         var last_id = $('#last_id').val();
-            //         var query = $('#search').val();
-            //         loadmore_tborders(query, page, last_id);
-            //     }
-            // });
-
-            // $(function() {
-            //     var $win = $(window);
-            //     $win.scroll(function() {
-            //         console.log($win.scrollTop());
-            //         console.log($win.height());
-            //         console.log($win.height() + $win.scrollTop());
-            //         console.log($(document).height());
-            //         if ($win.height() + $win.scrollTop() >=
-            //             $(document).height()) {
-            //             index = parseInt(page) - 1;
-            //             page++;
-            //             var last_id = document.getElementsByName('last_id[]')[index].value;
-            //             var query = $('#search').val();
-            //             loadmore_tborders(query, page, last_id);
-            //         }
-            //     });
-            // });
-
+            var val_last = '';
 
             $(window).scroll(function() {
                 if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
                     var validate = document.getElementById('validate').value;
-                    if (validate == '0') {
+                    if (validate == '0' && val_last != 'last') {
                         document.getElementById('validate').value = 1;
                         index = parseInt(page) - 1;
                         page++;
                         var last_id = document.getElementsByName('last_id[]')[index].value;
+                        val_last = last_id;
                         var query = $('#search').val();
-                        loadmore_tborders(query, page, last_id);
+                        if (val_last != 'last') {
+                            loadmore_tborders(query, page, last_id);
+                        }
                     }
                 }
             });
-
-
-            $("#load_more").click(function() {
-
-            });
-
 
             function loadmore_tborders(querys, pages, start_data) {
                 $.ajax({

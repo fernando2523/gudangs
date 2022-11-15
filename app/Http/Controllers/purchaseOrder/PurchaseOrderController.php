@@ -53,16 +53,46 @@ class PurchaseOrderController extends Controller
     public function load_table_po(Request $request)
     {
         // if ($request->ajax()) {
-        $query = $request->querys;
+        $querys = $request->querys;
+        $last_id = $request->last_id;
 
-        if ($query == '') {
-            $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation')->groupBy('idpo', 'tanggal', 'users')->paginate(10);
+        if ($last_id == '0') {
+            if ($querys == '') {
+                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation')
+                    ->groupBy('idpo', 'tanggal', 'users')
+                    ->orderBy('idpo', 'DESC')
+                    ->limit(10)
+                    ->get();
+            } else {
+                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation')
+                    ->where('idpo', $querys)
+                    ->orwhere('produk', $querys)
+                    ->orderBy('idpo', 'DESC')
+                    ->limit(10)
+                    ->get();
+            }
         } else {
-            $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation')->whereFullText('idpo', $query)->orwhereFullText('produk', $query)->groupBy('idpo', 'tanggal', 'users')->paginate(10);
+            if ($querys == '') {
+                $datapo = Supplier_order::groupBy('idpo', 'tanggal', 'users')
+                    ->where('id', '<', $last_id)
+                    ->orderBy('idpo', 'DESC')
+                    ->limit(10)
+                    ->get();
+            } else {
+                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation')
+                    ->where([['id', '<', $last_id], ['idpo', $querys]])
+                    ->orwhere([['id', '<', $last_id], ['produk', $querys]])
+                    ->orderBy('idpo', 'DESC')
+                    ->limit(10)
+                    ->get();
+            }
         }
+
+        $count = count($datapo);
 
         return view('load.load_tb_po', compact(
             'datapo',
+            'count'
         ));
         // }
     }
