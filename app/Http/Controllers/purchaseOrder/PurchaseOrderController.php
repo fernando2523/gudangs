@@ -55,6 +55,9 @@ class PurchaseOrderController extends Controller
         // if ($request->ajax()) {
         $querys = $request->querys;
         $last_id = $request->last_id;
+        $pages = $request->pages;
+        $limit = 10;
+        $current_page = ($pages * $limit) - ($limit - 1);
 
         if ($last_id == '0') {
             if ($querys == '') {
@@ -92,7 +95,8 @@ class PurchaseOrderController extends Controller
 
         return view('load.load_tb_po', compact(
             'datapo',
-            'count'
+            'count',
+            'current_page'
         ));
         // }
     }

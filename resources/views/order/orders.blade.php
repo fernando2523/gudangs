@@ -298,10 +298,11 @@
                 $("#load_tborder").html('');
                 $.ajax({
                     type: 'GET',
-                    url: "/load_tborders?page=" + pages,
+                    url: "/load_tborders",
                     data: {
                         querys: querys,
-                        last_id: start_data
+                        last_id: start_data,
+                        pages: pages
                     },
                     beforeSend: function() {
                         $("#load_tborder").html(
@@ -340,10 +341,11 @@
             function loadmore_tborders(querys, pages, start_data) {
                 $.ajax({
                     type: 'GET',
-                    url: "/load_tborders?page=" + pages,
+                    url: "/load_tborders",
                     data: {
                         querys: querys,
-                        last_id: start_data
+                        last_id: start_data,
+                        pages: pages
                     },
                     beforeSend: function() {},
                     success: function(data) {

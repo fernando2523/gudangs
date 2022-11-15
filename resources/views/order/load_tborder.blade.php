@@ -1,7 +1,7 @@
 @foreach ($data as $key => $datas)
     <tr>
         @if ($datas->id_reseller === '-')
-            <td align="center"><span class="fs-13px mt-2">{{ $key + 1 }}) </span></td>
+            <td align="center"><span class="fs-13px mt-2">{{ $current_page }}) </span></td>
             <td colspan="5" class="fw-bold pt-3 pb-3">
                 <div align="left">
                     <span class="fs-12px text-white">{{ $datas->id_invoice }}</span> | {{ $datas->tanggal }}<span
@@ -15,7 +15,7 @@
                 </div>
             </td>
         @else
-            <td align="center"><span class="fs-13px mt-2">{{ $key + 1 }}) </span></td>
+            <td align="center"><span class="fs-13px mt-2">{{ $current_page }}) </span></td>
             <td colspan="5" class="fw-bold pt-3 pb-3">
                 <div align="left">
                     <span class="fs-12px text-yellow">{{ $datas->id_invoice }}</span> | {{ $datas->tanggal }}<span
@@ -128,6 +128,8 @@
         <td colspan="8" style="padding-top: 5px;padding-bottom: 20px;">
         </td>
     </tr>
+
+    {{ $current_page++ }}
 @endforeach
 @if ($count == 0)
     <tr style="width: 100%">

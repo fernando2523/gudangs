@@ -42,6 +42,9 @@ class OrderController extends Controller
     {
         $querys = $request->querys;
         $last_id = $request->last_id;
+        $pages = $request->pages;
+        $limit = 10;
+        $current_page = ($pages * $limit) - ($limit - 1);
 
         if ($last_id == '0') {
             if ($querys == '') {
@@ -86,7 +89,8 @@ class OrderController extends Controller
         } else {
             return view('order.load_tborder', compact(
                 'data',
-                'count'
+                'count',
+                'current_page'
             ));
         }
     }

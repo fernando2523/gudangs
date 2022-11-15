@@ -598,10 +598,11 @@
                 $("#tb_po").html('');
                 $.ajax({
                     type: 'GET',
-                    url: "/load_tb_po?page=" + pages,
+                    url: "/load_tb_po",
                     data: {
                         querys: querys,
-                        last_id: start_data
+                        last_id: start_data,
+                        pages: pages
                     },
                     beforeSend: function() {
                         $("#tb_po").html(
@@ -639,11 +640,12 @@
 
             function loadmore_tb_po(querys, pages, start_data) {
                 $.ajax({
-                        url: "/load_tb_po?page=" + page,
+                        url: "/load_tb_po",
                         type: "GET",
                         data: {
                             querys: querys,
-                            last_id: start_data
+                            last_id: start_data,
+                            pages: pages
                         },
                         beforeSend: function() {
                             $('.auto-load').show();

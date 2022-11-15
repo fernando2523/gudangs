@@ -1,9 +1,7 @@
-<?php $items = 0; ?>
 @foreach ($datapo as $key => $data)
-    <?php $items++; ?>
     <tr>
         <td colspan="6" class="fw-bold " style="padding-top: 20px;">
-            <span class="fs-12px">{{ $items }})</span>
+            <span class="fs-12px">{{ $current_page }})</span>
             <span class="fs-12px text-lime">#{{ $data->tanggal }} - {{ $data->idpo }}
             </span>
             <span style="padding-left: 5px;cursor: pointer;" onclick="deleteModal({{ $data->idpo }})"><i
@@ -93,6 +91,7 @@
         <td colspan="8" style="padding-top: 5px;padding-bottom: 20px;">
         </td>
     </tr>
+    {{ $current_page++ }}
 @endforeach
 @if ($count == 0)
     <tr style="width: 100%">
