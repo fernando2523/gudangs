@@ -165,7 +165,7 @@ route::any('/load_tborders', [OrderController::class, 'load_tborders'])->middlew
 route::any('/cancel_order', [OrderController::class, 'cancel_order'])->middleware('auth');
 route::any('/load_refund', [OrderController::class, 'load_refund']);
 
-// nando
+// nando 17 Nov
 route::get('/ordercancel/cancel', [CancelOrderController::class, 'cancel'])->middleware('auth');
 route::any('/tablecancel', [CancelOrderController::class, 'tablecancel']);
 route::any('/table_rincian_cancel/{id_invoice}', [CancelOrderController::class, 'table_rincian_cancel']);
@@ -180,4 +180,4 @@ route::get('/orderrefund/refund', [RefundOrderController::class, 'refund'])->mid
 route::any('/tablerefund', [RefundOrderController::class, 'tablerefund']);
 route::any('/table_rincian_refund/{id_invoice}', [RefundOrderController::class, 'table_rincian_refund']);
 route::any('/rincian_refund', [RefundOrderController::class, 'rincian_refund']);
-// nando
+// nando 17 Nov
