@@ -264,6 +264,79 @@
             <!-- END -->
         </div>
 
+        <form class="was-validated" method="POST" action="/cancel_order">
+            <input type="hidden" name="_method" value="PATCH">
+            @csrf
+            <div class="modal fade" id="cancel_order" data-bs-backdrop="static" style="padding-top:5%;">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-warning">DELETE</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center text-warning" style="padding-bottom: 0px;font-weight: bold;">
+                            <p>Delete Order?</p>
+                        </div>
+                        <input type="hidden" id="id_invoice" name="id_invoice">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-default"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button class="btn btn-outline-warning" type="submit">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="modal fade" id="refund_order" data-bs-backdrop="static" style="padding-top:5%;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-success">REFUND PRODUCT <span id="s_idinvoice"></span></h5>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" style="font-weight: bold;" id="load_refund">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-default" data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn btn-outline-theme" type="submit">Refund</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function cancel_order(id_invoice) {
+                document.getElementById('id_invoice').value = id_invoice;
+                $('#cancel_order').modal('show');
+            }
+
+            function refund_order(id_invoice, count) {
+                document.getElementById('s_idinvoice').innerHTML = id_invoice;
+
+                $.ajax({
+                    url: "/load_refund",
+                    type: "POST",
+                    data: {
+                        id_invoice: id_invoice,
+                        count: count
+                    },
+                    beforeSend: function() {
+                        $("#load_refund").html(`<div class="text-center w-100">
+                            <div class="m-auto spinner-border"></div>
+                        </div>`);
+                    },
+                    success: function(data) {
+                        $("#load_refund").html(data);
+                    }
+                });
+
+                $('#refund_order').modal('show');
+            }
+        </script>
+
         <script>
             var query_awal = '';
             var id_awal = 0;

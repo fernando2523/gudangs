@@ -163,8 +163,11 @@ route::any('/area/editact/{id}', [AreaController::class, 'editact'])->middleware
 
 route::any('/load_tborders', [OrderController::class, 'load_tborders'])->middleware('auth');
 
-
 route::get('/ordercancel/cancel', [CancelOrderController::class, 'cancel'])->middleware('auth');
 route::any('/tablecancel', [CancelOrderController::class, 'tablecancel']);
 route::any('/table_rincian_cancel/{id_invoice}', [CancelOrderController::class, 'table_rincian_cancel']);
 route::any('/rincian_cancel', [CancelOrderController::class, 'rincian_cancel']);
+
+
+route::any('/cancel_order', [OrderController::class, 'cancel_order'])->middleware('auth');
+route::any('/load_refund', [OrderController::class, 'load_refund']);

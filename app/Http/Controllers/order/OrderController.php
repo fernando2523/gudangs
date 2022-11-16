@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Sale;
+use App\Models\variation;
 use App\Models\Store_equipment_cost;
+use App\Models\Cancel_order;
 
 class OrderController extends Controller
 {
@@ -108,5 +110,86 @@ class OrderController extends Controller
                 'current_page'
             ));
         }
+    }
+
+    public function cancel_order(Request $request)
+    {
+        $id_invoice = $request->id_invoice;
+
+        $get_id_invoice = Sale::where('id_invoice', $id_invoice)->get();
+
+        foreach ($get_id_invoice as $data) {
+            // Convert To Cancel Order
+            $datas = new Cancel_order();
+            $datas->tanggal = $data->tanggal;
+            $datas->tipe_refund = 'CANCEL';
+            $datas->customer = $data->customer;
+            $datas->id_invoice = $data->id_invoice;
+            $datas->idpo = $data->idpo;
+            $datas->id_produk = $data->id_produk;
+            $datas->id_ware = $data->id_ware;
+            $datas->id_area = $data->id_area;
+            $datas->id_store = $data->id_store;
+            $datas->id_brand = $data->id_brand;
+            $datas->id_reseller = $data->id_reseller;
+            $datas->payment = $data->payment;
+            $datas->produk = $data->produk;
+            $datas->size = $data->size;
+            $datas->qty = $data->qty;
+            $datas->quality = $data->quality;
+            $datas->m_price = $data->m_price;
+            $datas->selling_price = $data->selling_price;
+            $datas->diskon_item = $data->diskon_item;
+            $datas->diskon_all = $data->diskon_all;
+            $datas->subtotal = $data->subtotal;
+            $datas->grandtotal = $data->grandtotal;
+            $datas->cash = $data->cash;
+            $datas->bca = $data->bca;
+            $datas->mandiri = $data->mandiri;
+            $datas->qris = $data->qris;
+            $datas->ongkir = $data->ongkir;
+            $datas->refund = $data->refund;
+            $datas->desc = '';
+            $datas->users = Auth::user()->name;
+            $datas->save();
+            // Convert To Cancel Order
+
+            // Variations
+            $old_qty = variation::where('id_produk', $data->id_produk)
+                ->where('idpo', $data->idpo)
+                ->where('id_ware', $data->id_ware)
+                ->where('size', $data->size)
+                ->get('qty');
+
+            $qty_new = intval($old_qty[0]['qty']) + intval($data->qty);
+
+            variation::where('id_produk', $data->id_produk)
+                ->where('idpo', $data->idpo)
+                ->where('id_ware', $data->id_ware)
+                ->where('size', $data->size)
+                ->update([
+                    'qty' => $qty_new,
+                ]);
+            // Variations
+
+            // Delete Id_Invoice
+            Sale::where('id', $data->id)->delete();
+            // Delete Id_Invoice
+        }
+
+        return redirect('order/orders');
+    }
+
+    public function load_refund(Request $request)
+    {
+        $id_invoice = $request->id_invoice;
+        $count = $request->count;
+        $data = Sale::where('id_invoice', $id_invoice)->get();
+
+        return view('order.load_refund', compact(
+            'id_invoice',
+            'count',
+            'data'
+        ));
     }
 }

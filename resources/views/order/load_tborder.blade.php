@@ -1,14 +1,14 @@
 @foreach ($data as $key => $datas)
     <tr>
-        @if ($datas->id_reseller === '-')
+        @if ($datas->customer === 'RETAIL')
             <td align="center"><span class="fs-13px mt-2">{{ $current_page }}) </span></td>
             <td colspan="5" class="fw-bold pt-3 pb-3">
                 <div align="left">
-                    <span class="fs-12px text-white">{{ $datas->id_invoice }}</span> | {{ $datas->tanggal }}<span
-                        style="padding-left: 5px;cursor: pointer;"><i
-                            class="fa fa-print fa-lg text-info me-2 ms-2"></i></span><span
-                        style="padding-left: 5px;cursor: pointer;"><i
-                            class="fa fa-times-circle fa-lg text-danger"></i></span><br>
+                    <span class="fs-12px text-white">{{ $datas->id_invoice }}</span> | {{ $datas->tanggal }}
+                    <span style="padding-left: 5px;cursor: pointer;">
+                        <i class="fa fa-print fa-lg text-info me-2 ms-2"></i></span>
+                    <span style="padding-left: 5px;cursor: pointer;" onclick="cancel_order('{{ $datas->id_invoice }}')">
+                        <i class="fa fa-times-circle fa-lg text-danger"></i></span><br>
                     <span class="fs-11px text-white">{{ $datas->store[0]['store'] }}</span> | <span
                         class="fs-11px text-white">RETAIL</span><br>
                     <span class="badge bg-default text-dark">KASIR : {{ $datas->users }}</span>
@@ -18,11 +18,14 @@
             <td align="center"><span class="fs-13px mt-2">{{ $current_page }}) </span></td>
             <td colspan="5" class="fw-bold pt-3 pb-3">
                 <div align="left">
-                    <span class="fs-12px text-yellow">{{ $datas->id_invoice }}</span> | {{ $datas->tanggal }}<span
-                        style="padding-left: 5px;cursor: pointer;"><i
-                            class="fa fa-print fa-lg text-info me-2 ms-2"></i></span><span
-                        style="padding-left: 5px;cursor: pointer;"><i
-                            class="fa fa-times-circle fa-lg text-danger"></i></span><br>
+                    <span class="fs-12px text-yellow">{{ $datas->id_invoice }}</span> | {{ $datas->tanggal }}
+                    <span style="padding-left: 5px;cursor: pointer;">
+                        <i class="fa fa-print fa-lg text-info me-2 ms-2"></i>
+                    </span>
+                    <span style="padding-left: 5px;cursor: pointer;" onclick="cancel_order('{{ $datas->id_invoice }}')">
+                        <i class="fa fa-times-circle fa-lg text-danger"></i>
+                    </span>
+                    <br>
                     <span class="fs-11px text-white">{{ $datas->store[0]['store'] }}</span> | <span
                         class="fs-11px text-yellow">RESELLER
                         :</span><span class="ms-1 text-yellow">{{ $datas->id_reseller }}</span><br>
@@ -34,7 +37,8 @@
             <span><a class="btn  btn-primary btn-sm me-2 fw-bold text-white fs-10px"><i
                         class="bi bi-arrow-counterclockwise me-1 fa-1x"></i>TUKER
                     SIZE</a></span>
-            <span><a class="btn btn-danger btn-sm fw-bold text-white fs-10px"><i
+            <span><a class="btn btn-danger btn-sm fw-bold text-white fs-10px"
+                    onclick="refund_order('{{ $datas->id_invoice }}','{{ count($datas->details) }}')"><i
                         class="fa fa-times me-1 fa-1x"></i>REFUND</a></span>
         </td>
     </tr>
@@ -45,9 +49,7 @@
                 {{ $i + 1 }}
             </td>
             <td class="text-left fw-bold" style="border-right-width: 1px;">
-                <a style="cursor: pointer;" onclick="openmodaldetail()">
-                    <span>{{ $datas->details[$i]['produk'] }}</span>
-                </a>
+                <span>{{ $datas->details[$i]['produk'] }}</span>
             </td>
             <td class="text-center" style="border-right-width: 1px;">
                 {{ $datas->details[$i]['id_produk'] }}
