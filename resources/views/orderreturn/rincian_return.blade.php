@@ -1,26 +1,29 @@
-<div class="row mb-3">
-    <div class="col-xl-12 mb-3">
+<div class="row">
+    @if ($getdata[0]->customer === 'RESELLER')
+        <div class="col-xl-12 mb-3">
+            <div class="card" align="center">
+                <div class="card-body d-flex align-items-center text-white m-5px bg-success bg-opacity-10">
+                    <div class="flex-fill">
+                        <h5 class="text-white" style="margin-bottom: -2px;">{{ $getreseller[0]->nama }}</h5>
+                    </div>
+                </div>
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <div class="col-xl-2 mb-3">
         <div class="card" align="center">
-            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
+            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15"
+                style="padding-top: 5px;padding-bottom: 0px;">
                 <div class="flex-fill">
-                    <h4 class="text-white">ASWIN SUBAGJA</h4>
-                </div>
-            </div>
-            <div class="card-arrow">
-                <div class="card-arrow-top-left"></div>
-                <div class="card-arrow-top-right"></div>
-                <div class="card-arrow-bottom-left"></div>
-                <div class="card-arrow-bottom-right"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-2">
-        <div class="card" align="center">
-            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15"
-                style="height: 105px;">
-                <div class="flex-fill" style="padding-top: 5px;padding-bottom: 0px;">
                     <div class="mb-1 fw-bold text-default">TANGGAL</div>
-                    <h4 class="text-white">2022-11-16</h4>
+                    <h5 class="text-white">{{ $getdata[0]->tanggal }}</h5>
                 </div>
             </div>
             <div class="card-arrow">
@@ -31,13 +34,13 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-3">
+    <div class="col-xl-3 mb-3">
         <div class="card" align="center">
             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15"
-                style="height: 105px;">
-                <div class="flex-fill" style="padding-top: 5px;padding-bottom: 0px;">
+                style="padding-top: 5px;padding-bottom: 0px;">
+                <div class="flex-fill">
                     <div class="mb-1 fw-bold text-default">STORE</div>
-                    <h4 class="text-white">FOOTBOX</h4>
+                    <h5 class="text-white">{{ $getstore[0]->store }}</h5>
                 </div>
             </div>
             <div class="card-arrow">
@@ -48,13 +51,13 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-2">
+    <div class="col-xl-2 mb-3">
         <div class="card" align="center">
             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15"
-                style="height: 105px;">
-                <div class="flex-fill" style="padding-top: 5px;padding-bottom: 0px;">
+                style="padding-top: 5px;padding-bottom: 0px;">
+                <div class="flex-fill">
                     <div class="mb-1 fw-bold text-default">TOTAL QTY</div>
-                    <h4 class="text-white">100 PCS</h4>
+                    <h5 class="text-white">{{ $getdata[0]->totalqty }} PCS</h5>
                 </div>
             </div>
             <div class="card-arrow">
@@ -65,13 +68,13 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-2">
+    <div class="col-xl-2 mb-3">
         <div class="card" align="center">
             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15"
-                style="height: 105px;">
-                <div class="flex-fill" style="padding-top: 5px;padding-bottom: 0px;">
+                style="padding-top: 5px;padding-bottom: 0px;">
+                <div class="flex-fill">
                     <div class="mb-1 fw-bold text-default">DISCOUNT</div>
-                    <h5 class="text-warning">RP 5.000.000</h5>
+                    <h5 class="text-warning">@currency($discount)</h5>
                 </div>
             </div>
             <div class="card-arrow">
@@ -82,13 +85,67 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-3">
+    <div class="col-xl-3 mb-3">
         <div class="card" align="center">
             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15"
-                style="height: 105px;">
-                <div class="flex-fill" style="padding-top: 5px;padding-bottom: 0px;">
+                style="padding-top: 5px;padding-bottom: 0px;">
+                <div class="flex-fill">
                     <div class="mb-1 fw-bold text-default">TOTAL SALES</div>
-                    <h5 class="text-danger">RP 5.000.000</h5>
+                    <h5 class="text-white">@currency($getdata[0]->grandtotals)</h5>
+                </div>
+            </div>
+            <div class="card-arrow">
+                <div class="card-arrow-top-left"></div>
+                <div class="card-arrow-top-right"></div>
+                <div class="card-arrow-bottom-left"></div>
+                <div class="card-arrow-bottom-right"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 mb-3">
+        <div class="card" align="center">
+            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15"
+                style="padding-top: 5px;padding-bottom: 0px;">
+                <div class="flex-fill">
+                    <div class="mb-1 fw-bold text-lime">CASH</div>
+                    <h5 class="text-white">@currency($getdata[0]->cash)</h5>
+                </div>
+            </div>
+            <div class="card-arrow">
+                <div class="card-arrow-top-left"></div>
+                <div class="card-arrow-top-right"></div>
+                <div class="card-arrow-bottom-left"></div>
+                <div class="card-arrow-bottom-right"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 mb-3">
+        <div class="card" align="center">
+            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15"
+                style="padding-top: 5px;padding-bottom: 0px;">
+                <div class="flex-fill">
+                    <div class="mb-1 fw-bold text-info">BCA</div>
+                    <h5 class="text-white">@currency($getdata[0]->bca)</h5>
+                </div>
+            </div>
+            <div class="card-arrow">
+                <div class="card-arrow-top-left"></div>
+                <div class="card-arrow-top-right"></div>
+                <div class="card-arrow-bottom-left"></div>
+                <div class="card-arrow-bottom-right"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="card" align="center">
+            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15"
+                style="padding-top: 5px;padding-bottom: 0px;">
+                <div class="flex-fill">
+                    <div class="mb-1 fw-bold" style="color: cyan;">QRIS</div>
+                    <h5 class="text-white">@currency($getdata[0]->qris)</h5>
                 </div>
             </div>
             <div class="card-arrow">
@@ -113,8 +170,8 @@
                                 style="z-index: 1020;">
                                 <i class="fa fa-search opacity-5"></i>
                             </div>
-                            <input type="text" class="form-control form-control-sm ps-35px" id="search_rincianreturn"
-                                placeholder="Search.." />
+                            <input type="text" class="form-control form-control-sm ps-35px"
+                                id="search_rincianreturn" placeholder="Search.." />
                         </div>
                     </div>
                 </div>
