@@ -168,3 +168,13 @@ route::get('/ordercancel/cancel', [CancelOrderController::class, 'cancel'])->mid
 route::any('/tablecancel', [CancelOrderController::class, 'tablecancel']);
 route::any('/table_rincian_cancel/{id_invoice}', [CancelOrderController::class, 'table_rincian_cancel']);
 route::any('/rincian_cancel', [CancelOrderController::class, 'rincian_cancel']);
+
+route::get('/orderreturn/return', [ReturnOrderController::class, 'return'])->middleware('auth');
+route::any('/tablereturn', [ReturnOrderController::class, 'tablereturn']);
+route::any('/table_rincian_return/{id_invoice}', [ReturnOrderController::class, 'table_rincian_return']);
+route::any('/rincian_return', [ReturnOrderController::class, 'rincian_return']);
+
+route::get('/orderrefund/refund', [RefundOrderController::class, 'refund'])->middleware('auth');
+route::any('/tablerefund', [RefundOrderController::class, 'tablerefund']);
+route::any('/table_rincian_refund/{id_invoice}', [RefundOrderController::class, 'table_rincian_refund']);
+route::any('/rincian_refund', [RefundOrderController::class, 'rincian_refund']);

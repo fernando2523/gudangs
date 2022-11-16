@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <div id="rincian_cancel">
+                    <div id="rincian_refund">
                     </div>
                 </div>
             </div>

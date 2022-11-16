@@ -26,7 +26,7 @@ class CancelOrderController extends Controller
     public function tablecancel(Request $request)
     {
         if ($request->ajax()) {
-            $data = Cancel_order::with('stores', 'warehouses')->get();
+            $data = Cancel_order::with('stores', 'warehouses')->where('tipe_refund', '=', 'CANCEL')->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
