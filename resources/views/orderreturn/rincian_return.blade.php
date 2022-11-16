@@ -171,11 +171,11 @@
                                 <i class="fa fa-search opacity-5"></i>
                             </div>
                             <input type="text" class="form-control form-control-sm ps-35px"
-                                id="search_rinciancancel" placeholder="Search.." />
+                                id="search_rincianreturn" placeholder="Search.." />
                         </div>
                     </div>
                 </div>
-                <table class="table-sm table-bordered mb-0" style="width: 100%" id="tb_rinciancancel">
+                <table class="table-sm table-bordered mb-0" style="width: 100%" id="tb_rincianreturn">
                     <thead style="font-size: 11px;">
                         <tr>
                             <th class="text-center" width="2%" style="color: #a8b6bc !important;">NO
@@ -242,12 +242,12 @@
 
 <script type="text/javascript">
     $(function() {
-        var table = $('#tb_rinciancancel').DataTable({
+        var table = $('#tb_rincianreturn').DataTable({
             lengthMenu: [10],
             responsive: true,
             processing: false,
             serverSide: true,
-            ajax: "/table_rincian_cancel/{{ $id_invoice }}",
+            ajax: "/table_rincian_return/{{ $id_invoice }}",
             columns: [{
                 data: 'DT_RowIndex',
                 name: 'id',
@@ -282,7 +282,7 @@
             ],
         });
 
-        $('#search_rinciancancel').on('keyup', function() {
+        $('#search_rincianreturn').on('keyup', function() {
             table.search(this.value).draw();
         });
     });

@@ -173,14 +173,14 @@
                             <span class="menu-text">Cancel</span>
                         </a>
                     </div>
-                    <div class="menu-item">
-                        <a href="email_compose.html" class="menu-link">
+                    <div class="menu-item {{ Request::is('orderreturn/return') ? 'active' : '' }}">
+                        <a href="/orderreturn/return" class="menu-link">
                             <span class="menu-icon"><i class="bi bi-shuffle text-theme"></i></span>
                             <span class="menu-text">Return</span>
                         </a>
                     </div>
-                    <div class="menu-item">
-                        <a href="email_inbox.html" class="menu-link">
+                    <div class="menu-item {{ Request::is('orderrefund/refund') ? 'active' : '' }}">
+                        <a href="/orderrefund/refund" class="menu-link">
                             <span class="menu-icon"><i class="bi bi-recycle text-theme"></i></span>
                             <span class="menu-text">Refund</span>
                         </a>
