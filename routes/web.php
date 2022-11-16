@@ -160,13 +160,24 @@ route::get('/area/areas', [AreaController::class, 'area'])->middleware('auth');
 route::any('/tablearea', [AreaController::class, 'tablearea'])->middleware('auth');
 route::any('/area/editact/{id}', [AreaController::class, 'editact'])->middleware('auth');
 // end nando 14 nov
-
 route::any('/load_tborders', [OrderController::class, 'load_tborders'])->middleware('auth');
 
+route::any('/cancel_order', [OrderController::class, 'cancel_order'])->middleware('auth');
+route::any('/load_refund', [OrderController::class, 'load_refund']);
+
+// nando
 route::get('/ordercancel/cancel', [CancelOrderController::class, 'cancel'])->middleware('auth');
 route::any('/tablecancel', [CancelOrderController::class, 'tablecancel']);
 route::any('/table_rincian_cancel/{id_invoice}', [CancelOrderController::class, 'table_rincian_cancel']);
 route::any('/rincian_cancel', [CancelOrderController::class, 'rincian_cancel']);
 
-route::any('/cancel_order', [OrderController::class, 'cancel_order'])->middleware('auth');
-route::any('/load_refund', [OrderController::class, 'load_refund']);
+route::get('/orderreturn/return', [ReturnOrderController::class, 'return'])->middleware('auth');
+route::any('/tablereturn', [ReturnOrderController::class, 'tablereturn']);
+route::any('/table_rincian_return/{id_invoice}', [ReturnOrderController::class, 'table_rincian_return']);
+route::any('/rincian_return', [ReturnOrderController::class, 'rincian_return']);
+
+route::get('/orderrefund/refund', [RefundOrderController::class, 'refund'])->middleware('auth');
+route::any('/tablerefund', [RefundOrderController::class, 'tablerefund']);
+route::any('/table_rincian_refund/{id_invoice}', [RefundOrderController::class, 'table_rincian_refund']);
+route::any('/rincian_refund', [RefundOrderController::class, 'rincian_refund']);
+// nando
