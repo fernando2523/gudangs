@@ -98,7 +98,7 @@
             <!-- DATA ASSSET -->
             <div class="col-xl-12">
                 <div class="card">
-                    <div class="card-body p-3" style="height: 490px;">
+                    <div class="card-body p-3">
                         <!-- BEGIN input-group -->
                         <div class="d-flex fw-bold small mb-3">
                             <span class="flex-grow-1 text-danger">DATA CANCEL ORDER</span>
@@ -224,7 +224,7 @@
                         }, {
                             data: 'id_invoice',
                             name: 'id_invoice',
-                            class: 'text-center fw-bold text-white',
+                            class: 'text-center fw-bold',
                             searchable: true
                         },
                         {
