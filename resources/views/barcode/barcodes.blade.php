@@ -30,90 +30,30 @@
             }
         </style>
 
-        {{-- <div class="modal fade" id="modaladd" data-bs-backdrop="static" style="padding-top:6%;">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-theme">ADD EXPENSES</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <form class="was-validated" method="POST" action="{{ url('/store_expense/store_expenses/store') }}">
-                        @csrf
-                        <div class="modal-body">
-
-                            <div class="row form-group">
-                                <div class="col-12 form-group position-relative mb-3">
-                                    <label class="form-label">Store</label>
-                                    <select class="form-select form-select-sm text-theme" name="store" required>
-                                        @if (Auth::user()->role === 'SUPER-ADMIN')
-                                            <option value="" disabled selected>Pilih Store</option>
-                                            @foreach ($getstore as $gets)
-                                                <option value="{{ $gets->store }}">{{ $gets->store }}
-                                                </option>
-                                            @endforeach
-                                        @else
-                                            @foreach ($getstore as $gets)
-                                                @if (Auth::user()->id_store === $gets->id_store)
-                                                    <option value="{{ $gets->store }}">{{ $gets->store }}
-                                                    </option>
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    <div class="invalid-tooltip">
-                                        Mohon pilih store yang sesuai.
-                                    </div>
-                                </div>
-                                <hr style="margin-top: 25px;">
-
-                                <div class="col-12 form-group mb-3 mt-1">
-                                    <label class="form-label">Store Expenses</label>
-                                    <input class="form-control form-control-sm text-theme is-invalid" type="text"
-                                        name="item" required placeholder="Mohon di isi nama pengeluaran"
-                                        autocomplete="OFF">
-                                </div>
-
-                                <div class="col-12 form-group mb-3">
-                                    <label class="form-label">Desc</label>
-                                    <textarea class="form-control form-control-sm text-theme is-invalid" type="text" name="desc"
-                                        placeholder="Opsional.." autocomplete="OFF" rows="2"></textarea>
-                                </div>
-
-                                <div class="col-12 form-group mb-3">
-                                    <label class="form-label">Total Price</label>
-                                    <input class="form-control form-control-sm text-theme is-invalid" type="text"
-                                        name="total_price" required placeholder="0" autocomplete="OFF" type-currency="IDR">
-                                </div>
-                            </div>
-                            <div class="form-group mt-3" align="right">
-                                <button class="btn btn-theme" type="submit">Save</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div> --}}
-
         <div class="row">
             <!-- DATA ASSSET -->
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-body p-3" style="height: 490px;">
                         <!-- BEGIN input-group -->
-                        <div class="d-flex fw-bold small mb-3">
-                            <span class="flex-grow-1">DATA BARCODE</span>
-                            <a href="#" data-toggle="card-expand"
-                                class="text-white text-opacity-50 text-decoration-none"><i
-                                    class="bi bi-fullscreen"></i></a>
+                        <div class="d-flex row fw-bold small mb-3">
+                            <div class="col-9" style="margin-top: 7px;">
+                                <span class="flex-grow-1">DATA BARCODE</span>
+                            </div>
+                            <div class="col-3">
+                                <select class="form-select form-select-sm fw-bold" id="">
+                                    <option value="">PILIH WAREHOUSE..</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="input-group mb-4">
+                        <div class="input-group mb-3">
                             <div class="flex-fill position-relative">
                                 <div class="input-group">
                                     <div class="input-group-text position-absolute top-0 bottom-0 bg-none border-0 pe-0"
                                         style="z-index: 1020;">
                                         <i class="fa fa-search opacity-5"></i>
                                     </div>
-                                    <input type="text" class="form-control ps-35px" id="search_barcode"
+                                    <input type="text" class="form-control form-control-sm ps-35px" id="search_barcode"
                                         placeholder="Search products.." />
                                 </div>
                             </div>
@@ -123,16 +63,16 @@
                                 <tr>
                                     <th class="text-center" width="2%" style="color: #a8b6bc !important;">NO
                                     </th>
-                                    <th class="text-center" width="2%" style="color: #a8b6bc !important;">IMAGE
-                                    </th>
                                     <th class="text-center" width="40%" style="color: #a8b6bc !important;">NAME
                                     </th>
+                                    </th>
+                                    <th class="text-center" width="10%" style="color: #a8b6bc !important;">ID PRODUCT
                                     </th>
                                     <th class="text-center" width="10%" style="color: #a8b6bc !important;">WAREHOUSE
                                     </th>
                                     <th class="text-center" width="20%" style="color: #a8b6bc !important;">SIZE
                                     </th>
-                                    <th class="text-center" width="7%" style="color: #a8b6bc !important;">ACT
+                                    <th class="text-center" width="5%" style="color: #a8b6bc !important;">ACT
                                     </th>
                                 </tr>
                             </thead>
@@ -152,10 +92,9 @@
             <!-- END -->
         </div>
 
-        {{-- @include('store_expense.delete')
-        @include('store_expense.edit') --}}
+        @include('barcode.detail')
 
-        {{-- <link href="{{ URL::asset('/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"
+        <link href="{{ URL::asset('/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"
             rel="stylesheet" />
         <link href="{{ URL::asset('/assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
             rel="stylesheet" />
@@ -172,95 +111,129 @@
         <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
         <script src="{{ URL::asset('/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
         <script src="{{ URL::asset('/assets/plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}">
-        </script> --}}
+        </script>
 
-        {{-- <script type="text/javascript">
+        <script type="text/javascript">
             $(function() {
                 var table = $('#tb_barcode').DataTable({
                     lengthMenu: [10],
                     responsive: true,
                     processing: false,
                     serverSide: true,
-                    ajax: "/tableexpenses",
+                    ajax: "/tablebarcode",
                     columns: [{
-                            data: 'DT_RowIndex',
-                            name: 'id',
-                            class: 'text-center fw-bold',
-                            searchable: false
-                        }, {
-                            data: 'tanggal',
-                            name: 'tanggal',
-                            class: 'text-center',
-                            searchable: true
-                        }, {
-                            data: 'store',
-                            name: 'store',
-                            class: 'text-center text-theme fw-bold',
-                            searchable: true
-                        }, {
-                            data: 'item',
-                            name: 'item',
-                            class: 'text-center',
-                            searchable: true
+                        data: 'DT_RowIndex',
+                        name: 'id',
+                        class: 'text-center fw-bold',
+                        searchable: false
+                    }, {
+                        data: 'produk',
+                        name: 'produk',
+                        class: 'text-left',
+                        searchable: true,
+                        "render": function(data, type, row, meta) {
+                            return '<span class="fw-bold fs-14px text-white">' + row
+                                .produk +
+                                '</span><br><span class="fw-bold"><span class="fw-bold">' +
+                                row.brand +
+                                '</span>';
                         },
-                        {
-                            data: 'desc',
-                            name: 'desc',
-                            class: 'text-center',
-                            searchable: true,
-                            "render": function(data, type, row) {
-                                if (row.desc === "" || row.desc === null) {
-                                    return '<span>-</span>';
-                                } else {
-                                    return '<span>' + row.desc + '</span>';
-                                }
+                    }, {
+                        data: 'id_produk',
+                        name: 'id_produk',
+                        class: 'text-center',
+                        searchable: true,
+                        "render": function(data, type, row, meta) {
+                            return '<span class="fw-bold">' + row
+                                .id_produk +
+                                '</span>';
+                        },
+                    }, {
+                        data: 'warehouse',
+                        name: 'warehouse',
+                        class: 'text-center',
+                        searchable: true,
+                        "render": function(data, type, row, meta) {
+                            return '<span class="fw-bold text-success">' + row
+                                .warehouse[0]['warehouse'] +
+                                '</span>';
+                        },
+                    }, {
+                        data: 'product_variation',
+                        name: 'product_variation',
+                        class: 'text-center',
+                        searchable: true,
+                        // Edit Tian
+                        "render": function(data, type, row) {
+                            size = '';
+                            length = data.length;
+                            i = 0;
+                            b = 1;
+                            v = '';
 
-                            },
+                            while (i < length) {
+                                if (row.warehouse[0]['id_ware'] === row.product_variation[
+                                        i][
+                                        'id_ware'
+                                    ]) {
+                                    if (row.product_variation[i]['qty'] === 0) {
+                                        size = size + '<span class="text-danger"> ' +
+                                            '[<i>' +
+                                            row
+                                            .product_variation[i]['size'] +
+                                            '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
+                                            row.product_variation[
+                                                i][
+                                                'qty'
+                                            ] +
+                                            '</span><span class="fw-bold text-danger">] </span>';
+
+                                    } else {
+                                        size = size + '<span class="text-lime">' + '[<i>' +
+                                            row
+                                            .product_variation[i]['size'] +
+                                            '</i><span class="text-lime"> = </span><span class="text-lime fw-bold">' +
+                                            row.product_variation[
+                                                i][
+                                                'qty'
+                                            ] +
+                                            '</span><span class="fw-bold text-lime">] </span>';
+                                    }
+                                    if (b === 4) {
+                                        size = size + '<br>';
+                                        b = 0;
+                                    }
+                                    b++;
+                                    v = '1';
+                                }
+                                i++;
+                            }
+                            if (v === '1') {
+                                return size;
+                            } else {
+                                return '<span class="fw-bold text-warning">STOK TIDAK TERSEDIA</span>';
+                            }
                         },
-                        {
-                            data: 'total_price',
-                            render: $.fn.dataTable.render.number('.', ',', 0, 'Rp '),
-                            name: 'total_price',
-                            class: 'text-center fw-bold text-yellow',
-                            searchable: true
+                    }, {
+                        data: 'action',
+                        name: 'action',
+                        class: 'text-center fw-bold',
+                        "render": function(data, type, row) {
+                            return '<span><a class="text-lime" style="cursor: pointer;" onclick="openmodalbarcode(' +
+                                "'" + row.id_produk + "'" +
+                                ',' + "'" + row.id_ware + "'" +
+                                ',' + "'" + row.id_area + "'" +
+                                ')"><i class="fa-xl bi bi-upc-scan"> </i></a> </span><span><a class="text-default" style="font-weight: bold;"></a></span>';
                         },
-                        {
-                            data: 'users',
-                            name: 'users',
-                            class: 'text-center fw-bold text-theme',
-                            searchable: true
-                        },
-                        {
-                            data: 'action',
-                            name: 'action',
-                            class: 'text-center fw-bold',
-                            "render": function(data, type, row) {
-                                return '<span><a class="text-info" style="cursor: pointer;margin-right: 10px;" onclick="openmodaledit(' +
-                                    "'" + row.id + "'" +
-                                    ',' +
-                                    "'" + row.id_costs + "'" +
-                                    ',' +
-                                    "'" + row.store + "'" +
-                                    ',' +
-                                    "'" + row.item + "'" +
-                                    ',' +
-                                    "'" + row.desc + "'" +
-                                    ',' +
-                                    "'" + row.total_price + "'" +
-                                    ')"><i class="fas fa-xl fa-edit"></i></a><a class="text-danger" style="cursor: pointer;" onclick="openmodaldelete(' +
-                                    "'" + row.id + "'" +
-                                    ')"><i class="fas fa-xl fa-times-circle"></i></a></span>';
-                            },
-                        },
-                    ],
+                    }, ],
                     dom: 'tip',
                     // "ordering" : true,
                     order: [
-                        [1, 'desc']
+                        [5, 'desc']
                     ],
                     columnDefs: [{
                             orderable: false,
-                            targets: [4]
+                            targets: [0]
                         },
 
                     ],
@@ -271,77 +244,31 @@
                 });
             });
             // end
-        </script> --}}
+        </script>
 
-        {{-- <script>
+        <script>
             // edit
-            function openmodaledit(id, id_costs, store, item, desc, total_price) {
-                $('#modaledit').modal('show');
-                document.getElementById('e_id').value = id;
-                document.getElementById('e_id_costs').value = id_costs;
-                document.getElementById('e_item').value = item;
-                document.getElementById('e_totalprice').value = total_price;
+            function openmodalbarcode(id_produk, id_ware, id_area) {
+                $('#modalbarcode').modal('show');
 
                 $.ajax({
                     type: 'POST',
-                    url: "{{ URL::to('/expense_select_store') }}",
+                    url: "{{ URL::to('/barcode_detail') }}",
                     data: {
-                        store: store,
+                        id_produk: id_produk,
+                        id_ware: id_ware,
+                        id_area: id_area,
                     },
                     success: function(data) {
-                        $("#expense_select_store").html(data);
-                    }
-                });
-
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ URL::to('/expense_desc') }}",
-                    data: {
-                        desc: desc,
-                    },
-                    success: function(data) {
-                        $("#expense_desc").html(data);
+                        $("#barcode_detail").html(data);
                     }
                 });
             }
 
-            function submitformedit() {
-                var value = document.getElementById('e_id').value;
-                document.getElementById('form_edit').action = "../store_expenses/editact/" + value;
-                document.getElementById("form_edit").submit();
-            }
-
-            // delete
-            function openmodaldelete(id) {
-                $('#modaldelete').modal('show');
-                document.getElementById('del_id').value = id;
-            }
-
-            function submitformdelete() {
-                var value = document.getElementById('del_id').value;
-                document.getElementById('form_delete').action = "../store_expenses/destroy/" + value;
-                document.getElementById("form_delete").submit();
+            function submitformbarcode() {
+                var value = document.getElementById('id_produk').value;
+                document.getElementById('form_barcode').action = "../barcode/barcodeact/" + value;
+                document.getElementById("form_barcode").submit();
             }
         </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-        <script>
-            document.querySelectorAll('input[type-currency="IDR"]').forEach((element) => {
-                element.addEventListener('keyup', function(e) {
-                    let cursorPostion = this.selectionStart;
-                    let value = parseInt(this.value.replace(/[^,\d]/g, ''));
-                    let originalLenght = this.value.length;
-                    if (isNaN(value)) {
-                        this.value = "";
-                    } else {
-                        this.value = value.toLocaleString('id-ID', {
-                            currency: 'IDR',
-                            style: 'currency',
-                            minimumFractionDigits: 0
-                        });
-                        cursorPostion = this.value.length - originalLenght + cursorPostion;
-                        this.setSelectionRange(cursorPostion, cursorPostion);
-                    }
-                });
-            });
-        </script> --}}
     @endsection

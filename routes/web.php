@@ -151,6 +151,9 @@ route::any('/savesales', [SaleController::class, 'save_sales']);
 
 // nando baru 9 nov
 route::get('/barcode/barcodes', [BarcodeController::class, 'barcodes'])->middleware('auth');
+route::any('/tablebarcode', [BarcodeController::class, 'tablebarcode'])->middleware('auth');
+route::any('/barcode_detail', [BarcodeController::class, 'barcode_detail'])->middleware('auth');
+
 route::get('/order/orders', [OrderController::class, 'orders'])->middleware('auth');
 route::get('/orderreseller/orderresellers', [OrderResellerController::class, 'orderresellers'])->middleware('auth');
 // nando baru 9 nov
