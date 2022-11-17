@@ -288,24 +288,29 @@
             </div>
         </form>
 
-        <div class="modal fade" id="refund_order" data-bs-backdrop="static" style="padding-top:5%;">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-success">REFUND PRODUCT <span id="s_idinvoice"></span></h5>
 
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body" style="font-weight: bold;" id="load_refund">
+        <form class="" method="POST" action="/refund_order">
+            @csrf
+            <div class="modal fade" id="refund_order" data-bs-backdrop="static" style="padding-top:5%;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-success">REFUND PRODUCT <span id="s_idinvoice"></span></h5>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-default" data-bs-dismiss="modal">Cancel</button>
-                        <button class="btn btn-outline-theme" type="submit">Refund</button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body" style="font-weight: bold;" id="load_refund">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-default"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button class="btn btn-outline-theme" type="submit">Refund</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
 
         <script>
             function cancel_order(id_invoice) {

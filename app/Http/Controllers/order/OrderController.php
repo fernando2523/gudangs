@@ -192,4 +192,123 @@ class OrderController extends Controller
             'data'
         ));
     }
+
+    public function refund_order(Request $request)
+    {
+        $id_invoice = $request->r_id_invoice;
+        $count = $request->r_count;
+        $id = $request->r_produk;
+        $qty = $request->r_qty;
+        $ket = $request->ket;
+
+        for ($i = 0; $i < count($id); $i++) {
+            $produk = Sale::where('id', $id[$i])->get();
+            $result = intval($produk[0]['qty']) - intval($qty[$i]);
+
+            $old_qty = variation::where('id_produk', $produk[0]['id_produk'])
+                ->where('idpo', $produk[0]['idpo'])
+                ->where('id_ware', $produk[0]['id_ware'])
+                ->where('size', $produk[0]['size'])
+                ->get('qty');
+
+            $qty_baru = intval($old_qty[0]['qty']) + intval($qty[$i]);
+
+            if ($result === 0) {
+                variation::where('id_produk', $produk[0]['id_produk'])
+                    ->where('idpo', $produk[0]['idpo'])
+                    ->where('id_ware', $produk[0]['id_ware'])
+                    ->where('size', $produk[0]['size'])
+                    ->update([
+                        'qty' => $qty_baru,
+                    ]);
+
+                // Convert To Cancel Order
+                $datas = new Cancel_order();
+                $datas->tanggal = $produk[0]['tanggal'];
+                $datas->tipe_refund = 'REFUND';
+                $datas->customer = $produk[0]['customer'];
+                $datas->id_invoice = $produk[0]['id_invoice'];
+                $datas->idpo = $produk[0]['idpo'];
+                $datas->id_produk = $produk[0]['id_produk'];
+                $datas->id_ware = $produk[0]['id_ware'];
+                $datas->id_area = $produk[0]['id_area'];
+                $datas->id_store = $produk[0]['id_store'];
+                $datas->id_brand = $produk[0]['id_brand'];
+                $datas->id_reseller = $produk[0]['id_reseller'];
+                $datas->payment = $produk[0]['payment'];
+                $datas->produk = $produk[0]['produk'];
+                $datas->size = $produk[0]['size'];
+                $datas->qty = $qty[$i];
+                $datas->quality = $produk[0]['quality'];
+                $datas->m_price = $produk[0]['m_price'];
+                $datas->selling_price = $produk[0]['selling_price'];
+                $datas->diskon_item = $produk[0]['diskon_item'];
+                $datas->diskon_all = $produk[0]['diskon_all'];
+                $datas->subtotal = $produk[0]['subtotal'];
+                $datas->grandtotal = $produk[0]['grandtotal'];
+                $datas->cash = $produk[0]['cash'];
+                $datas->bca = $produk[0]['bca'];
+                $datas->mandiri = $produk[0]['mandiri'];
+                $datas->qris = $produk[0]['qris'];
+                $datas->ongkir = $produk[0]['ongkir'];
+                $datas->refund = $produk[0]['refund'];
+                $datas->desc = $ket[$i];
+                $datas->users = Auth::user()->name;
+                $datas->save();
+                // Convert To Cancel Order
+
+                Sale::where('id', $id[$i])->delete();
+            } else {
+                variation::where('id_produk', $produk[0]['id_produk'])
+                    ->where('idpo', $produk[0]['idpo'])
+                    ->where('id_ware', $produk[0]['id_ware'])
+                    ->where('size', $produk[0]['size'])
+                    ->update([
+                        'qty' => $qty_baru,
+                    ]);
+
+                // Convert To Cancel Order
+                $datas = new Cancel_order();
+                $datas->tanggal = $produk[0]['tanggal'];
+                $datas->tipe_refund = 'REFUND';
+                $datas->customer = $produk[0]['customer'];
+                $datas->id_invoice = $produk[0]['id_invoice'];
+                $datas->idpo = $produk[0]['idpo'];
+                $datas->id_produk = $produk[0]['id_produk'];
+                $datas->id_ware = $produk[0]['id_ware'];
+                $datas->id_area = $produk[0]['id_area'];
+                $datas->id_store = $produk[0]['id_store'];
+                $datas->id_brand = $produk[0]['id_brand'];
+                $datas->id_reseller = $produk[0]['id_reseller'];
+                $datas->payment = $produk[0]['payment'];
+                $datas->produk = $produk[0]['produk'];
+                $datas->size = $produk[0]['size'];
+                $datas->qty = $qty[$i];
+                $datas->quality = $produk[0]['quality'];
+                $datas->m_price = $produk[0]['m_price'];
+                $datas->selling_price = $produk[0]['selling_price'];
+                $datas->diskon_item = $produk[0]['diskon_item'];
+                $datas->diskon_all = $produk[0]['diskon_all'];
+                $datas->subtotal = $produk[0]['subtotal'];
+                $datas->grandtotal = $produk[0]['grandtotal'];
+                $datas->cash = $produk[0]['cash'];
+                $datas->bca = $produk[0]['bca'];
+                $datas->mandiri = $produk[0]['mandiri'];
+                $datas->qris = $produk[0]['qris'];
+                $datas->ongkir = $produk[0]['ongkir'];
+                $datas->refund = $produk[0]['refund'];
+                $datas->desc = $ket[$i];
+                $datas->users = Auth::user()->name;
+                $datas->save();
+                // Convert To Cancel Order
+
+                Sale::where('id', $id[$i])
+                    ->update([
+                        'qty' => $result,
+                    ]);
+            }
+        }
+
+        return redirect('order/orders');
+    }
 }

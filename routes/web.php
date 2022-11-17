@@ -181,3 +181,5 @@ route::any('/tablerefund', [RefundOrderController::class, 'tablerefund']);
 route::any('/table_rincian_refund/{id_invoice}', [RefundOrderController::class, 'table_rincian_refund']);
 route::any('/rincian_refund', [RefundOrderController::class, 'rincian_refund']);
 // nando 17 Nov
+
+route::any('/refund_order', [OrderController::class, 'refund_order']);
