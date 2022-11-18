@@ -13,7 +13,8 @@
             </div>
 
             <div class="menu-header">Data Master</div>
-            <div class="menu-item has-sub">
+            <div
+                class="menu-item has-sub {{ Request::is('employee/employees') ? 'active' : '' }}{{ Request::is('supplier/suppliers') ? 'active' : '' }}{{ Request::is('reseller/resellers') ? 'active' : '' }}">
                 <a href="#" class="menu-link">
                     <span class="menu-icon">
                         <i class="bi bi-person-rolodex text-theme"></i>
@@ -43,7 +44,8 @@
                 </div>
             </div>
 
-            <div class="menu-item has-sub">
+            <div
+                class="menu-item has-sub {{ Request::is('area/areas') ? 'active' : '' }}{{ Request::is('warehouse/warehouses') ? 'active' : '' }}{{ Request::is('store/stores') ? 'active' : '' }}">
                 <a href="#" class="menu-link">
                     <span class="menu-icon">
                         <i class="bi bi-house-door-fill text-theme"></i>
@@ -73,7 +75,8 @@
                 </div>
             </div>
 
-            <div class="menu-item has-sub">
+            <div
+                class="menu-item has-sub {{ Request::is('repeat/repeatorders') ? 'active' : '' }}{{ Request::is('purchase/purchaseorder') ? 'active' : '' }}{{ Request::is('brand/brands') ? 'active' : '' }}{{ Request::is('category/categories') ? 'active' : '' }}{{ Request::is('barcode/barcodes') ? 'active' : '' }}">
                 <a href="#" class="menu-link">
                     <span class="menu-icon">
                         <i class="bi bi-clipboard2-data-fill text-theme"></i>
@@ -82,7 +85,7 @@
                     <span class="menu-caret"><b class="caret"></b></span>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item { Request::is('repeat/repeatorders') ? 'active' : '' }}">
+                    <div class="menu-item {{ Request::is('repeat/repeatorders') ? 'active' : '' }}">
                         <a href="/repeat/repeatorders" class="menu-link">
                             <span class="menu-icon"><i class="bi-arrow-repeat text-theme"></i></span>
                             <span class="menu-text">Repeat Order</span>
@@ -121,7 +124,7 @@
                 </div>
             </div>
 
-            <div class="menu-header">Sales</div>
+            <div class="menu-header">Assets</div>
             <div class="menu-item {{ Request::is('asset/assets') ? 'active' : '' }}">
                 <a href="/asset/assets" class="menu-link">
                     <span class="menu-icon"><i class="bi bi bi-wallet text-theme"></i></span>
@@ -158,8 +161,9 @@
                 </a>
             </div>
 
-            <div class="menu-item has-sub">
-                <a href="#" class="menu-link">
+            <div
+                class="menu-item has-sub {{ Request::is('ordercancel/cancel') ? 'active' : '' }} {{ Request::is('orderreturn/return') ? 'active' : '' }} {{ Request::is('orderrefund/refund') ? 'active' : '' }}">
+                <a href="#" class="menu-link ">
                     <span class="menu-icon">
                         <i class="bi bi-clock-history text-theme"></i>
                     </span>
@@ -189,7 +193,8 @@
             </div>
 
             <div class="menu-header">Report</div>
-            <div class="menu-item has-sub">
+            <div
+                class="menu-item has-sub {{ Request::is('reportSummary/summary') ? 'active' : '' }}{{ Request::is('reportProduct/product') ? 'active' : '' }}{{ Request::is('reportStore/store') ? 'active' : '' }}">
                 <a href="#" class="menu-link">
                     <span class="menu-icon">
                         <i class="bi bi-graph-up-arrow text-theme"></i>
@@ -198,19 +203,29 @@
                     <span class="menu-caret"><b class="caret"></b></span>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item">
-                        <a href="email_compose.html" class="menu-link">
-                            <span class="menu-text">Cancel</span>
+                    <div class="menu-item {{ Request::is('reportSummary/summary') ? 'active' : '' }}">
+                        <a href="/reportSummary/summary" class="menu-link">
+                            <span class="menu-text">Summary</span>
                         </a>
                     </div>
-                    <div class="menu-item">
-                        <a href="email_compose.html" class="menu-link">
-                            <span class="menu-text">Return</span>
+                    <div class="menu-item {{ Request::is('reportProduct/product') ? 'active' : '' }}">
+                        <a href="/reportProduct/product" class="menu-link">
+                            <span class="menu-text">Product</span>
+                        </a>
+                    </div>
+                    <div class="menu-item {{ Request::is('reportStore/store') ? 'active' : '' }}">
+                        <a href="/reportStore/store" class="menu-link">
+                            <span class="menu-text">Store</span>
                         </a>
                     </div>
                     <div class="menu-item">
                         <a href="email_inbox.html" class="menu-link">
-                            <span class="menu-text">Refund</span>
+                            <span class="menu-text">Brand</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="email_inbox.html" class="menu-link">
+                            <span class="menu-text">Quality</span>
                         </a>
                     </div>
                 </div>

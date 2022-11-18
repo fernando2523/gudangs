@@ -23,6 +23,10 @@ use App\Http\Controllers\area\AreaController;
 use App\Http\Controllers\ordercancel\CancelOrderController;
 use App\Http\Controllers\orderrefund\RefundOrderController;
 use App\Http\Controllers\orderreturn\ReturnOrderController;
+use App\Http\Controllers\reportSummary\ReportSummaryController;
+use App\Http\Controllers\reportProduct\ReportProductController;
+use App\Http\Controllers\reportStore\ReportStoreController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -166,6 +170,7 @@ route::any('/area/editact/{id}', [AreaController::class, 'editact'])->middleware
 route::any('/load_tborders', [OrderController::class, 'load_tborders'])->middleware('auth');
 
 route::any('/cancel_order', [OrderController::class, 'cancel_order'])->middleware('auth');
+// tian cek
 route::any('/load_refund', [OrderController::class, 'load_refund']);
 route::any('/load_retur', [OrderController::class, 'load_retur']);
 route::any('/cek_size_retur', [OrderController::class, 'cek_size_retur']);
@@ -186,6 +191,13 @@ route::any('/tablerefund', [RefundOrderController::class, 'tablerefund']);
 route::any('/table_rincian_refund/{id_invoice}', [RefundOrderController::class, 'table_rincian_refund']);
 route::any('/rincian_refund', [RefundOrderController::class, 'rincian_refund']);
 // nando 17 Nov
-
+// tian cek
 route::any('/refund_order', [OrderController::class, 'refund_order']);
 route::any('/retur_order', [OrderController::class, 'retur_order']);
+
+route::get('/reportSummary/summary', [ReportSummaryController::class, 'summary'])->middleware('auth');
+route::any('/load_tbsummary', [ReportSummaryController::class, 'load_tbsummary'])->middleware('auth');
+
+route::get('/reportProduct/product', [ReportProductController::class, 'product'])->middleware('auth');
+
+route::get('/reportStore/store', [ReportStoreController::class, 'store'])->middleware('auth');
