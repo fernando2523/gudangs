@@ -161,20 +161,20 @@
                                 <tr>
                                     <th class="text-center" width="2%" style="color: #a8b6bc !important;">NO
                                     </th>
-                                    <th class="text-center" width="28%" style="color: #a8b6bc !important;">NAME
+                                    <th class="text-left" width="28%" style="color: #a8b6bc !important;">NAME
                                     </th>
                                     </th>
-                                    <th class="text-center" width="10%" style="color: #a8b6bc !important;">WAREHOUSE
+                                    <th class="text-center" width="8%" style="color: #a8b6bc !important;">ID PRODUCT
                                     </th>
-                                    <th class="text-center" width="10%" style="color: #a8b6bc !important;">RELEASE
+                                    <th class="text-center" width="7%" style="color: #a8b6bc !important;">RELEASE
                                     </th>
-                                    <th class="text-center" width="10%" style="color: #a8b6bc !important;">REPEAT
+                                    <th class="text-center" width="7%" style="color: #a8b6bc !important;">REPEAT
                                     </th>
-                                    <th class="text-center" width="10%" style="color: #a8b6bc !important;">STOCK
-                                    </th>
-                                    <th class="text-center" width="10%" style="color: #a8b6bc !important;">COST
+                                    <th class="text-center" width="7%" style="color: #a8b6bc !important;">STOCK
                                     </th>
                                     <th class="text-center" width="10%" style="color: #a8b6bc !important;">ASSETS
+                                    </th>
+                                    <th class="text-center" width="3%" style="color: #a8b6bc !important;">ACT
                                     </th>
                                 </tr>
                             </thead>
@@ -231,57 +231,48 @@
                     }, {
                         data: 'produk',
                         name: 'produk',
-                        class: 'text-center',
+                        class: 'text-left',
                         searchable: true,
                         "render": function(data, type, row) {
                             return '<span class="fw-bold">' + row.produk + '</span>';
                         },
                     }, {
-                        data: 'warehouse',
-                        name: 'warehouse',
-                        class: 'text-center',
+                        data: 'id_produk',
+                        name: 'id_produk',
+                        class: 'text-center fw-bold',
                         searchable: true,
-                        "render": function(data, type, row, meta) {
-                            return '<span class="fw-bold text-indigo">' + row.warehouse[0][
-                                    'warehouse'
-                                ] +
-                                '</span>';
-                        },
                     }, {
-                        data: 'supplier_order',
-                        name: 'supplier_order',
+                        data: 'tipe_order',
+                        name: 'tipe_order',
                         class: 'text-center',
                         searchable: true,
                         "render": function(data, type, row, meta) {
-                            if (row.supplier_order[0]['tipe_order'] === "RELEASE") {
-                                return row.supplier_order[0]['qty'];
-                            } else {
-                                return '0';
+                            if (row.tipe_order === "RELEASE") {
+                                return row.qty;
                             }
                         },
                     }, {
-                        data: 'supplier_order',
-                        name: 'supplier_order',
+                        data: 'tipe_order',
+                        name: 'tipe_order',
                         class: 'text-center',
                         searchable: true,
                         "render": function(data, type, row, meta) {
-                            if (row.supplier_order[0]['tipe_order'] === "REPEAT") {
-                                return row.supplier_order[0]['qty'];
-                            } else {
-                                return '0';
+                            if (row.tipe_order === "REPEAT") {
+                                return row.qty;
                             }
                         },
                     }, {
-                        data: 'product_variation',
-                        name: 'product_variation',
+                        data: 'product_variation_asset',
+                        name: 'product_variation_asset',
                         class: 'text-center',
                         searchable: true,
                         "render": function(data, type, row) {
                             totalqty = 0;
-                            for (i = 0; i < row.product_variation.length; i++) {
-                                totalqty = parseInt(totalqty) + parseInt(row.product_variation[i][
-                                    'qty'
-                                ]);
+                            for (i = 0; i < row.product_variation_asset.length; i++) {
+                                totalqty = parseInt(totalqty) + parseInt(row
+                                    .product_variation_asset[i][
+                                        'qty'
+                                    ]);
                             }
                             return totalqty;
                         },
@@ -294,26 +285,23 @@
                         "render": function(data, type, row) {
                             let rupiah = Intl.NumberFormat('id-ID');
 
-                            return 'Rp ' + rupiah.format(row.m_price);
-                        },
-                    }, {
-                        data: 'm_price',
-                        name: 'm_price',
-                        class: 'text-center',
-                        searchable: true,
-                        // Edit Tian
-                        "render": function(data, type, row) {
-                            let rupiah = Intl.NumberFormat('id-ID');
-
                             totalqty = 0;
-                            for (i = 0; i < row.product_variation.length; i++) {
-                                totalqty = parseInt(totalqty) + parseInt(row.product_variation[i][
-                                    'qty'
-                                ]);
+                            for (i = 0; i < row.product_variation_asset.length; i++) {
+                                totalqty = parseInt(totalqty) + parseInt(row
+                                    .product_variation_asset[i][
+                                        'qty'
+                                    ]);
                             }
                             totalmodal = totalqty * parseInt(row.m_price);
 
                             return 'Rp ' + rupiah.format(totalmodal);
+                        },
+                    }, {
+                        data: 'action',
+                        name: 'action',
+                        class: 'text-center fw-bold',
+                        "render": function(data, type, row) {
+                            return '<span><a class="text-theme" style="cursor: pointer;" onclick="openmodaledit()"><i class="fas fa-xl bi bi-eye-fill"></i></a>';
                         },
                     }, ],
                     dom: 'tip',
