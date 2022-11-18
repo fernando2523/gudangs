@@ -29,6 +29,8 @@ class CreateReturnOrdersTable extends Migration
             $table->string('produk');
             $table->string('size');
             $table->string('qty');
+            $table->string('size_new');
+            $table->string('qty_new');
             $table->string('quality');
             $table->string('m_price');
             $table->string('selling_price');
