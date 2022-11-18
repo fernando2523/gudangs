@@ -35,9 +35,9 @@
         </style>
 
         <div class="row mb-3">
-            <div class="col-3">
+            <div class="col-12">
                 <div class="row">
-                    <div class="col-xl-6 mb-6">
+                    <div class="col-xl-4 mb-3">
                         <div class="card">
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <!-- END -->
-                    <div class="col-xl-6 mb-6">
+                    <div class="col-xl-4 mb-3">
                         <div class="card">
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
@@ -72,12 +72,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-9">
-                <div class="row">
-                    <div class="col-xl-2 mb-6">
+                    <div class="col-xl-4 mb-3">
                         <div class="card">
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
@@ -93,8 +89,12 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="col-xl-3 mb-6">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-xl-2 mb-6">
                         <div class="card">
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
@@ -145,11 +145,45 @@
                         </div>
                     </div>
 
-                    <div class="col-xl-3 mb-6">
+                    <div class="col-xl-2 mb-6">
                         <div class="card">
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">NET SALES</div>
+                                    <h4 class="text-info fs-12px text-center"></h4>
+                                </div>
+                            </div>
+                            <div class="card-arrow">
+                                <div class="card-arrow-top-left"></div>
+                                <div class="card-arrow-top-right"></div>
+                                <div class="card-arrow-bottom-left"></div>
+                                <div class="card-arrow-bottom-right"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-2 mb-6">
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
+                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                                    <div class="text-default mb-1 fw-bold text-center">COSTS</div>
+                                    <h4 class="text-info fs-12px text-center"></h4>
+                                </div>
+                            </div>
+                            <div class="card-arrow">
+                                <div class="card-arrow-top-left"></div>
+                                <div class="card-arrow-top-right"></div>
+                                <div class="card-arrow-bottom-left"></div>
+                                <div class="card-arrow-bottom-right"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-2 mb-6">
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
+                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                                    <div class="text-default mb-1 fw-bold text-center">PROFIT </div>
                                     <h4 class="text-info fs-12px text-center"></h4>
                                 </div>
                             </div>
@@ -227,6 +261,8 @@
                                     <th class="text-center text-white" width="3%">
                                         QTY
                                     </th>
+                                    <th class="text-center text-white" width="7%">COST
+                                    </th>
                                     <th class="text-center text-white" width="7%">PRICE
                                     </th>
                                     <th class="text-center text-white" width="7%">
@@ -237,7 +273,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody class="table-bordered" style="font-size: 11px;" id="load_tborder">
+                            <tbody class="table-bordered" style="font-size: 11px;" id="load_tbsummary">
                             </tbody>
                         </table>
                         <br>
@@ -311,7 +347,7 @@
             </div>
         </form> --}}
 
-        <script>
+        {{-- <script>
             function cancel_order(id_invoice) {
                 document.getElementById('id_invoice').value = id_invoice;
                 $('#cancel_order').modal('show');
@@ -339,14 +375,14 @@
 
                 $('#refund_order').modal('show');
             }
-        </script>
+        </script> --}}
 
         <script>
             var query_awal = '';
             var id_awal = 0;
 
             $(document).ready(function() {
-                load_tborders(query_awal, 1, id_awal);
+                load_tbsummary(query_awal, 1, id_awal);
             });
 
             $("#btn_search").click(function() {
@@ -355,7 +391,7 @@
                     document.getElementById('validate').value = 0;
                     page = 1;
                     val_last = '';
-                    load_tborders(query, page, id_awal);
+                    load_tbsummary(query, page, id_awal);
                     $("#search_var").css("display", "block");
                     $("#query_search").html(query);
                 } else {
@@ -367,23 +403,23 @@
                 document.getElementById('validate').value = 0;
                 page = 1;
                 val_last = '';
-                load_tborders('', page, id_awal);
+                load_tbsummary('', page, id_awal);
                 $("#search_var").css("display", "none");
                 $("#search").val('');
             });
 
-            function load_tborders(querys, pages, start_data) {
-                $("#load_tborder").html('');
+            function load_tbsummary(querys, pages, start_data) {
+                $("#load_tbsummary").html('');
                 $.ajax({
                     type: 'GET',
-                    url: "/load_tborders",
+                    url: "/load_tbsummary",
                     data: {
                         querys: querys,
                         last_id: start_data,
                         pages: pages
                     },
                     beforeSend: function() {
-                        $("#load_tborder").html(
+                        $("#load_tbsummary").html(
                             `<tr style="width:100%;">
                                 <td colspan="8" align="center" style="padding: 30px 0px 20px 0px;">
                                     <div class="spinner-border"></div>
@@ -391,7 +427,7 @@
                             </tr>`);
                     },
                     success: function(data) {
-                        $("#load_tborder").html(data);
+                        $("#load_tbsummary").html(data);
                     }
                 });
             }
@@ -410,16 +446,16 @@
                         val_last = last_id;
                         var query = $('#search').val();
                         if (val_last != 'last') {
-                            loadmore_tborders(query, page, last_id);
+                            loadmore_tbsummary(query, page, last_id);
                         }
                     }
                 }
             });
 
-            function loadmore_tborders(querys, pages, start_data) {
+            function loadmore_tbsummary(querys, pages, start_data) {
                 $.ajax({
                     type: 'GET',
-                    url: "/load_tborders",
+                    url: "/load_tbsummary",
                     data: {
                         querys: querys,
                         last_id: start_data,
@@ -428,7 +464,7 @@
                     beforeSend: function() {},
                     success: function(data) {
                         document.getElementById('validate').value = 0;
-                        $("#load_tborder").append(data);
+                        $("#load_tbsummary").append(data);
                     }
                 });
             }

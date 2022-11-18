@@ -263,6 +263,8 @@
                         while (i < length) {
                             if (row.id_ware === row.supplier_variation[i][
                                     'id_ware'
+                                ] || row.id_produk === row.supplier_variation[i][
+                                    'id_produk'
                                 ]) {
                                 if (row.supplier_variation[i]['qty'] === '0') {
                                     size = size + '<span class="text-danger"> ' + '[<i>' +

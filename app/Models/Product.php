@@ -30,6 +30,13 @@ class Product extends Model
         return $this->hasMany(variation::class, 'id_produk', 'id_produk')->selectRaw('*,SUM(qty) as qty')->groupBy('id_produk');
     }
 
+    public function product_variation_asset()
+    {
+
+        return $this->hasMany(variation::class, 'id_produk', 'id_produk');
+    }
+
+
     public function warehouse()
     {
         return $this->hasMany(Warehouse::class, 'id_ware', 'id_ware');
@@ -41,6 +48,11 @@ class Product extends Model
     }
 
     public function supplier_order()
+    {
+        return $this->hasMany(Supplier_order::class, 'id_produk', 'id_produk');
+    }
+
+    public function supplier_order2()
     {
         return $this->hasMany(Supplier_order::class, 'id_produk', 'id_produk');
     }

@@ -25,4 +25,10 @@ class Supplier_order extends Model
     {
         return $this->hasMany(Supplier_order::class, 'idpo', 'idpo');
     }
+
+    public function product_variation_asset()
+    {
+
+        return $this->hasMany(variation::class, 'id_produk', 'id_produk');
+    }
 }

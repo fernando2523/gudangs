@@ -34,94 +34,172 @@
             }
         </style>
 
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-xl-2 mb-3">
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
+                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                                    <div class="mb-1 text-default fw-bold text-center">QTY</div>
+                                    <h4 class="text-white fs-12px text-center">10 PCS
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="card-arrow">
+                                <div class="card-arrow-top-left"></div>
+                                <div class="card-arrow-top-right"></div>
+                                <div class="card-arrow-bottom-left"></div>
+                                <div class="card-arrow-bottom-right"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-2 mb-6">
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
+                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                                    <div class="text-default mb-1 fw-bold text-center">GROSS SALE</div>
+                                    <h4 class="text-default fs-12px text-center">Rp 150.000</h4>
+                                </div>
+                            </div>
+                            <div class="card-arrow">
+                                <div class="card-arrow-top-left"></div>
+                                <div class="card-arrow-top-right"></div>
+                                <div class="card-arrow-bottom-left"></div>
+                                <div class="card-arrow-bottom-right"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-2 mb-6">
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
+                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                                    <div class="text-default mb-1 fw-bold text-center">DISCOUNT</div>
+                                    <h4 class="text-yellow fs-12px text-center">Rp 150.000</h4>
+                                </div>
+                            </div>
+                            <div class="card-arrow">
+                                <div class="card-arrow-top-left"></div>
+                                <div class="card-arrow-top-right"></div>
+                                <div class="card-arrow-bottom-left"></div>
+                                <div class="card-arrow-bottom-right"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-2 mb-6">
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
+                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                                    <div class="text-default mb-1 fw-bold text-center">NET SALES</div>
+                                    <h4 class="text-white fs-12px text-center">Rp 150.000</h4>
+                                </div>
+                            </div>
+                            <div class="card-arrow">
+                                <div class="card-arrow-top-left"></div>
+                                <div class="card-arrow-top-right"></div>
+                                <div class="card-arrow-bottom-left"></div>
+                                <div class="card-arrow-bottom-right"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-2 mb-6">
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
+                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                                    <div class="text-default mb-1 fw-bold text-center">COSTS</div>
+                                    <h4 class="text-indigo fs-12px text-center">Rp 150.000</h4>
+                                </div>
+                            </div>
+                            <div class="card-arrow">
+                                <div class="card-arrow-top-left"></div>
+                                <div class="card-arrow-top-right"></div>
+                                <div class="card-arrow-bottom-left"></div>
+                                <div class="card-arrow-bottom-right"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-2 mb-6">
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
+                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
+                                    <div class="text-default mb-1 fw-bold text-center">PROFIT </div>
+                                    <h4 class="text-lime fs-12px text-center">Rp 150.000</h4>
+                                </div>
+                            </div>
+                            <div class="card-arrow">
+                                <div class="card-arrow-top-left"></div>
+                                <div class="card-arrow-top-right"></div>
+                                <div class="card-arrow-bottom-left"></div>
+                                <div class="card-arrow-bottom-right"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <!-- DATA ASSSET -->
             <div class="col-xl-12">
                 <div class="card">
-                    <div class="card-body p-3" style="height: auto;">
+                    <div class="card-body p-3">
                         <!-- BEGIN input-group -->
-                        <div class="input-group mb-2">
+                        <div class="d-flex row fw-bold small mb-3">
+                            <div class="col-9" style="margin-top: 7px;">
+                                <span class="flex-grow-1">DATA REPORT PRODUCT</span>
+                            </div>
+                            <div class="col-3">
+                                <select class="form-select form-select-sm fw-bold" id="">
+                                    <option value="">PILIH WAREHOUSE..</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
                             <div class="flex-fill position-relative">
                                 <div class="input-group">
-
-                                    <div style="width: 94%;margin-right:1%;">
-                                        <div class="input-group-text position-absolute top-0 bottom-0 bg-none border-0 pe-0"
-                                            style="z-index: 1020;">
-                                            <i class="fa fa-search opacity-5"></i>
-                                        </div>
-                                        <style>
-                                            #search_purchaseOrder::-webkit-search-cancel-button {}
-                                        </style>
-                                        <input type="search" class="form-control ps-35px" id="search"
-                                            placeholder="Search Order.." />
+                                    <div class="input-group-text position-absolute top-0 bottom-0 bg-none border-0 pe-0"
+                                        style="z-index: 1020;">
+                                        <i class="fa fa-search opacity-5"></i>
                                     </div>
-                                    <div style="width: 5%;">
-                                        <button type="button" id="btn_search" class="btn btn-theme">Search</button>
-                                    </div>
+                                    <input type="text" class="form-control form-control-sm ps-35px"
+                                        id="search_product" placeholder="Search products.." />
                                 </div>
                             </div>
                         </div>
-                        <style>
-                            .thead-custom {
-                                font-size: 11px;
-                                background-color: darkslategray;
-                            }
-
-                            .tr-custom {
-                                font-size: 11px;
-                                border-left-width: 1px;
-                                border-right-width: 1px;
-                                border-bottom-width: 1px;
-                                border-top-width: 1px;
-                            }
-                        </style>
-                        <div class="mt-2 mb-2" id="search_var" style="display: none;">
-                            <button id="clear_search" class="btn btn-sm btn-theme ms-1 me-1">Clear Search</button>
-                            <span>Searching : <span id="query_search"></span></span>
-                        </div>
-                        {{-- tb awal --}}
-                        <table class="table-sm mb-0 mt-2" style="width: 100%">
-                            <thead class="thead-custom">
-                                <tr class="text-white">
-                                    <th class="text-center text-white" width="2%">NO
+                        <table class="table-sm table-bordered mb-0" style="width: 100%" id="tb_product">
+                            <thead style="font-size: 11px;">
+                                <tr>
+                                    <th class="text-center" width="2%" style="color: #a8b6bc !important;">NO
                                     </th>
-                                    <th class="text-center text-white" width="30%">
-                                        PRODUCT
+                                    <th class="text-center" width="2%" style="color: #a8b6bc !important;">IMAGE
                                     </th>
-                                    <th class="text-center text-white" width="7%">ID PRODUCT
+                                    <th class="text-center" width="30%" style="color: #a8b6bc !important;">NAME
                                     </th>
-                                    <th class="text-center text-white" width="3%">
-                                        SIZE
                                     </th>
-                                    <th class="text-center text-white" width="3%">
-                                        QTY
+                                    <th class="text-center" width="5%" style="color: #a8b6bc !important;">QTY
                                     </th>
-                                    <th class="text-center text-white" width="7%">PRICE
+                                    <th class="text-center" width="15%" style="color: #a8b6bc !important;">GROSS SALE
                                     </th>
-                                    <th class="text-center text-white" width="7%">
-                                        DISC ITEM
+                                    <th class="text-center" width="10%" style="color: #a8b6bc !important;">DISC ITEM
                                     </th>
-                                    <th colspan="3" class="text-center text-white" width="25%">SUB
-                                        TOTAL
+                                    <th class="text-center" width="15%" style="color: #a8b6bc !important;">NET SALE
+                                    </th>
+                                    <th class="text-center" width="10%" style="color: #a8b6bc !important;">COST
+                                    </th>
+                                    <th class="text-center" width="15%" style="color: #a8b6bc !important;">PROFIT
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody class="table-bordered" style="font-size: 11px;" id="load_tborder">
+
+                            <tbody style="font-size: 11px;">
                             </tbody>
                         </table>
-                        <br>
-                        {{-- tb awal --}}
-                        <center>
-                            {{-- <button type="button" class="btn btn-sm btn-outline-theme" id="load_more">Load
-                                More</button> --}}
-                            <input type="hidden" id="validate" value="0">
-                        </center>
                     </div>
-                    <!-- Data Loader -->
-                    {{-- <div class="auto-load text-center">
-                        <div class="spinner-border"></div>
-                    </div> --}}
                     <div class="card-arrow">
                         <div class="card-arrow-top-left"></div>
                         <div class="card-arrow-top-right"></div>
@@ -132,175 +210,137 @@
             </div>
             <!-- END -->
         </div>
-
-        {{-- <form class="was-validated" method="POST" action="/cancel_order">
-            <input type="hidden" name="_method" value="PATCH">
-            @csrf
-            <div class="modal fade" id="cancel_order" data-bs-backdrop="static" style="padding-top:5%;">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title text-warning">DELETE</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body text-center text-warning" style="padding-bottom: 0px;font-weight: bold;">
-                            <p>Delete Order?</p>
-                        </div>
-                        <input type="hidden" id="id_invoice" name="id_invoice">
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-default"
-                                data-bs-dismiss="modal">Cancel</button>
-                            <button class="btn btn-outline-warning" type="submit">Delete</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+    </div>
 
 
-        <form class="" method="POST" action="/refund_order">
-            @csrf
-            <div class="modal fade" id="refund_order" data-bs-backdrop="static" style="padding-top:5%;">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title text-success">REFUND PRODUCT <span id="s_idinvoice"></span></h5>
+    {{-- @include('barcode.detail') --}}
 
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body" style="font-weight: bold;" id="load_refund">
+    <link href="{{ URL::asset('/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"
+        rel="stylesheet" />
+    <link href="{{ URL::asset('/assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
+        rel="stylesheet" />
+    <link href="{{ URL::asset('/assets/plugins/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}"
+        rel="stylesheet" />
 
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-default"
-                                data-bs-dismiss="modal">Cancel</button>
-                            <button class="btn btn-outline-theme" type="submit">Refund</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+    <script src="{{ URL::asset('/assets/plugins/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/plugins/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/plugins/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}">
+    </script>
 
-        <script>
-            function cancel_order(id_invoice) {
-                document.getElementById('id_invoice').value = id_invoice;
-                $('#cancel_order').modal('show');
-            }
-
-            function refund_order(id_invoice, count) {
-                document.getElementById('s_idinvoice').innerHTML = id_invoice;
-
-                $.ajax({
-                    url: "/load_refund",
-                    type: "POST",
-                    data: {
-                        id_invoice: id_invoice,
-                        count: count
-                    },
-                    beforeSend: function() {
-                        $("#load_refund").html(`<div class="text-center w-100">
-                            <div class="m-auto spinner-border"></div>
-                        </div>`);
-                    },
-                    success: function(data) {
-                        $("#load_refund").html(data);
-                    }
-                });
-
-                $('#refund_order').modal('show');
-            }
-        </script>
-
-        <script>
-            var query_awal = '';
-            var id_awal = 0;
-
-            $(document).ready(function() {
-                load_tborders(query_awal, 1, id_awal);
-            });
-
-            $("#btn_search").click(function() {
-                var query = $('#search').val();
-                if (query != '') {
-                    document.getElementById('validate').value = 0;
-                    page = 1;
-                    val_last = '';
-                    load_tborders(query, page, id_awal);
-                    $("#search_var").css("display", "block");
-                    $("#query_search").html(query);
-                } else {
-                    alert('Masukan Query Pencarian');
-                }
-            });
-
-            $("#clear_search").click(function() {
-                document.getElementById('validate').value = 0;
-                page = 1;
-                val_last = '';
-                load_tborders('', page, id_awal);
-                $("#search_var").css("display", "none");
-                $("#search").val('');
-            });
-
-            function load_tborders(querys, pages, start_data) {
-                $("#load_tborder").html('');
-                $.ajax({
-                    type: 'GET',
-                    url: "/load_tborders",
-                    data: {
-                        querys: querys,
-                        last_id: start_data,
-                        pages: pages
-                    },
-                    beforeSend: function() {
-                        $("#load_tborder").html(
-                            `<tr style="width:100%;">
-                                <td colspan="8" align="center" style="padding: 30px 0px 20px 0px;">
-                                    <div class="spinner-border"></div>
-                                </td>
-                            </tr>`);
-                    },
-                    success: function(data) {
-                        $("#load_tborder").html(data);
-                    }
-                });
-            }
-
-            var page = 1;
-            var val_last = '';
-
-            $(window).scroll(function() {
-                if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-                    var validate = document.getElementById('validate').value;
-                    if (validate == '0' && val_last != 'last') {
-                        document.getElementById('validate').value = 1;
-                        index = parseInt(page) - 1;
-                        page++;
-                        var last_id = document.getElementsByName('last_id[]')[index].value;
-                        val_last = last_id;
-                        var query = $('#search').val();
-                        if (val_last != 'last') {
-                            loadmore_tborders(query, page, last_id);
+    <script type="text/javascript">
+        $(function() {
+            var table = $('#tb_product').DataTable({
+                lengthMenu: [15],
+                responsive: true,
+                processing: false,
+                serverSide: true,
+                ajax: "/tablereportproduct",
+                columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'id',
+                    class: 'text-center fw-bold',
+                    searchable: false
+                }, {
+                    data: 'image_product',
+                    name: 'image_product',
+                    class: 'text-center',
+                    "render": function(data, type, row) {
+                        if (row.image_product[0]['img'] === "") {
+                            return '<span><img src="/product/defaultimg.png" alt="" width="100" height="100" class="rounded"></span><span class="fw-bold text-default"><br>' +
+                                row
+                                .id_produk + '</span>';
+                        } else {
+                            return '<span><img src="/product/' + row.image_product[0]['img'] +
+                                '" alt="" width="95"  height="95" class="rounded"></span><span class="fw-bold text-default"><br>' +
+                                row
+                                .id_produk + '</span>';
                         }
-                    }
-                }
+                    },
+                }, {
+                    data: 'produk',
+                    name: 'produk',
+                    class: 'text-left',
+                    searchable: true,
+                    "render": function(data, type, row, meta) {
+                        return '<span class="fw-bold fs-14px text-white">' + row
+                            .produk +
+                            '</span><br><span class="fw-bold"><span class="fw-bold">' +
+                            row.brand +
+                            '</span>';
+                    },
+                }, {
+                    data: 'id_produk',
+                    name: 'id_produk',
+                    class: 'text-center fw-bold',
+                    searchable: true,
+                    "render": function(data, type, row, meta) {
+                        return 'QTY';
+                    },
+                }, {
+                    data: 'warehouse',
+                    name: 'warehouse',
+                    class: 'text-center fw-bold',
+                    searchable: true,
+                    "render": function(data, type, row, meta) {
+                        return 'GROSS SALE';
+                    },
+                }, {
+                    data: 'warehouse',
+                    name: 'warehouse',
+                    class: 'text-center fw-bold',
+                    searchable: true,
+                    "render": function(data, type, row, meta) {
+                        return 'DISC ITEM';
+                    },
+                }, {
+                    data: 'warehouse',
+                    name: 'warehouse',
+                    class: 'text-center fw-bold',
+                    searchable: true,
+                    "render": function(data, type, row, meta) {
+                        return 'NET SALE';
+                    },
+                }, {
+                    data: 'warehouse',
+                    name: 'warehouse',
+                    class: 'text-center fw-bold',
+                    searchable: true,
+                    "render": function(data, type, row, meta) {
+                        return 'COST';
+                    },
+                }, {
+                    data: 'warehouse',
+                    name: 'warehouse',
+                    class: 'text-center fw-bold',
+                    searchable: true,
+                    "render": function(data, type, row, meta) {
+                        return 'PROFIT';
+                    },
+                }, ],
+                dom: 'tip',
+                // "ordering" : true,
+                order: [
+                    [0, 'desc']
+                ],
+                columnDefs: [{
+                        orderable: false,
+                        targets: [1]
+                    },
+
+                ],
             });
 
-            function loadmore_tborders(querys, pages, start_data) {
-                $.ajax({
-                    type: 'GET',
-                    url: "/load_tborders",
-                    data: {
-                        querys: querys,
-                        last_id: start_data,
-                        pages: pages
-                    },
-                    beforeSend: function() {},
-                    success: function(data) {
-                        document.getElementById('validate').value = 0;
-                        $("#load_tborder").append(data);
-                    }
-                });
-            }
-        </script> --}}
-    @endsection
+            $('#search_product').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+        });
+        // end
+    </script>
+@endsection

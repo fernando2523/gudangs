@@ -5,11 +5,11 @@
             <div>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/location/locations">REPORT</a></li>
-                    <li class="breadcrumb-item active">REPORT STORE PAGE</li>
+                    <li class="breadcrumb-item active">REPORT QUALITY PAGE</li>
                 </ul>
 
                 <h1 class="page-header">
-                    Report Store
+                    Report Quality
                 </h1>
             </div>
             <div class="ms-auto">
@@ -152,7 +152,7 @@
                         <!-- BEGIN input-group -->
                         <div class="d-flex row fw-bold small mb-3">
                             <div class="col-9" style="margin-top: 7px;">
-                                <span class="flex-grow-1">DATA REPORT STORE</span>
+                                <span class="flex-grow-1">DATA REPORT QUALITY</span>
                             </div>
                             <div class="col-3">
                                 <select class="form-select form-select-sm fw-bold" id="">
@@ -167,17 +167,17 @@
                                         style="z-index: 1020;">
                                         <i class="fa fa-search opacity-5"></i>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm ps-35px" id="search_store"
-                                        placeholder="Search store.." />
+                                    <input type="text" class="form-control form-control-sm ps-35px"
+                                        id="search_quality" placeholder="Search brand.." />
                                 </div>
                             </div>
                         </div>
-                        <table class="table-sm table-bordered mb-0" style="width: 100%" id="tb_store">
+                        <table class="table-sm table-bordered mb-0" style="width: 100%" id="tb_quality">
                             <thead style="font-size: 11px;">
                                 <tr>
                                     <th class="text-center" width="2%" style="color: #a8b6bc !important;">NO
                                     </th>
-                                    <th class="text-center" width="30%" style="color: #a8b6bc !important;">STORE
+                                    <th class="text-left" width="30%" style="color: #a8b6bc !important;">QUALITY
                                     </th>
                                     </th>
                                     <th class="text-center" width="5%" style="color: #a8b6bc !important;">QTY
@@ -235,65 +235,65 @@
 
     <script type="text/javascript">
         $(function() {
-            var table = $('#tb_store').DataTable({
+            var table = $('#tb_quality').DataTable({
                 lengthMenu: [15],
                 responsive: true,
                 processing: false,
                 serverSide: true,
-                ajax: "/tablereportstore",
+                ajax: "/tablereportquality",
                 columns: [{
                     data: 'DT_RowIndex',
                     name: 'id',
                     class: 'text-center fw-bold',
                     searchable: false
                 }, {
-                    data: 'store',
-                    name: 'store',
+                    data: 'quality',
+                    name: 'quality',
                     class: 'text-left fw-bold text-white',
                     searchable: true,
                 }, {
-                    data: 'id_store',
-                    name: 'id_store',
+                    data: 'quality',
+                    name: 'quality',
                     class: 'text-center fw-bold',
                     searchable: true,
                     "render": function(data, type, row, meta) {
                         return 'QTY';
                     },
                 }, {
-                    data: 'warehouses',
-                    name: 'warehouses',
+                    data: 'quality',
+                    name: 'quality',
                     class: 'text-center fw-bold',
                     searchable: true,
                     "render": function(data, type, row, meta) {
                         return 'GROSS SALE';
                     },
                 }, {
-                    data: 'warehouses',
-                    name: 'warehouses',
+                    data: 'quality',
+                    name: 'quality',
                     class: 'text-center fw-bold',
                     searchable: true,
                     "render": function(data, type, row, meta) {
                         return 'DISC ITEM';
                     },
                 }, {
-                    data: 'warehouses',
-                    name: 'warehouses',
+                    data: 'quality',
+                    name: 'quality',
                     class: 'text-center fw-bold',
                     searchable: true,
                     "render": function(data, type, row, meta) {
                         return 'NET SALE';
                     },
                 }, {
-                    data: 'warehouses',
-                    name: 'warehouses',
+                    data: 'quality',
+                    name: 'quality',
                     class: 'text-center fw-bold',
                     searchable: true,
                     "render": function(data, type, row, meta) {
                         return 'COST';
                     },
                 }, {
-                    data: 'warehouses',
-                    name: 'warehouses',
+                    data: 'quality',
+                    name: 'quality',
                     class: 'text-center fw-bold',
                     searchable: true,
                     "render": function(data, type, row, meta) {
@@ -313,7 +313,7 @@
                 ],
             });
 
-            $('#search_store').on('keyup', function() {
+            $('#search_quality').on('keyup', function() {
                 table.search(this.value).draw();
             });
         });

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\reportStore;
+namespace App\Http\Controllers\reportBrand;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,23 +9,23 @@ use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
-use App\Models\Store;
+use App\Models\Brand;
 
-class ReportStoreController extends Controller
+class ReportBrandController extends Controller
 {
-    public function store()
+    public function brand()
     {
-        $title = "Report Store";
+        $title = "Report Brand";
 
-        return view('reportStore/store', compact(
+        return view('reportBrand/brand', compact(
             'title'
         ));
     }
 
-    public function tablereportstore(Request $request)
+    public function tablereportbrand(Request $request)
     {
         if ($request->ajax()) {
-            $product = Store::with('warehouses')->get();
+            $product = Brand::latest()->get();
             return DataTables::of($product)
                 ->addIndexColumn()
                 ->addColumn('action', function () {
