@@ -312,6 +312,29 @@
             </div>
         </form>
 
+        <form class="" method="POST" action="/retur_order">
+            @csrf
+            <div class="modal fade" id="retur_order" data-bs-backdrop="static" style="padding-top:5%;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-success">RETUR PRODUCT <span id="s_idinvoice"></span></h5>
+
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body" style="font-weight: bold;" id="load_retur">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-default"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button class="btn btn-outline-theme" type="submit">Retur</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
         <script>
             function cancel_order(id_invoice) {
                 document.getElementById('id_invoice').value = id_invoice;
@@ -339,6 +362,29 @@
                 });
 
                 $('#refund_order').modal('show');
+            }
+
+            function retur_order(id_invoice, count) {
+                document.getElementById('s_idinvoice').innerHTML = id_invoice;
+
+                $.ajax({
+                    url: "/load_retur",
+                    type: "POST",
+                    data: {
+                        id_invoice: id_invoice,
+                        count: count
+                    },
+                    beforeSend: function() {
+                        $("#load_retur").html(`<div class="text-center w-100">
+                            <div class="m-auto spinner-border"></div>
+                        </div>`);
+                    },
+                    success: function(data) {
+                        $("#load_retur").html(data);
+                    }
+                });
+
+                $('#retur_order').modal('show');
             }
         </script>
 

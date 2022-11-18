@@ -34,7 +34,8 @@
             </td>
         @endif
         <td colspan="4" class="fw-bold fs-12px" align="right" style="padding-top: 20px;">
-            <span><a class="btn  btn-primary btn-sm me-2 fw-bold text-white fs-10px"><i
+            <span><a class="btn  btn-primary btn-sm me-2 fw-bold text-white fs-10px"
+                    onclick="retur_order('{{ $datas->id_invoice }}','{{ count($datas->details) }}')"><i
                         class="bi bi-arrow-counterclockwise me-1 fa-1x"></i>TUKER
                     SIZE</a></span>
             <span><a class="btn btn-danger btn-sm fw-bold text-white fs-10px"

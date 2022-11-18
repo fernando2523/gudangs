@@ -13,6 +13,7 @@ use App\Models\Sale;
 use App\Models\variation;
 use App\Models\Store_equipment_cost;
 use App\Models\Cancel_order;
+use PhpParser\Node\Stmt\Return_;
 
 class OrderController extends Controller
 {
@@ -193,6 +194,39 @@ class OrderController extends Controller
         ));
     }
 
+    public function load_retur(Request $request)
+    {
+        $id_invoice = $request->id_invoice;
+        $count = $request->count;
+        $data = Sale::where('id_invoice', $id_invoice)->get();
+
+        return view('order.load_retur', compact(
+            'id_invoice',
+            'count',
+            'data'
+        ));
+    }
+
+    public function cek_size_retur(Request $request)
+    {
+        $id_invoice = $request->r_id_invoice;
+        $id = $request->id;
+
+        $get_produk = Sale::where('id', $id)->get();
+
+        $get_var = variation::where('id_produk', $get_produk[0]['id_produk'])
+            ->where('id_area', $get_produk[0]['id_area'])
+            ->where('size', '!=', $get_produk[0]['size'])
+            ->get();
+
+        $result = '';
+        foreach ($get_var as $data) {
+            $result .= '<option data-max="' . $data->qty . '" value="' . $data->size . '">' . $data->size . '=' . $data->qty . '</option>';
+        }
+
+        echo $result;
+    }
+
     public function refund_order(Request $request)
     {
         $id_invoice = $request->r_id_invoice;
@@ -308,6 +342,167 @@ class OrderController extends Controller
                     ]);
             }
         }
+
+        return redirect('order/orders');
+    }
+
+    public function retur_order(Request $request)
+    {
+        $id_invoice = $request->r_id_invoice;
+        $count = $request->r_count;
+        $id = $request->r_produk;
+        $size_new = $request->r_size;
+        $qty_new = $request->r_qty;
+        $ket = $request->ket;
+
+        if ($qty_new === '0') {
+        } else {
+            for ($i = 0; $i < count($id); $i++) {
+                DB::beginTransaction();
+
+                $get_produk = Sale::where('id', $id[$i])->get();
+
+                $result_qty = $get_produk[0]['qty'] - $qty_new[$i];
+
+                $old_qty = variation::where('id_produk', $get_produk[0]['id_produk'])
+                    ->where('idpo', $get_produk[0]['idpo'])
+                    ->where('id_ware', $get_produk[0]['id_ware'])
+                    ->where('size', $get_produk[0]['size'])
+                    ->get();
+
+                $qty_baru = intval($old_qty[0]['qty']) + intval($qty_new[$i]);
+
+                $new_qty = variation::where('id_produk', $get_produk[0]['id_produk'])
+                    ->where('idpo', $get_produk[0]['idpo'])
+                    ->where('id_ware', $get_produk[0]['id_ware'])
+                    ->where('size', $size_new[$i])
+                    ->get();
+
+                $qty_baru2 = intval($new_qty[0]['qty']) - intval($qty_new[$i]);
+
+                print_r('id_invoice = ' . $id_invoice . '<br>');
+                print_r('id_ = ' . $id[$i] . '<br>');
+                print_r('Size Old = ' . $get_produk[0]['size'] . '<br>');
+                print_r('Size Retur= ' . $size_new[$i] . '<br>');
+                print_r('Qty Old = ' . $get_produk[0]['qty'] . '<br>');
+                print_r('Qty Retur= ' . $qty_new[$i] . '<br>');
+                print_r('Old - Retur = ' . $result_qty . '<br>');
+                print_r('Var + Retur = ' . $old_qty[0]['size'] . '=' . $qty_baru . '<br>');
+                print_r('Var - Retur = ' . $new_qty[0]['size'] . '=' . $qty_baru2 . '<br>');
+                print_r('Ket = ' . $ket[$i] . '<br>');
+                print_r('<br>');
+
+                if ($result_qty === 0) {
+                    $cek_produk = Sale::where('id_invoice', $id_invoice)
+                        ->where('size', $size_new[$i])
+                        ->get();
+
+                    if (count($cek_produk) > 0) {
+                        Sale::where('id_invoice', $id_invoice)
+                            ->where('size', $size_new[$i])
+                            ->update([
+                                'qty' => $cek_produk[0]['qty'] + $qty_new[$i],
+                            ]);
+
+                        Sale::where('id', $id[$i])->delete();
+                    } else {
+                        Sale::where('id', $id[$i])
+                            ->update([
+                                'size' => $size_new[$i],
+                            ]);
+                    }
+
+                    variation::where('id_produk', $get_produk[0]['id_produk'])
+                        ->where('idpo', $get_produk[0]['idpo'])
+                        ->where('id_ware', $get_produk[0]['id_ware'])
+                        ->where('size', $get_produk[0]['size'])
+                        ->update([
+                            'qty' => $qty_baru,
+                        ]);
+
+                    variation::where('id_produk', $get_produk[0]['id_produk'])
+                        ->where('idpo', $get_produk[0]['idpo'])
+                        ->where('id_ware', $get_produk[0]['id_ware'])
+                        ->where('size', $size_new[$i])
+                        ->update([
+                            'qty' => $qty_baru2,
+                        ]);
+                } else {
+                    Sale::where('id', $id[$i])
+                        ->update([
+                            'qty' => $result_qty,
+                        ]);
+
+                    $cek_produk = Sale::where('id_invoice', $id_invoice)
+                        ->where('size', $size_new[$i])
+                        ->get();
+
+                    if (count($cek_produk) > 0) {
+                        Sale::where('id_invoice', $id_invoice)
+                            ->where('size', $size_new[$i])
+                            ->update([
+                                'qty' => $cek_produk[0]['qty'] + $qty_new[$i],
+                            ]);
+                    } else {
+                        // Save Function
+                        $data = new Sale();
+                        $data->m_price = $get_produk[0]['m_price'];
+                        $data->tanggal = $get_produk[0]['tanggal'];
+                        $data->id_invoice = $get_produk[0]['id_invoice'];
+                        $data->id_produk = $get_produk[0]['id_produk'];
+                        $data->idpo = $get_produk[0]['idpo'];
+                        $data->id_area = $get_produk[0]['id_area'];
+                        $data->id_ware = $get_produk[0]['id_ware'];
+                        $data->id_store = $get_produk[0]['id_store'];
+                        $data->id_brand = $get_produk[0]['id_brand'];
+                        $data->id_reseller = $get_produk[0]['id_reseller'];
+                        $data->payment = $get_produk[0]['payment'];
+                        $data->customer = $get_produk[0]['customer'];
+                        $data->quality = $get_produk[0]['quality'];
+                        $data->produk = $get_produk[0]['produk'];
+                        $data->size = $size_new[$i];
+                        $data->qty = $qty_new[$i];
+                        $data->selling_price = $get_produk[0]['selling_price'];
+                        $data->diskon_item = $get_produk[0]['diskon_item'];
+                        $data->diskon_all = $get_produk[0]['diskon_all'];
+                        $data->subtotal = $get_produk[0]['subtotal'];
+                        $data->grandtotal = $get_produk[0]['grandtotal'];
+                        $data->cash = $get_produk[0]['cash'];
+                        $data->bca = $get_produk[0]['bca'];
+                        $data->mandiri = $get_produk[0]['mandiri'];
+                        $data->qris = $get_produk[0]['qris'];
+                        $data->ongkir = $get_produk[0]['ongkir'];
+                        $data->refund = $get_produk[0]['refund'];
+                        $data->users = $get_produk[0]['users'];
+                        $data->save();
+                        // End Save Function
+                    }
+
+
+
+
+                    variation::where('id_produk', $get_produk[0]['id_produk'])
+                        ->where('idpo', $get_produk[0]['idpo'])
+                        ->where('id_ware', $get_produk[0]['id_ware'])
+                        ->where('size', $get_produk[0]['size'])
+                        ->update([
+                            'qty' => $qty_baru,
+                        ]);
+
+                    variation::where('id_produk', $get_produk[0]['id_produk'])
+                        ->where('idpo', $get_produk[0]['idpo'])
+                        ->where('id_ware', $get_produk[0]['id_ware'])
+                        ->where('size', $size_new[$i])
+                        ->update([
+                            'qty' => $qty_baru2,
+                        ]);
+                }
+
+                DB::commit();
+            }
+        }
+
+
 
         return redirect('order/orders');
     }
