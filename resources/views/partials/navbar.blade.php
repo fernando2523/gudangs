@@ -194,7 +194,7 @@
 
             <div class="menu-header">Report</div>
             <div
-                class="menu-item has-sub {{ Request::is('reportSummary/summary') ? 'active' : '' }}{{ Request::is('reportProduct/product') ? 'active' : '' }}{{ Request::is('reportStore/store') ? 'active' : '' }}">
+                class="menu-item has-sub {{ Request::is('reportSummary/summary') ? 'active' : '' }}{{ Request::is('reportProduct/product') ? 'active' : '' }}{{ Request::is('reportStore/store') ? 'active' : '' }}{{ Request::is('reportBrand/brand') ? 'active' : '' }}{{ Request::is('reportQuality/quality') ? 'active' : '' }}">
                 <a href="#" class="menu-link">
                     <span class="menu-icon">
                         <i class="bi bi-graph-up-arrow text-theme"></i>
@@ -218,13 +218,13 @@
                             <span class="menu-text">Store</span>
                         </a>
                     </div>
-                    <div class="menu-item">
-                        <a href="email_inbox.html" class="menu-link">
+                    <div class="menu-item {{ Request::is('reportBrand/brand') ? 'active' : '' }}">
+                        <a href="/reportBrand/brand" class="menu-link">
                             <span class="menu-text">Brand</span>
                         </a>
                     </div>
-                    <div class="menu-item">
-                        <a href="email_inbox.html" class="menu-link">
+                    <div class="menu-item {{ Request::is('reportQuality/quality') ? 'active' : '' }}">
+                        <a href="/reportQuality/quality" class="menu-link">
                             <span class="menu-text">Quality</span>
                         </a>
                     </div>

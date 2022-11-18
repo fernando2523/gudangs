@@ -5,10 +5,11 @@
             <td colspan="5" class="fw-bold pt-3 pb-3">
                 <div align="left">
                     <span class="fs-12px text-white">{{ $datas->id_invoice }}</span> | {{ $datas->tanggal }}
-                    <span style="padding-left: 5px;cursor: pointer;">
+                    {{-- <span style="padding-left: 5px;cursor: pointer;">
                         <i class="fa fa-print fa-lg text-info me-2 ms-2"></i></span>
                     <span style="padding-left: 5px;cursor: pointer;" onclick="cancel_order('{{ $datas->id_invoice }}')">
-                        <i class="fa fa-times-circle fa-lg text-danger"></i></span><br>
+                        <i class="fa fa-times-circle fa-lg text-danger"></i></span> --}}
+                    <br>
                     <span class="fs-11px text-white">{{ $datas->store[0]['store'] }}</span> | <span
                         class="fs-11px text-white">RETAIL</span><br>
                     <span class="badge bg-default text-dark">KASIR : {{ $datas->users }}</span>
@@ -19,12 +20,12 @@
             <td colspan="5" class="fw-bold pt-3 pb-3">
                 <div align="left">
                     <span class="fs-12px text-yellow">{{ $datas->id_invoice }}</span> | {{ $datas->tanggal }}
-                    <span style="padding-left: 5px;cursor: pointer;">
+                    {{-- <span style="padding-left: 5px;cursor: pointer;">
                         <i class="fa fa-print fa-lg text-info me-2 ms-2"></i>
                     </span>
                     <span style="padding-left: 5px;cursor: pointer;" onclick="cancel_order('{{ $datas->id_invoice }}')">
                         <i class="fa fa-times-circle fa-lg text-danger"></i>
-                    </span>
+                    </span> --}}
                     <br>
                     <span class="fs-11px text-white">{{ $datas->store[0]['store'] }}</span> | <span
                         class="fs-11px text-yellow">RESELLER
@@ -33,13 +34,8 @@
                 </div>
             </td>
         @endif
-        <td colspan="4" class="fw-bold fs-12px" align="right" style="padding-top: 20px;">
-            <span><a class="btn  btn-primary btn-sm me-2 fw-bold text-white fs-10px"><i
-                        class="bi bi-arrow-counterclockwise me-1 fa-1x"></i>TUKER
-                    SIZE</a></span>
-            <span><a class="btn btn-danger btn-sm fw-bold text-white fs-10px"
-                    onclick="refund_order('{{ $datas->id_invoice }}','{{ count($datas->details) }}')"><i
-                        class="fa fa-times me-1 fa-1x"></i>REFUND</a></span>
+        <td colspan="5" class="fw-bold fs-12px" align="right" style="padding-top: 20px;">
+            <span class="fw-bold text-white">Profit : <span class="text-lime">Rp 350.000</span></span>
         </td>
     </tr>
     {{-- Looping --}}
@@ -54,11 +50,14 @@
             <td class="text-center" style="border-right-width: 1px;">
                 {{ $datas->details[$i]['id_produk'] }}
             </td>
-            <td class="text-center text-lime fw-bold" style="border-right-width: 1px;">
+            <td class="text-center text-white fw-bold" style="border-right-width: 1px;">
                 {{ $datas->details[$i]['size'] }}
             </td>
-            <td class="text-center fw-bold" style="border-right-width: 1px;">
+            <td class="text-center text-white fw-bold" style="border-right-width: 1px;">
                 {{ $datas->details[$i]['qty'] }}
+            </td>
+            <td class="text-center text-info fw-bold" style="border-right-width: 1px;">
+                Rp 250.000
             </td>
             <td class="text-center fw-bold" style="border-right-width: 1px;">
                 @currency($datas->details[$i]['selling_price'])
@@ -73,7 +72,7 @@
     @endfor
     {{-- Looping --}}
     <tr class="tr-custom">
-        <td colspan="7" style="border-bottom: hidden;border-left: hidden;"></td>
+        <td colspan="8" style="border-bottom: hidden;border-left: hidden;"></td>
         <td class="text-center text-theme fw-bold fs-11px" style="border-left-width: 1px;border-right-width: 1px;">
             CASH
         </td>
@@ -85,7 +84,7 @@
         </td>
     </tr>
     <tr class="tr-custom">
-        <td colspan="7" style="border-bottom: hidden;border-left: hidden;"></td>
+        <td colspan="8" style="border-bottom: hidden;border-left: hidden;"></td>
         <td class="text-center fw-bold fs-11px" style="border-left-width: 1px;border-right-width: 1px;">
             @currency($datas->cash)
         </td>
@@ -98,7 +97,7 @@
     </tr>
 
     <tr>
-        <td colspan="8" style="border-bottom: hidden;border-left: hidden;"></td>
+        <td colspan="9" style="border-bottom: hidden;border-left: hidden;"></td>
         <td class="fw-bold fs-12px" align="right" style="border-bottom: hidden;border-left: hidden;">
             Ongkir :
         </td>
@@ -107,7 +106,7 @@
         </td>
     </tr>
     <tr>
-        <td colspan="8" style="border-bottom: hidden;border-left: hidden;"></td>
+        <td colspan="9" style="border-bottom: hidden;border-left: hidden;"></td>
         <td class="fw-bold fs-12px" align="right" style="border-bottom: hidden;border-left: hidden;">
             Discount Nota :
         </td>
@@ -116,7 +115,7 @@
         </td>
     </tr>
     <tr>
-        <td colspan="8" style="border-bottom: hidden;border-left: hidden;"></td>
+        <td colspan="9" style="border-bottom: hidden;border-left: hidden;"></td>
         <td class="fw-bold fs-12px" align="right" style="border-bottom: hidden;border-left: hidden;">
             Amount :
         </td>
@@ -126,7 +125,7 @@
     </tr>
 
     <tr style="border-bottom: 3px solid #797979;">
-        <td colspan="8" style="padding-top: 5px;padding-bottom: 20px;">
+        <td colspan="9" style="padding-top: 5px;padding-bottom: 20px;">
         </td>
     </tr>
 
