@@ -228,8 +228,15 @@
                                 name="r_tanggal" value="{{ $datenow }}" readonly>
                         </div>
                         <div class="col-3">
-                            <input class="form-control fw-bold form-control-sm text-lime text-center" type="text"
-                                name="r_idinvoice" value="#5465406460564" readonly>
+                            {{-- <input class="form-control fw-bold form-control-sm text-lime text-center" type="text"
+                                name="r_idinvoice" value="#5465406460564" readonly> --}}
+                            <select class="form-select fw-bold form-select-sm text-theme" id="reseller_name"
+                                name="reseller_name" disabled>
+                                <option value="" disabled selected>Name Reseller..</option>
+                                @foreach ($getreseller as $reseller)
+                                    <option value="{{ $reseller->id_reseller }}">{{ $reseller->nama }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
@@ -369,7 +376,7 @@
                                     </div>
                                 </div>
                                 <div class="col-8">
-                                    <div class="col-12 mb-3" style="display: none" id="show_reseller">
+                                    {{-- <div class="col-12 mb-3" style="display: none" id="show_reseller">
                                         <select class="form-select fw-bold form-select-sm text-theme" id="reseller_name"
                                             name="reseller_name" required>
                                             <option value="" disabled selected>Name Reseller..</option>
@@ -377,7 +384,7 @@
                                                 <option value="{{ $reseller->id_reseller }}">{{ $reseller->nama }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
+                                    </div> --}}
                                     <div class="row">
                                         <div class="col-4">
                                             <button type="button" id="btn_ongkir" class="btn btn-default"
@@ -792,11 +799,11 @@
             $('#customer').on('change', function() {
                 clear_cart();
                 if (this.value != 'RETAIL') {
-                    $("#show_reseller").css("display", "block");
+                    $("#reseller_name").prop("disabled", false);
                     $("#btn_ongkir").prop("disabled", false);
                     $("#btn_ongkir").removeClass("btn-default").addClass("btn-purple");
                 } else {
-                    $("#show_reseller").css("display", "none");
+                    $("#reseller_name").prop("disabled", true);
                     $("#btn_ongkir").prop("disabled", true);
                     $("#btn_ongkir").removeClass("btn-purple").addClass("btn-default");
                 }

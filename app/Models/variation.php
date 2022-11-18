@@ -17,9 +17,8 @@ class variation extends Model
     ];
 
 
-    // public function product()
-    // {
-    //     return $this->hasMany(Product::class, 'id_produk', 'id_produk')
-    //         ->orderBy('id');
-    // }
+    public function warehouse()
+    {
+        return $this->hasMany(Warehouse::class, 'id_ware', 'id_ware');
+    }
 }

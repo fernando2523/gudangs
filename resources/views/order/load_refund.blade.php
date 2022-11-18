@@ -1,13 +1,12 @@
  <!-- default table -->
  <input class="form-control" type="hidden" id="r_id_invoice" name="r_id_invoice" value="{{ $id_invoice }}">
  <input class="form-control" type="hidden" id="r_count" name="r_count" value="{{ $count }}">
- <table class="table table-borderless w-100" id="table_refund">
+ <table class="table table-borderless w-100 mb-0" id="table_refund">
      <thead>
          <tr>
-             <th width="42%">Product</th>
+             <th width="80%">Product</th>
              <th class="text-center" width="10%">Qty</th>
-             <th width="25%">Keterangan</th>
-             <th class="text-center" width="8%">Act</th>
+             <th class="text-center" width="10%">Act</th>
          </tr>
      </thead>
      <tbody class="align-middle" id="table_refund_body">
@@ -35,14 +34,16 @@
                  </div>
              </td>
              <td>
-                 <textarea style="resize: none;" class="form-control" name="ket[]" rows="2" placeholder="Keterangan..."></textarea>
-             </td>
-             <td>
                  <button class="btn btn-theme" style="width: 100%" type="button" onclick="add_rows()">+</button>
              </td>
          </tr>
      </tbody>
  </table>
+
+ <div class="p-2">
+     <label class="mb-2">Keterangan</label>
+     <textarea style="resize: none;" class="form-control" name="ket" rows="2" placeholder="Keterangan..." required></textarea>
+ </div>
 
  <script>
      function validate_product(r) {
@@ -96,9 +97,6 @@
                          <i class="fa fa-plus"></i>
                      </button>
                  </div>
-                </td>
-                <td>
-                    <textarea style="resize: none;" class="form-control" name="ket[]" rows="2" placeholder="Keterangan..."></textarea>
                 </td>
                 <td>
                     <button class="btn btn-danger" style="width: 100%" type="button" onclick="deleteRow(this)">x</button>

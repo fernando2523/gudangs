@@ -88,11 +88,21 @@ class SaleController extends Controller
 
     public function save_sales(Request $request)
     {
+        $now = Carbon::now('Asia/Jakarta');
+        $today = $now->format('Y-m-d');
 
-
+        $thn_bln_tgl = $now->format('ymd');
+        $hitung = Sale::where('tanggal', $today)->groupBy('id_invoice')->get();
+        if (count($hitung) === 0) {
+            $urut3 = 1;
+            $idinvoice = $thn_bln_tgl . sprintf("%04s", ($urut3));
+        } else {
+            $ambildatas2 = Sale::all()->max('id_invoice');
+            $hitung2 = (int)substr($ambildatas2, 6) + 1;
+            $idinvoice = $thn_bln_tgl . sprintf("%04s", + ($hitung2));
+        }
 
         $tanggal = $request->r_tanggal;
-        $idinvoice = $request->r_idinvoice;
         $warehouse = $request->r_idware;
         $id_area = $request->r_area;
         $store = $request->r_id_store;
@@ -150,8 +160,8 @@ class SaleController extends Controller
 
 
         for ($i = 0; $i < $count; $i++) {
+            DB::beginTransaction();
             // cek stock Variasi Aktif
-            // $m_price = $request->r_m_price;
             $get_var = variation::where('id_produk', $idproduk[$i])
                 ->where('id_area', $id_area)
                 ->where('id_ware', $warehouse[$i])
@@ -171,13 +181,6 @@ class SaleController extends Controller
                     ->get('m_price');
 
                 if ($qty_baru >= 0) {
-                    // print_r(' SIZE : ' . $size[$i]);
-                    // print_r(' STOCK : ' . $get_qty);
-                    // print_r(' REQ : ' . $qty_sales);
-                    // print_r(' SISA : ' . $qty_baru);
-                    // print_r(' MODAL : ' . $get_modal[0]['m_price']);
-                    // print_r('<br><br>');
-
                     // Save Function
                     $data = new Sale();
                     $data->m_price = $get_modal[0]['m_price'];
@@ -227,13 +230,6 @@ class SaleController extends Controller
                     if ($qty_baru < 0) {
                         $qty_sisa = 0;
                     }
-                    // print_r(' SIZE : ' . $size[$i]);
-                    // print_r(' STOCK : ' . $get_qty);
-                    // print_r(' REQ : ' . $qty_sales);
-                    // print_r(' SISA : ' . $qty_sisa);
-                    // print_r(' MODAL : ' . $get_modal[0]['m_price']);
-                    // print_r('<br>');
-
                     // Save Function
                     $data = new Sale();
                     $data->m_price = $get_modal[0]['m_price'];
@@ -282,6 +278,7 @@ class SaleController extends Controller
                 }
             }
             // End cek stock Variasi Aktif
+            DB::commit();
         }
         return redirect('/sale/sales');
     }

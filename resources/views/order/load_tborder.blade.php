@@ -28,7 +28,7 @@
                     <br>
                     <span class="fs-11px text-white">{{ $datas->store[0]['store'] }}</span> | <span
                         class="fs-11px text-yellow">RESELLER
-                        :</span><span class="ms-1 text-yellow">{{ $datas->id_reseller }}</span><br>
+                        :</span><span class="ms-1 text-yellow">{{ $datas->reseller[0]['nama'] }}</span><br>
                     <span class="badge bg-default text-dark">KASIR : {{ $datas->users }}</span>
                 </div>
             </td>
@@ -38,9 +38,19 @@
                     onclick="retur_order('{{ $datas->id_invoice }}','{{ count($datas->details) }}')"><i
                         class="bi bi-arrow-counterclockwise me-1 fa-1x"></i>TUKER
                     SIZE</a></span>
-            <span><a class="btn btn-danger btn-sm fw-bold text-white fs-10px"
-                    onclick="refund_order('{{ $datas->id_invoice }}','{{ count($datas->details) }}')"><i
-                        class="fa fa-times me-1 fa-1x"></i>REFUND</a></span>
+            @if ($datas->refund > 0)
+                <span>
+                    <button class="btn btn-default btn-sm fw-bold text-white fs-10px" disabled>
+                        <i class="fa fa-times me-1 fa-1x"></i>REFUND
+                    </button>
+                </span>
+            @else
+                <span>
+                    <a class="btn btn-danger btn-sm fw-bold text-white fs-10px"
+                        onclick="refund_order('{{ $datas->id_invoice }}','{{ count($datas->details) }}')">
+                        <i class="fa fa-times me-1 fa-1x"></i>REFUND</a>
+                </span>
+            @endif
         </td>
     </tr>
     {{-- Looping --}}
@@ -113,7 +123,16 @@
             Discount Nota :
         </td>
         <td class="fw-bold fs-12px" align="right" style="border-bottom: hidden;border-left: hidden;">
-            @currency($datas->diskon_all)
+            - @currency($datas->diskon_all)
+        </td>
+    </tr>
+    <tr>
+        <td colspan="8" style="border-bottom: hidden;border-left: hidden;"></td>
+        <td class="fw-bold fs-12px" align="right" style="border-bottom: hidden;border-left: hidden;">
+            Total Refund :
+        </td>
+        <td class="fw-bold fs-12px" align="right" style="border-bottom: hidden;border-left: hidden;">
+            - @currency($datas->refund)
         </td>
     </tr>
     <tr>
@@ -137,9 +156,10 @@
     <tr style="width: 100%">
         <td colspan="10" align="center">
             No More Data...
+
         </td>
     </tr>
     <input type="hidden" name="last_id[]" value="last">
 @else
-    <input type="hidden" name="last_id[]" value="{{ $datas->id }}">
+    <input type="hidden" name="last_id[]" value="{{ $datas->id_invoice }}">
 @endif

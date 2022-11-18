@@ -201,3 +201,7 @@ route::any('/load_tbsummary', [ReportSummaryController::class, 'load_tbsummary']
 route::get('/reportProduct/product', [ReportProductController::class, 'product'])->middleware('auth');
 
 route::get('/reportStore/store', [ReportStoreController::class, 'store'])->middleware('auth');
+
+// tian new
+route::any('/get_warehouse', [OrderController::class, 'get_warehouse']);
+// tian new
