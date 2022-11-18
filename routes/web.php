@@ -204,12 +204,10 @@ route::get('/reportProduct/product', [ReportProductController::class, 'product']
 route::any('/tablereportproduct', [ReportProductController::class, 'tablereportproduct'])->middleware('auth');
 
 route::get('/reportStore/store', [ReportStoreController::class, 'store'])->middleware('auth');
-<<<<<<< HEAD
 
 // tian new
 route::any('/get_warehouse', [OrderController::class, 'get_warehouse']);
 // tian new
-=======
 route::any('/tablereportstore', [ReportStoreController::class, 'tablereportstore'])->middleware('auth');
 
 route::get('/reportBrand/brand', [ReportBrandController::class, 'brand'])->middleware('auth');
@@ -217,4 +215,3 @@ route::any('/tablereportbrand', [ReportBrandController::class, 'tablereportbrand
 
 route::get('/reportQuality/quality', [ReportQualityController::class, 'quality'])->middleware('auth');
 route::any('/tablereportquality', [ReportQualityController::class, 'tablereportquality'])->middleware('auth');
->>>>>>> 187d5e6b7820672300bf06af0e06e81de2799b29
