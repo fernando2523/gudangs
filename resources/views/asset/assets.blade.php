@@ -244,28 +244,49 @@
                         class: 'text-center fw-bold',
                         searchable: true,
                     }, {
-                        data: 'supplier_order',
-                        name: 'supplier_order',
-                        class: 'text-center',
-                        searchable: true,
-                        "render": function(data, type, row, meta) {
-                            return row.supplier_order[0]['qty'];
-                        },
-                    }, {
-                        data: 'supplier_order',
-                        name: 'supplier_order',
-                        class: 'text-center',
-                        searchable: true,
-                        "render": function(data, type, row, meta) {
-                            return row.supplier_order[0]['tipe_order'];
-                        },
-                    }, {
-                        data: 'id_produk',
-                        name: 'id_produk',
+                        data: 'supplier_order3',
+                        name: 'supplier_order3',
                         class: 'text-center fw-bold',
                         searchable: true,
-                        "render": function(data, type, row, meta) {
-                            return 0;
+                        "render": function(data, type, row) {
+                            var release = 0;
+
+                            for (let index = 0; index < data.length; index++) {
+                                if (row.supplier_order3[index]['tipe_order'] == "RELEASE") {
+                                    release = release + parseInt(row.supplier_order3[index]['qty']);
+                                } else {
+                                    release = release + 0;
+                                }
+                            }
+
+                            return release;
+                        },
+                    }, {
+                        data: 'supplier_order3',
+                        name: 'supplier_order3',
+                        class: 'text-center fw-bold',
+                        searchable: true,
+                        "render": function(data, type, row) {
+                            var repeat = 0;
+
+                            for (let index = 0; index < data.length; index++) {
+                                if (row.supplier_order3[index]['tipe_order'] == "REPEAT") {
+                                    repeat = repeat + parseInt(row.supplier_order3[index]['qty']);
+                                } else {
+                                    repeat = repeat + 0;
+                                }
+                            }
+
+                            return repeat;
+                        },
+                    }, {
+                        data: 'supplier_order3',
+                        name: 'supplier_order3',
+                        class: 'text-center fw-bold',
+                        searchable: true,
+                        "render": function(data, type, row) {
+                            return '<span class="fw-bold">' + data.length +
+                                '</span>';
                         },
                     }, {
                         data: 'product_variation_asset',

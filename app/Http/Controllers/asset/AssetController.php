@@ -47,8 +47,8 @@ class AssetController extends Controller
     public function tableassets(Request $request)
     {
         if ($request->ajax()) {
-            $supplier = Product::with('product_variation_asset', 'supplier_variation', 'supplier_order')
-                // ->groupBy('id_produk')
+            $supplier = Product::with('product_variation_asset', 'supplier_variation', 'supplier_order3')
+                ->groupBy('id_produk')
                 ->get();
 
             return DataTables::of($supplier)

@@ -57,6 +57,11 @@ class Product extends Model
         return $this->hasMany(Supplier_order::class, 'id_produk', 'id_produk')->groupBy('id_produk');
     }
 
+    public function supplier_order3()
+    {
+        return $this->hasMany(Supplier_order::class, 'id_produk', 'id_produk')->selectRaw('*,SUM(qty) as qty')->groupBy('tipe_order', 'id_produk');
+    }
+
     public function supplier_variation()
     {
         return $this->hasMany(supplier_variation::class, 'id_produk', 'id_produk');
