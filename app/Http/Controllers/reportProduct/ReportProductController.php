@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Product;
+use App\Models\Sale;
 
 class ReportProductController extends Controller
 {
@@ -25,7 +26,7 @@ class ReportProductController extends Controller
     public function tablereportproduct(Request $request)
     {
         if ($request->ajax()) {
-            $product = Product::with('warehouse', 'image_product', 'product_variation')->groupBy('id_produk')->get();
+            $product = Sale::with('image_product', 'qtys', 'disc_item', 'disc_all', 'gross', 'costs', 'profit')->groupBy('id_produk')->get();
             return DataTables::of($product)
                 ->addIndexColumn()
                 ->addColumn('action', function () {

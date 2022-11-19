@@ -243,87 +243,170 @@
                 serverSide: true,
                 ajax: "/tablereportproduct",
                 columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'id',
-                    class: 'text-center fw-bold',
-                    searchable: false
-                }, {
-                    data: 'image_product',
-                    name: 'image_product',
-                    class: 'text-center',
-                    "render": function(data, type, row) {
-                        if (row.image_product[0]['img'] === "") {
-                            return '<span><img src="/product/defaultimg.png" alt="" width="100" height="100" class="rounded"></span><span class="fw-bold text-default"><br>' +
-                                row
-                                .id_produk + '</span>';
-                        } else {
-                            return '<span><img src="/product/' + row.image_product[0]['img'] +
-                                '" alt="" width="95"  height="95" class="rounded"></span><span class="fw-bold text-default"><br>' +
-                                row
-                                .id_produk + '</span>';
-                        }
+                        data: 'DT_RowIndex',
+                        name: 'id',
+                        class: 'text-center fw-bold',
+                        searchable: false
+                    }, {
+                        data: 'image_product',
+                        name: 'image_product',
+                        class: 'text-center',
+                        "render": function(data, type, row) {
+                            if (row.image_product[0]['img'] === "") {
+                                return '<span><img src="/product/defaultimg.png" alt="" width="100" height="100" class="rounded"></span><span class="fw-bold text-default"><br>' +
+                                    row
+                                    .id_produk + '</span>';
+                            } else {
+                                return '<span><img src="/product/' + row.image_product[0]['img'] +
+                                    '" alt="" width="95"  height="95" class="rounded"></span><span class="fw-bold text-default"><br>' +
+                                    row
+                                    .id_produk + '</span>';
+                            }
+                        },
+                    }, {
+                        data: 'produk',
+                        name: 'produk',
+                        class: 'text-left',
+                        searchable: true,
+                        "render": function(data, type, row, meta) {
+                            return '<span class="fw-bold fs-14px text-white">' + row
+                                .produk +
+                                '</span><br><span class="fw-bold"><span class="fw-bold">' +
+                                row.brand +
+                                '</span>';
+                        },
+                    }, {
+                        data: 'qtys',
+                        name: 'qtys',
+                        class: 'text-center fw-bold',
+                        searchable: true,
+                        "render": function(data, type, row, meta) {
+                            return row.qtys[0]['qty'];
+                        },
+                    }, {
+                        data: 'gross',
+                        name: 'gross',
+                        class: 'text-center fw-bold',
+                        searchable: true,
+                        "render": function(data, type, row, meta) {
+                            let rupiah = Intl.NumberFormat('id-ID');
+
+                            gross = 0;
+                            for (i = 0; i < row.gross.length; i++) {
+                                gross = parseInt(gross) + (parseInt(row
+                                    .gross[i][
+                                        'qty'
+                                    ]) * parseInt(row
+                                    .gross[i][
+                                        'selling_price'
+                                    ]));
+                            }
+                            totalgross = gross;
+
+                            return rupiah.format(totalgross);
+                        },
+                    }, {
+                        data: 'disc_item',
+                        name: 'disc_item',
+                        class: 'text-center fw-bold',
+                        searchable: true,
+                        "render": function(data, type, row, meta) {
+                            let rupiah = Intl.NumberFormat('id-ID');
+
+                            // totalqty = row.qtys[0]['qty'];
+                            // total_disc_all = (parseInt(row.disc_all[0]['diskon_all']) / parseInt(
+                            //     totalqty));
+
+                            total_disc_item = row.disc_item[0]['disc']
+
+
+                            return total_disc_item;
+                        },
                     },
-                }, {
-                    data: 'produk',
-                    name: 'produk',
-                    class: 'text-left',
-                    searchable: true,
-                    "render": function(data, type, row, meta) {
-                        return '<span class="fw-bold fs-14px text-white">' + row
-                            .produk +
-                            '</span><br><span class="fw-bold"><span class="fw-bold">' +
-                            row.brand +
-                            '</span>';
+                    {
+                        data: 'gross',
+                        name: 'gross',
+                        class: 'text-center fw-bold',
+                        searchable: true,
+                        "render": function(data, type, row, meta) {
+                            let rupiah = Intl.NumberFormat('id-ID');
+
+                            gross = 0;
+                            for (i = 0; i < row.gross.length; i++) {
+                                gross = parseInt(gross) + (parseInt(row
+                                    .gross[i][
+                                        'qty'
+                                    ]) * parseInt(row
+                                    .gross[i][
+                                        'selling_price'
+                                    ]));
+                            }
+                            netsales = gross - row.disc_item[0]['disc'];
+
+                            return rupiah.format(netsales);
+                        },
                     },
-                }, {
-                    data: 'id_produk',
-                    name: 'id_produk',
-                    class: 'text-center fw-bold',
-                    searchable: true,
-                    "render": function(data, type, row, meta) {
-                        return 'QTY';
+                    {
+                        data: 'costs',
+                        name: 'costs',
+                        class: 'text-center fw-bold',
+                        searchable: true,
+                        "render": function(data, type, row, meta) {
+                            let rupiah = Intl.NumberFormat('id-ID');
+
+                            costs = 0;
+                            for (i = 0; i < row.costs.length; i++) {
+                                costs = parseInt(costs) + (parseInt(row
+                                    .costs[i][
+                                        'qty'
+                                    ]) * parseInt(row
+                                    .costs[i][
+                                        'm_price'
+                                    ]));
+                            }
+                            totalcosts = costs;
+
+                            return rupiah.format(totalcosts);
+                        },
                     },
-                }, {
-                    data: 'warehouse',
-                    name: 'warehouse',
-                    class: 'text-center fw-bold',
-                    searchable: true,
-                    "render": function(data, type, row, meta) {
-                        return 'GROSS SALE';
+                    {
+                        data: 'profit',
+                        name: 'profit',
+                        class: 'text-center fw-bold',
+                        searchable: true,
+                        "render": function(data, type, row, meta) {
+                            let rupiah = Intl.NumberFormat('id-ID');
+
+                            gross = 0;
+                            for (i = 0; i < row.gross.length; i++) {
+                                gross = parseInt(gross) + (parseInt(row
+                                    .gross[i][
+                                        'qty'
+                                    ]) * parseInt(row
+                                    .gross[i][
+                                        'selling_price'
+                                    ]));
+                            }
+                            netsales = gross - row.disc_item[0]['disc'];
+
+                            costs = 0;
+                            for (i = 0; i < row.costs.length; i++) {
+                                costs = parseInt(costs) + (parseInt(row
+                                    .costs[i][
+                                        'qty'
+                                    ]) * parseInt(row
+                                    .costs[i][
+                                        'm_price'
+                                    ]));
+                            }
+                            totalcosts = costs;
+
+                            totalprofit = netsales - totalcosts;
+
+                            return rupiah.format(totalprofit);
+                        },
                     },
-                }, {
-                    data: 'warehouse',
-                    name: 'warehouse',
-                    class: 'text-center fw-bold',
-                    searchable: true,
-                    "render": function(data, type, row, meta) {
-                        return 'DISC ITEM';
-                    },
-                }, {
-                    data: 'warehouse',
-                    name: 'warehouse',
-                    class: 'text-center fw-bold',
-                    searchable: true,
-                    "render": function(data, type, row, meta) {
-                        return 'NET SALE';
-                    },
-                }, {
-                    data: 'warehouse',
-                    name: 'warehouse',
-                    class: 'text-center fw-bold',
-                    searchable: true,
-                    "render": function(data, type, row, meta) {
-                        return 'COST';
-                    },
-                }, {
-                    data: 'warehouse',
-                    name: 'warehouse',
-                    class: 'text-center fw-bold',
-                    searchable: true,
-                    "render": function(data, type, row, meta) {
-                        return 'PROFIT';
-                    },
-                }, ],
+                ],
                 dom: 'tip',
                 // "ordering" : true,
                 order: [

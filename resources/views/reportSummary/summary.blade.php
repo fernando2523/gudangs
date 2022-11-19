@@ -202,7 +202,7 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">COSTS</div>
-                                    <h4 class="text-info fs-12px text-center">
+                                    <h4 class="text-indigo fs-12px text-center">
                                         @php
                                             $total_cost = 0;
                                         @endphp
@@ -229,7 +229,7 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">PROFIT </div>
-                                    <h4 class="text-info fs-12px text-center">
+                                    <h4 class="text-lime fs-12px text-center">
                                         @php
                                             $net_sales = $total_gross_sale - $expenses - ($discount_item + $total_diskon);
                                         @endphp
