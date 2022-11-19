@@ -18,8 +18,13 @@ class ReportProductController extends Controller
     {
         $title = "Report Product";
 
+        $get_qty = Sale::sum('qty');
+        $get_gross = Sale::all();
+
         return view('reportProduct/product', compact(
-            'title'
+            'title',
+            'get_gross',
+            'get_qty'
         ));
     }
 

@@ -42,7 +42,8 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="mb-1 text-default fw-bold text-center">QTY</div>
-                                    <h4 class="text-white fs-12px text-center">10 PCS
+                                    <h4 class="text-white fs-12px text-center">
+                                        {{ $get_qty }} PCS
                                     </h4>
                                 </div>
                             </div>
@@ -313,14 +314,7 @@
                         "render": function(data, type, row, meta) {
                             let rupiah = Intl.NumberFormat('id-ID');
 
-                            // totalqty = row.qtys[0]['qty'];
-                            // total_disc_all = (parseInt(row.disc_all[0]['diskon_all']) / parseInt(
-                            //     totalqty));
-
-                            total_disc_item = row.disc_item[0]['disc']
-
-
-                            return total_disc_item;
+                            return rupiah.format(row.disc_item[0]['disc']);
                         },
                     },
                     {
