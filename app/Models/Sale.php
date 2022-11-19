@@ -25,4 +25,39 @@ class Sale extends Model
     {
         return $this->hasMany(Reseller::class, 'id_reseller', 'id_reseller');
     }
+
+    public function image_product()
+    {
+        return $this->hasMany(Image_product::class, 'id_produk', 'id_produk');
+    }
+
+    public function qtys()
+    {
+        return $this->hasMany(Sale::class, 'id_produk', 'id_produk')->selectRaw('*,SUM(qty) as qty')->groupBy('id_produk');
+    }
+
+    public function disc_item()
+    {
+        return $this->hasMany(Sale::class, 'id_produk', 'id_produk')->groupBy('id_produk')->selectRaw('*,SUM(diskon_item) as disc');
+    }
+
+    public function disc_all()
+    {
+        return $this->hasMany(Sale::class, 'id_produk', 'id_produk')->groupBy('id_produk');
+    }
+
+    public function gross()
+    {
+        return $this->hasMany(Sale::class, 'id_produk', 'id_produk');
+    }
+
+    public function costs()
+    {
+        return $this->hasMany(Sale::class, 'id_produk', 'id_produk');
+    }
+
+    public function profit()
+    {
+        return $this->hasMany(Sale::class, 'id_produk', 'id_produk');
+    }
 }
