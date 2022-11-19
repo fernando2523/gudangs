@@ -9,7 +9,7 @@
                 </ul>
 
                 <h1 class="page-header">
-                    Assets
+                    Assets (FIFO METHOD)
                 </h1>
             </div>
             <div class="ms-auto">
@@ -42,33 +42,12 @@
         </style>
 
         <div class="row mb-3">
-            <!-- TOTAL STOCK -->
-            <div class="col-xl-3 mb-6">
-                <div class="card">
-                    <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
-                        <div class="flex-fill" style="padding-top: 5px;padding-bottom: 0px;">
-                            <div class="mb-1 fw-bold">TOTAL QTY</div>
-                            <h4 class="text-theme">{{ $qtyasset[0]->totalqty }}</h4>
-                        </div>
-                        <div class="opacity-5">
-                            <i class="fa fa-cube fa-3x"></i>
-                        </div>
-                    </div>
 
-                    <!-- card-arrow -->
-                    <div class="card-arrow">
-                        <div class="card-arrow-top-left"></div>
-                        <div class="card-arrow-top-right"></div>
-                        <div class="card-arrow-bottom-left"></div>
-                        <div class="card-arrow-bottom-right"></div>
-                    </div>
-                </div>
-            </div>
             <div class="col-xl-3 mb-6">
                 <div class="card">
                     <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
                         <div class="flex-fill" style="padding-top: 5px;padding-bottom: 0px;">
-                            <div class="mb-1 fw-bold">QTY RELEASE</div>
+                            <div class="mb-1 fw-bold">RELEASE QUANTITY</div>
                             @if ($qtyrelease[0]->qtyreleases === null or $qtyrelease[0]->qtyreleases === '0')
                                 <h4 class="text-theme">0</h4>
                             @else
@@ -93,7 +72,7 @@
                 <div class="card">
                     <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
                         <div class="flex-fill" style="padding-top: 5px;padding-bottom: 0px;">
-                            <div class="mb-1 fw-bold">QTY REPEAT</div>
+                            <div class="mb-1 fw-bold">REPEAT QUANTITY</div>
                             @if ($qtyrepeat[0]->qtyrepeats === null or $qtyrepeat[0]->qtyrepeats === '0')
                                 <h4 class="text-theme">0</h4>
                             @else
@@ -115,12 +94,43 @@
                 </div>
             </div>
             <!-- END -->
+            <!-- TOTAL STOCK -->
             <div class="col-xl-3 mb-6">
                 <div class="card">
                     <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
                         <div class="flex-fill" style="padding-top: 5px;padding-bottom: 0px;">
-                            <div class="mb-1 fw-bold">CAPITAL AMOUNT</div>
-                            <h4 class="text-theme">@currency($totalmodal)</h4>
+                            <div class="mb-1 fw-bold">STOCK ASSETS QUANTITY</div>
+                            <h4 class="text-theme">{{ $qtyasset[0]->totalqty }}</h4>
+                        </div>
+                        <div class="opacity-5">
+                            <i class="fa fa-cube fa-3x"></i>
+                        </div>
+                    </div>
+
+                    <!-- card-arrow -->
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 mb-6">
+                <div class="card">
+                    <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
+                        <div class="flex-fill" style="padding-top: 5px;padding-bottom: 0px;">
+                            <div class="mb-1 fw-bold">ASSETS VALUATION</div>
+                            <h4 class="text-theme">
+                                <?php $totalmodal = 0; ?>
+                                @foreach ($assets_valuation as $assets_valuations)
+                                    @php
+                                        $totalmodal = $totalmodal + $assets_valuations->qty * $assets_valuations->supplier[0]['m_price'];
+                                    @endphp
+                                @endforeach
+
+                                @currency($totalmodal)
+                            </h4>
                         </div>
                         <div class="opacity-5">
                             <i class="bi bi-cash-stack fa-3x"></i>
@@ -161,7 +171,7 @@
                                 <tr>
                                     <th class="text-center" width="2%" style="color: #a8b6bc !important;">NO
                                     </th>
-                                    <th class="text-left" width="28%" style="color: #a8b6bc !important;">NAME
+                                    <th class="text-left" width="25%" style="color: #a8b6bc !important;">NAME
                                     </th>
                                     </th>
                                     <th class="text-center" width="8%" style="color: #a8b6bc !important;">ID PRODUCT
@@ -280,48 +290,56 @@
                             return repeat;
                         },
                     }, {
-                        data: 'supplier_order3',
-                        name: 'supplier_order3',
+                        data: 'sales',
+                        name: 'sales',
                         class: 'text-center fw-bold',
                         searchable: true,
                         "render": function(data, type, row) {
-                            return '<span class="fw-bold">' + data.length +
-                                '</span>';
-                        },
-                    }, {
-                        data: 'product_variation_asset',
-                        name: 'product_variation_asset',
-                        class: 'text-center',
-                        searchable: true,
-                        "render": function(data, type, row) {
-                            totalqty = 0;
-                            for (i = 0; i < row.product_variation_asset.length; i++) {
-                                totalqty = parseInt(totalqty) + parseInt(row
-                                    .product_variation_asset[i][
-                                        'qty'
-                                    ]);
+                            var sales = '';
+
+                            for (let index = 0; index < data.length; index++) {
+                                sales = sales + row.sales[index]['sold'];
                             }
-                            return totalqty;
+
+                            return sales;
                         },
                     }, {
-                        data: 'm_price',
-                        name: 'm_price',
-                        class: 'text-center',
+                        data: 'stock',
+                        name: 'stock',
+                        class: 'text-center fw-bold',
                         searchable: true,
-                        // Edit Tian
                         "render": function(data, type, row) {
+                            var stock = 0;
+
+                            for (let index = 0; index < data.length; index++) {
+                                stock = stock + row.stock[index]['stock'];
+                            }
+
+                            return stock;
+                        },
+                    }, {
+                        data: 'stock',
+                        name: 'assets',
+                        class: 'text-center fw-bold',
+                        searchable: true,
+                        "render": function(data, type, row) {
+                            var stock = 0;
+
+                            for (let index = 0; index < data.length; index++) {
+                                for (let i = 0; i < row.details_po.length; i++) {
+                                    if (row.stock[index]['idpo'] === row.details_po[i]['idpo']) {
+                                        stock = stock + parseInt(row.stock[index]['stock']) *
+                                            parseInt(row
+                                                .details_po[i]['m_price']);
+                                    } else {
+
+                                    }
+                                }
+                            }
+
                             let rupiah = Intl.NumberFormat('id-ID');
 
-                            totalqty = 0;
-                            for (i = 0; i < row.product_variation_asset.length; i++) {
-                                totalqty = parseInt(totalqty) + parseInt(row
-                                    .product_variation_asset[i][
-                                        'qty'
-                                    ]);
-                            }
-                            totalmodal = totalqty * parseInt(row.m_price);
-
-                            return 'Rp ' + rupiah.format(totalmodal);
+                            return 'Rp' + rupiah.format(stock);
                         },
                     }, {
                         data: 'action',
@@ -349,68 +367,4 @@
             });
             // end
         </script>
-
-        {{-- <script>
-            // edit
-            function openmodaledit(id, id_produk, id_ware, produk, m_price, brand) {
-                $('#modaledit').modal('show');
-                document.getElementById('id').value = id;
-                document.getElementById("produk").innerHTML = produk;
-                document.getElementById("brand").innerHTML = brand;
-
-
-                var convert_m_price = m_price;
-                var number_string = convert_m_price.toString(),
-                    sisa = number_string.length % 3,
-                    hasil_m_price = number_string.substr(0, sisa),
-                    ribuan = number_string.substr(sisa).match(/\d{3}/g);
-
-                if (ribuan) {
-                    separator = sisa ? '' : '';
-                    hasil_m_price += separator + ribuan.join('.');
-                }
-
-
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ URL::to('/load_repeatorder') }}",
-                    data: {
-                        id: id,
-                        id_produk: id_produk,
-                        id_ware: id_ware,
-                        produk: produk,
-                        m_price: hasil_m_price,
-                        brand: brand,
-                    },
-                    success: function(data) {
-                        $("#repeatorder").html(data);
-                    }
-                });
-            }
-
-            function submitformedit() {
-                if (document.forms["form_edit"]["type_po"].value == "") {
-                    alert("SILAHKAN PILIH TIPE PO, TERLEBIH DAHULU.");
-                    document.forms["form_edit"]["type_po"].focus();
-                    return false;
-                }
-
-                var value = document.getElementById('id').value;
-                document.getElementById('form_edit').action = "../repeat/repeats/" + value;
-                document.getElementById("form_edit").submit();
-            }
-
-            // delete
-            function openmodaldelete(id, id_produk) {
-                $('#modaldelete').modal('show');
-                document.getElementById('del_id').value = id;
-                document.getElementById('del_id_produk').value = id_produk;
-            }
-
-            function submitformdelete() {
-                var value = document.getElementById('del_id').value;
-                document.getElementById('form_delete').action = "../repeat/destroy/" + value;
-                document.getElementById("form_delete").submit();
-            }
-        </script> --}}
     @endsection

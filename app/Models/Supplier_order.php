@@ -31,4 +31,29 @@ class Supplier_order extends Model
 
         return $this->hasMany(variation::class, 'id_produk', 'id_produk');
     }
+
+    public function supplier_order3()
+    {
+        return $this->hasMany(Supplier_order::class, 'id_produk', 'id_produk')->selectRaw('*,SUM(qty) as qty')->groupBy('tipe_order', 'id_produk');
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class, 'id_produk', 'id_produk')->selectRaw('*,sum(qty) as sold')->groupBy('id_produk');
+    }
+
+    public function stock()
+    {
+        return $this->hasMany(variation::class, 'id_produk', 'id_produk')->selectRaw('*,sum(qty) as stock')->groupBy('id_produk', 'idpo');
+    }
+
+    public function details_po()
+    {
+        return $this->hasMany(Supplier_order::class, 'id_produk', 'id_produk');
+    }
+
+    public function asset_value()
+    {
+        return $this->hasMany(variation::class, 'id_produk', 'id_produk')->selectRaw('*,sum(qty) as stock')->groupBy('id_produk');
+    }
 }

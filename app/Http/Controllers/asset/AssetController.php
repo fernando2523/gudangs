@@ -27,27 +27,25 @@ class AssetController extends Controller
     {
         $title = "Assets";
 
-        $qtyasset = DB::table('variations')->select(DB::raw('SUM(qty) as totalqty'),)->get();
-        $modalasset = DB::table('products')->select(DB::raw('SUM(m_price) as modals'),)->get();
-        $totalmodal = $qtyasset[0]->totalqty * $modalasset[0]->modals;
+        $assets_valuation = variation::with('supplier')->get();
 
+        $qtyasset = DB::table('variations')->select(DB::raw('SUM(qty) as totalqty'),)->get();
         $qtyrelease = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtyreleases'),)->where('tipe_order', '=', 'RELEASE')->get();
         $qtyrepeat = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtyrepeats'),)->where('tipe_order', '=', 'REPEAT')->get();
 
         return view('asset.assets', compact(
             'title',
-            'qtyasset',
-            'modalasset',
-            'totalmodal',
+            'assets_valuation',
             'qtyrelease',
-            'qtyrepeat'
+            'qtyrepeat',
+            'qtyasset'
         ));
     }
 
     public function tableassets(Request $request)
     {
         if ($request->ajax()) {
-            $supplier = Product::with('product_variation_asset', 'supplier_variation', 'supplier_order3')
+            $supplier = Supplier_order::with('supplier_order3', 'sales', 'stock', 'details_po', 'asset_value')
                 ->groupBy('id_produk')
                 ->get();
 

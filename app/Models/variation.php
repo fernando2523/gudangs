@@ -21,4 +21,9 @@ class variation extends Model
     {
         return $this->hasMany(Warehouse::class, 'id_ware', 'id_ware');
     }
+
+    public function supplier()
+    {
+        return $this->hasMany(Supplier_order::class, 'idpo', 'idpo');
+    }
 }
