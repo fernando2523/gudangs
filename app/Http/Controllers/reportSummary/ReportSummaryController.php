@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Sale;
+use App\Models\Store_equipment_cost;
 
 class ReportSummaryController extends Controller
 {
@@ -17,8 +18,25 @@ class ReportSummaryController extends Controller
     {
         $title = "Report Summary";
 
+        $nota = Sale::selectRaw('count(DISTINCT id_invoice) as id_invoice')->get('id_invoice');
+        $qty = Sale::sum('qty');
+        $ongkir = Sale::selectRaw('ongkir')->groupBy('id_invoice')->get();
+        $gross_sale = Sale::all();
+        $expenses = Store_equipment_cost::sum('total_price');
+        $discount_item = Sale::sum('diskon_item');
+        $discount_all = Sale::selectRaw('diskon_all')->groupBy('id_invoice')->get('diskon_all');
+        $cost = Sale::all();
+
         return view('reportSummary/summary', compact(
-            'title'
+            'title',
+            'nota',
+            'qty',
+            'ongkir',
+            'gross_sale',
+            'expenses',
+            'discount_item',
+            'discount_all',
+            'cost',
         ));
     }
 
@@ -58,7 +76,7 @@ class ReportSummaryController extends Controller
                 $data = Sale::with('details', 'store')
                     ->selectRaw('*,GROUP_CONCAT(produk SEPARATOR " ") as produk,GROUP_CONCAT(id_produk SEPARATOR " ") as id_produk')
 
-                    ->where('id', '<', $last_id)
+                    ->where('id_invoice', '<', $last_id)
 
                     ->groupBy('id_invoice')
                     ->orderBy('id_invoice', 'DESC')
@@ -68,11 +86,11 @@ class ReportSummaryController extends Controller
                 $data = Sale::with('details', 'store')
                     ->selectRaw('*,GROUP_CONCAT(produk SEPARATOR " ") as produk,GROUP_CONCAT(id_produk SEPARATOR " ") as id_produk')
 
-                    ->where([['id', '<', $last_id], ['id_reseller', $querys_result]])
-                    ->orwhere([['id', '<', $last_id], ['produk',  'Like', '%' . $querys_result . '%']])
-                    ->orwhere([['id', '<', $last_id], ['id_produk', $querys_result]])
-                    ->orwhere([['id', '<', $last_id], ['id_invoice', $querys_result]])
-                    ->orwhere([['id', '<', $last_id], ['users', $querys_result]])
+                    ->where([['id_invoice', '<', $last_id], ['id_reseller', $querys_result]])
+                    ->orwhere([['id_invoice', '<', $last_id], ['produk',  'Like', '%' . $querys_result . '%']])
+                    ->orwhere([['id_invoice', '<', $last_id], ['id_produk', $querys_result]])
+                    ->orwhere([['id_invoice', '<', $last_id], ['id_invoice', $querys_result]])
+                    ->orwhere([['id_invoice', '<', $last_id], ['users', $querys_result]])
 
                     ->orderBy('id_invoice', 'DESC')
                     ->groupBy('id_invoice')

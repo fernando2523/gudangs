@@ -133,11 +133,11 @@
 @endforeach
 @if ($count == 0)
     <tr style="width: 100%">
-        <td colspan="10" align="center">
+        <td colspan="11" align="center">
             No More Data...
         </td>
     </tr>
     <input type="hidden" name="last_id[]" value="last">
 @else
-    <input type="hidden" name="last_id[]" value="{{ $datas->id }}">
+    <input type="hidden" name="last_id[]" value="{{ $datas->id_invoice }}">
 @endif
