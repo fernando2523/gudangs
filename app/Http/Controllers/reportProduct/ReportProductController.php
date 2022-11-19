@@ -20,11 +20,15 @@ class ReportProductController extends Controller
 
         $get_qty = Sale::sum('qty');
         $get_gross = Sale::all();
+        $get_discitem = Sale::all()->sum('diskon_item');
+        $get_costs = Sale::all();
 
         return view('reportProduct/product', compact(
             'title',
             'get_gross',
-            'get_qty'
+            'get_qty',
+            'get_discitem',
+            'get_costs'
         ));
     }
 

@@ -16,4 +16,10 @@ class Store extends Model
 
         return $this->hasMany(Warehouse::class, 'id_ware', 'id_ware');
     }
+
+    public function sales()
+    {
+
+        return $this->hasMany(Sale::class, 'id_store', 'id_store')->groupBy('id_store');
+    }
 }

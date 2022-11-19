@@ -61,7 +61,17 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">GROSS SALE</div>
-                                    <h4 class="text-default fs-12px text-center">Rp 150.000</h4>
+                                    <h4 class="text-default fs-12px text-center">
+                                        @php
+                                            $total_gross = 0;
+                                        @endphp
+                                        @foreach ($get_gross as $gross)
+                                            @php
+                                                $total_gross = $total_gross + intval($gross->qty * $gross->selling_price);
+                                            @endphp
+                                        @endforeach
+                                        @currency($total_gross)
+                                    </h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -78,7 +88,9 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">DISCOUNT</div>
-                                    <h4 class="text-yellow fs-12px text-center">Rp 150.000</h4>
+                                    <h4 class="text-yellow fs-12px text-center">
+                                        @currency($get_discitem)
+                                    </h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -95,7 +107,12 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">NET SALES</div>
-                                    <h4 class="text-white fs-12px text-center">Rp 150.000</h4>
+                                    <h4 class="text-white fs-12px text-center">
+                                        @php
+                                            $netsales = $total_gross - $get_discitem;
+                                        @endphp
+                                        @currency($netsales)
+                                    </h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -112,7 +129,17 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">COSTS</div>
-                                    <h4 class="text-indigo fs-12px text-center">Rp 150.000</h4>
+                                    <h4 class="text-indigo fs-12px text-center">
+                                        @php
+                                            $total_cost = 0;
+                                        @endphp
+                                        @foreach ($get_costs as $costs)
+                                            @php
+                                                $total_cost = $total_cost + intval($costs->qty * $costs->m_price);
+                                            @endphp
+                                        @endforeach
+                                        @currency($total_cost)
+                                    </h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -129,7 +156,12 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">PROFIT </div>
-                                    <h4 class="text-lime fs-12px text-center">Rp 150.000</h4>
+                                    <h4 class="text-lime fs-12px text-center">
+                                        @php
+                                            $profit = $netsales - $total_cost;
+                                        @endphp
+                                        @currency($profit)
+                                    </h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -255,25 +287,23 @@
                         "render": function(data, type, row) {
                             if (row.image_product[0]['img'] === "") {
                                 return '<span><img src="/product/defaultimg.png" alt="" width="100" height="100" class="rounded"></span><span class="fw-bold text-default"><br>' +
-                                    row
-                                    .id_produk + '</span>';
+                                    row.id_produk + '</span>';
                             } else {
                                 return '<span><img src="/product/' + row.image_product[0]['img'] +
                                     '" alt="" width="95"  height="95" class="rounded"></span><span class="fw-bold text-default"><br>' +
-                                    row
-                                    .id_produk + '</span>';
+                                    row.id_produk + '</span>';
                             }
                         },
                     }, {
                         data: 'produk',
                         name: 'produk',
-                        class: 'text-left',
+                        class: 'text-left  fw-bold',
                         searchable: true,
                         "render": function(data, type, row, meta) {
                             return '<span class="fw-bold fs-14px text-white">' + row
                                 .produk +
                                 '</span><br><span class="fw-bold"><span class="fw-bold">' +
-                                row.brand +
+                                row.id_brand +
                                 '</span>';
                         },
                     }, {

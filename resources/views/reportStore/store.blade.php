@@ -43,7 +43,8 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="mb-1 text-default fw-bold text-center">QTY</div>
-                                    <h4 class="text-white fs-12px text-center">10 PCS
+                                    <h4 class="text-white fs-12px text-center">
+                                        {{ $get_qty }} PCS
                                     </h4>
                                 </div>
                             </div>
@@ -61,7 +62,17 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">GROSS SALE</div>
-                                    <h4 class="text-default fs-12px text-center">Rp 150.000</h4>
+                                    <h4 class="text-default fs-12px text-center">
+                                        @php
+                                            $total_gross = 0;
+                                        @endphp
+                                        @foreach ($get_gross as $gross)
+                                            @php
+                                                $total_gross = $total_gross + intval($gross->qty * $gross->selling_price);
+                                            @endphp
+                                        @endforeach
+                                        @currency($total_gross)
+                                    </h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -78,7 +89,9 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">DISCOUNT</div>
-                                    <h4 class="text-warning fs-12px text-center">Rp 150.000</h4>
+                                    <h4 class="text-yellow fs-12px text-center">
+                                        @currency($get_discitem)
+                                    </h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -95,7 +108,12 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">NET SALES</div>
-                                    <h4 class="text-info fs-12px text-center">Rp 150.000</h4>
+                                    <h4 class="text-white fs-12px text-center">
+                                        @php
+                                            $netsales = $total_gross - $get_discitem;
+                                        @endphp
+                                        @currency($netsales)
+                                    </h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -112,7 +130,17 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">COSTS</div>
-                                    <h4 class="text-danger fs-12px text-center">Rp 150.000</h4>
+                                    <h4 class="text-indigo fs-12px text-center">
+                                        @php
+                                            $total_cost = 0;
+                                        @endphp
+                                        @foreach ($get_costs as $costs)
+                                            @php
+                                                $total_cost = $total_cost + intval($costs->qty * $costs->m_price);
+                                            @endphp
+                                        @endforeach
+                                        @currency($total_cost)
+                                    </h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -129,7 +157,12 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">PROFIT </div>
-                                    <h4 class="text-lime fs-12px text-center">Rp 150.000</h4>
+                                    <h4 class="text-lime fs-12px text-center">
+                                        @php
+                                            $profit = $netsales - $total_cost;
+                                        @endphp
+                                        @currency($profit)
+                                    </h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -177,7 +210,7 @@
                                 <tr>
                                     <th class="text-center" width="2%" style="color: #a8b6bc !important;">NO
                                     </th>
-                                    <th class="text-center" width="30%" style="color: #a8b6bc !important;">STORE
+                                    <th class="text-left" width="30%" style="color: #a8b6bc !important;">STORE
                                     </th>
                                     </th>
                                     <th class="text-center" width="5%" style="color: #a8b6bc !important;">QTY
@@ -247,57 +280,129 @@
                     class: 'text-center fw-bold',
                     searchable: false
                 }, {
-                    data: 'store',
-                    name: 'store',
+                    data: 'id_store',
+                    name: 'id_store',
                     class: 'text-left fw-bold text-white',
                     searchable: true,
                 }, {
-                    data: 'id_store',
-                    name: 'id_store',
+                    data: 'store_qtys',
+                    name: 'store_qtys',
                     class: 'text-center fw-bold',
                     searchable: true,
                     "render": function(data, type, row, meta) {
-                        return 'QTY';
+                        return row.store_qtys[0]['qty'];
                     },
                 }, {
-                    data: 'warehouses',
-                    name: 'warehouses',
+                    data: 'store_gross',
+                    name: 'store_gross',
                     class: 'text-center fw-bold',
                     searchable: true,
                     "render": function(data, type, row, meta) {
-                        return 'GROSS SALE';
+                        let rupiah = Intl.NumberFormat('id-ID');
+
+                        gross = 0;
+                        for (i = 0; i < row.store_gross.length; i++) {
+                            gross = parseInt(gross) + (parseInt(row
+                                .store_gross[i][
+                                    'qty'
+                                ]) * parseInt(row
+                                .store_gross[i][
+                                    'selling_price'
+                                ]));
+                        }
+                        totalgross = gross;
+
+                        return rupiah.format(totalgross);
                     },
                 }, {
-                    data: 'warehouses',
-                    name: 'warehouses',
+                    data: 'store_disc_item',
+                    name: 'store_disc_item',
                     class: 'text-center fw-bold',
                     searchable: true,
                     "render": function(data, type, row, meta) {
-                        return 'DISC ITEM';
+                        let rupiah = Intl.NumberFormat('id-ID');
+
+                        return rupiah.format(row.store_disc_item[0]['disc']);
                     },
                 }, {
-                    data: 'warehouses',
-                    name: 'warehouses',
+                    data: 'store_gross',
+                    name: 'store_gross',
                     class: 'text-center fw-bold',
                     searchable: true,
                     "render": function(data, type, row, meta) {
-                        return 'NET SALE';
+                        let rupiah = Intl.NumberFormat('id-ID');
+
+                        gross = 0;
+                        for (i = 0; i < row.store_gross.length; i++) {
+                            gross = parseInt(gross) + (parseInt(row
+                                .store_gross[i][
+                                    'qty'
+                                ]) * parseInt(row
+                                .store_gross[i][
+                                    'selling_price'
+                                ]));
+                        }
+                        netsales = gross - row.store_disc_item[0]['disc'];
+
+                        return rupiah.format(netsales);
                     },
                 }, {
-                    data: 'warehouses',
-                    name: 'warehouses',
+                    data: 'store_costs',
+                    name: 'store_costs',
                     class: 'text-center fw-bold',
                     searchable: true,
                     "render": function(data, type, row, meta) {
-                        return 'COST';
+                        let rupiah = Intl.NumberFormat('id-ID');
+
+                        costs = 0;
+                        for (i = 0; i < row.store_costs.length; i++) {
+                            costs = parseInt(costs) + (parseInt(row
+                                .store_costs[i][
+                                    'qty'
+                                ]) * parseInt(row
+                                .store_costs[i][
+                                    'm_price'
+                                ]));
+                        }
+                        totalcosts = costs;
+
+                        return rupiah.format(totalcosts);
                     },
                 }, {
-                    data: 'warehouses',
-                    name: 'warehouses',
+                    data: 'store_costs',
+                    name: 'profit',
                     class: 'text-center fw-bold',
                     searchable: true,
                     "render": function(data, type, row, meta) {
-                        return 'PROFIT';
+                        let rupiah = Intl.NumberFormat('id-ID');
+
+                        gross = 0;
+                        for (i = 0; i < row.store_gross.length; i++) {
+                            gross = parseInt(gross) + (parseInt(row
+                                .store_gross[i][
+                                    'qty'
+                                ]) * parseInt(row
+                                .store_gross[i][
+                                    'selling_price'
+                                ]));
+                        }
+                        netsales = gross - row.store_disc_item[0]['disc'];
+
+                        costs = 0;
+                        for (i = 0; i < row.store_costs.length; i++) {
+                            costs = parseInt(costs) + (parseInt(row
+                                .store_costs[i][
+                                    'qty'
+                                ]) * parseInt(row
+                                .store_costs[i][
+                                    'm_price'
+                                ]));
+                        }
+                        totalcosts = costs;
+
+                        totalprofit = netsales - totalcosts;
+
+                        return rupiah.format(totalprofit);
                     },
                 }, ],
                 dom: 'tip',
