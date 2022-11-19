@@ -145,6 +145,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        DB::beginTransaction();
         $getbrand = $request->id_brand;
         $get_brand = DB::table('brands')->where('id_brand', '=', $getbrand)->pluck('code');
         $get_brand2 = $get_brand->toArray();
@@ -358,7 +359,7 @@ class ProductController extends Controller
             $data3->save();
             //END DB SUPPLIER ORDER
         }
-
+        DB::commit();
         return redirect('product/products');
     }
 
