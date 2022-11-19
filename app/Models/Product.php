@@ -54,7 +54,7 @@ class Product extends Model
 
     public function supplier_order2()
     {
-        return $this->hasMany(Supplier_order::class, 'id_produk', 'id_produk');
+        return $this->hasMany(Supplier_order::class, 'id_produk', 'id_produk')->groupBy('id_produk');
     }
 
     public function supplier_variation()

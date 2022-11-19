@@ -170,6 +170,8 @@
                                     </th>
                                     <th class="text-center" width="7%" style="color: #a8b6bc !important;">REPEAT
                                     </th>
+                                    <th class="text-center" width="7%" style="color: #a8b6bc !important;">SOLD
+                                    </th>
                                     <th class="text-center" width="7%" style="color: #a8b6bc !important;">STOCK
                                     </th>
                                     <th class="text-center" width="10%" style="color: #a8b6bc !important;">ASSETS
@@ -242,24 +244,28 @@
                         class: 'text-center fw-bold',
                         searchable: true,
                     }, {
-                        data: 'tipe_order',
-                        name: 'tipe_order',
+                        data: 'supplier_order',
+                        name: 'supplier_order',
                         class: 'text-center',
                         searchable: true,
                         "render": function(data, type, row, meta) {
-                            if (row.tipe_order === "RELEASE") {
-                                return row.qty;
-                            }
+                            return row.supplier_order[0]['qty'];
                         },
                     }, {
-                        data: 'tipe_order',
-                        name: 'tipe_order',
+                        data: 'supplier_order',
+                        name: 'supplier_order',
                         class: 'text-center',
                         searchable: true,
                         "render": function(data, type, row, meta) {
-                            if (row.tipe_order === "REPEAT") {
-                                return row.qty;
-                            }
+                            return row.supplier_order[0]['tipe_order'];
+                        },
+                    }, {
+                        data: 'id_produk',
+                        name: 'id_produk',
+                        class: 'text-center fw-bold',
+                        searchable: true,
+                        "render": function(data, type, row, meta) {
+                            return 0;
                         },
                     }, {
                         data: 'product_variation_asset',
