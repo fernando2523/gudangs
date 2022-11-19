@@ -35,38 +35,50 @@
             </td>
         @endif
         <td colspan="5" class="fw-bold fs-12px" align="right" style="padding-top: 20px;">
-            <span class="fw-bold text-white">Profit : <span class="text-lime">Rp 350.000</span></span>
+            <span class="fw-bold text-white">Profit :
+                @php
+                    $total_profit = 0;
+                @endphp
+                @for ($i = 0; $i < count($datas->details2); $i++)
+                    @php
+                        $total_profit = $total_profit + $datas->details2[$i]['cost'];
+                    @endphp
+                @endfor
+                <span class="text-lime">
+                    @currency($total_profit)
+                </span>
+            </span>
         </td>
     </tr>
     {{-- Looping --}}
-    @for ($i = 0; $i < count($datas->details); $i++)
+    @for ($i = 0; $i < count($datas->details2); $i++)
         <tr class="tr-custom">
             <td class="text-center fw-bold" style="border-right-width: 1px;">
                 {{ $i + 1 }}
             </td>
             <td class="text-left fw-bold" style="border-right-width: 1px;">
-                <span>{{ $datas->details[$i]['produk'] }}</span>
+                <span>{{ $datas->details2[$i]['produk'] }}</span>
             </td>
             <td class="text-center" style="border-right-width: 1px;">
-                {{ $datas->details[$i]['id_produk'] }}
+                {{ $datas->details2[$i]['id_produk'] }}
             </td>
             <td class="text-center text-white fw-bold" style="border-right-width: 1px;">
-                {{ $datas->details[$i]['size'] }}
+                {{ $datas->details2[$i]['size'] }}
             </td>
             <td class="text-center text-white fw-bold" style="border-right-width: 1px;">
-                {{ $datas->details[$i]['qty'] }}
+                {{ $datas->details2[$i]['qty'] }}
             </td>
             <td class="text-center text-info fw-bold" style="border-right-width: 1px;">
-                Rp 250.000
+                @currency($datas->details2[$i]['cost'])
             </td>
             <td class="text-center fw-bold" style="border-right-width: 1px;">
-                @currency($datas->details[$i]['selling_price'])
+                @currency($datas->details2[$i]['selling_price'])
             </td>
             <td class="text-center fw-bold" style="border-right-width: 1px;">
-                @currency($datas->details[$i]['diskon_item'])
+                @currency($datas->details2[$i]['diskon_item'])
             </td>
             <td colspan="4" class="text-center fw-bold" style="border-right-width: 1px;">
-                @currency($datas->details[$i]['subtotal'])
+                @currency($datas->details2[$i]['subtotal'])
             </td>
         </tr>
     @endfor

@@ -50,14 +50,14 @@ class ReportSummaryController extends Controller
 
         if ($last_id == '0') {
             if ($querys_result == '') {
-                $data = Sale::with('details', 'store')
+                $data = Sale::with('details2', 'store')
                     ->selectRaw('*,GROUP_CONCAT(produk SEPARATOR " ") as produk,GROUP_CONCAT(id_produk SEPARATOR " ") as id_produk')
                     ->groupBy('id_invoice')
                     ->orderBy('id_invoice', 'DESC')
                     ->limit(10)
                     ->get();
             } else {
-                $data = Sale::with('details', 'store')
+                $data = Sale::with('details2', 'store')
                     ->selectRaw('*,GROUP_CONCAT(produk SEPARATOR " ") as produk,GROUP_CONCAT(id_produk SEPARATOR " ") as id_produk')
 
                     ->where('id_reseller', $querys_result)
@@ -73,7 +73,7 @@ class ReportSummaryController extends Controller
             }
         } else {
             if ($querys_result == '') {
-                $data = Sale::with('details', 'store')
+                $data = Sale::with('details2', 'store')
                     ->selectRaw('*,GROUP_CONCAT(produk SEPARATOR " ") as produk,GROUP_CONCAT(id_produk SEPARATOR " ") as id_produk')
 
                     ->where('id_invoice', '<', $last_id)
@@ -83,7 +83,7 @@ class ReportSummaryController extends Controller
                     ->limit(10)
                     ->get();
             } else {
-                $data = Sale::with('details', 'store')
+                $data = Sale::with('details2', 'store')
                     ->selectRaw('*,GROUP_CONCAT(produk SEPARATOR " ") as produk,GROUP_CONCAT(id_produk SEPARATOR " ") as id_produk')
 
                     ->where([['id_invoice', '<', $last_id], ['id_reseller', $querys_result]])
