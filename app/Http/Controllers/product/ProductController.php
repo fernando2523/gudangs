@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\brand;
 use App\Models\Sub_category;
-use App\Models\Warehouse;
+use App\Models\warehouse;
 use App\Models\Supplier;
 use App\Models\Supplier_order;
 use App\Models\Supplier_variation;
@@ -53,10 +53,11 @@ class ProductController extends Controller
                 DB::raw('COUNT(DISTINCT id_produk) as countidproduk'),
                 DB::raw('SUM(qty) as totalQty'),
                 DB::raw('id_ware'),
-            )->where('qty', '!=', '0')->groupBy('id_produk')->get();
-
+            )->where('qty', '!=', '0')->groupBy('id_ware')->get();
 
         $get_Supplier_Order = DB::table('supplier_orders')->select(DB::raw('idpo'), DB::raw('tanggal'), DB::raw('id_sup'),)->groupBy('idpo', 'tanggal', 'id_sup')->orderBy('idpo', 'desc')->limit(10)->get();
+
+        $selectWarehouse = warehouse::all();
 
         return view('product.products', compact(
             'title',
@@ -69,14 +70,37 @@ class ProductController extends Controller
             'get_perware',
             'getsproduct',
             'get_Supplier_Order',
-            'getnamewarehouse'
+            'getnamewarehouse',
+            'selectWarehouse'
         ));
     }
 
-    public function tableproduct(Request $request)
+    public function detail_product(Request $request)
     {
         if ($request->ajax()) {
-            $product = Product::with('warehouse', 'image_product', 'product_variation', 'areas')->get();
+            $id_ware = $request->id_ware;
+            $getbrand = brand::all();
+            $getcategory = Sub_category::all();
+
+            return view('product/detail_product', compact(
+                'id_ware',
+                'getbrand',
+                'getcategory'
+            ));
+        }
+    }
+
+    public function tableproduct(Request $request, $id_ware)
+    {
+        if ($request->ajax()) {
+            if ($id_ware === "all_ware") {
+                $product = Product::with('warehouse', 'image_product', 'product_variation', 'areas')->get();
+            } else {
+                $product = Product::with('warehouse', 'image_product', 'product_variation', 'areas')
+                    ->where('id_ware', '=', $id_ware)
+                    ->get();
+            }
+
             return DataTables::of($product)
                 ->addIndexColumn()
                 ->addColumn('action', function () {

@@ -56,4 +56,30 @@ class AssetController extends Controller
                 ->make(true);
         }
     }
+
+    public function load_detail_asset(Request $request)
+    {
+        if ($request->ajax()) {
+            $id_produk = $request->id_produk;
+
+            return view('asset/load_detail_asset', compact(
+                'id_produk',
+            ));
+        }
+    }
+
+    public function table_detail_asset(Request $request, $id_produk)
+    {
+        if ($request->ajax()) {
+            $supplier = Supplier_order::with('supplier_variation2')
+                ->where('id_produk', $id_produk)
+                ->get();
+
+            return DataTables::of($supplier)
+                ->addIndexColumn()
+                ->addColumn('action', function () {
+                })
+                ->make(true);
+        }
+    }
 }

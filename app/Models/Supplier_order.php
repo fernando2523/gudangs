@@ -16,6 +16,11 @@ class Supplier_order extends Model
         return $this->hasMany(Supplier_variation::class, 'idpo', 'idpo')->orderBy('idpo');
     }
 
+    public function supplier_variation2()
+    {
+        return $this->hasMany(Supplier_variation::class, 'id_produk', 'id_produk');
+    }
+
     public function suppliers_detail()
     {
         return $this->hasMany(Supplier::class, 'id_sup', 'id_sup');
