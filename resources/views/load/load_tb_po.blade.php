@@ -27,20 +27,24 @@
             </td>
             <td class="text-left fw-bold" style="border-right-width: 1px;">
                 {{ $data->suppliers_details[$i]['produk'] }}
-                {{-- <span style="display: block;float:right;cursor: pointer;"
-                            onclick="showQty('{{ $data->suppliers_details[$i]['id_produk'] }}','{{ $data->suppliers_details[$i]['idpo'] }}','{{ $data->suppliers_details[$i]['id_ware'] }}','{{ $data->suppliers_details[$i]['produk'] }}')">
-                            <i class="fas fa-lg fa-fw me-2 fa-eye text-success"></i>
-                        </span> --}}
                 <span style="cursor: pointer;"
                     onclick="showQty('{{ $data->suppliers_details[$i]['id_produk'] }}','{{ $data->suppliers_details[$i]['idpo'] }}','{{ $data->suppliers_details[$i]['id_ware'] }}','{{ $data->suppliers_details[$i]['produk'] }}')">
                     <i class="fas fa-lg fa-fw me-2 fa-eye text-success"></i>
                 </span>
             </td>
             <td class="text-center" style="border-right-width: 1px;">
+                <?php
+                if (count($data->products) > 0) {
+                    ?>
                 <span style="cursor: pointer;margin-right:5px;"
                     onclick="editPo('{{ $data->suppliers_details[$i]['id_produk'] }}','{{ $data->suppliers_details[$i]['idpo'] }}','{{ $data->suppliers_details[$i]['id_ware'] }}','{{ $data->suppliers_details[$i]['produk'] }}')">
                     <i class="fas fa-lg fa-edit text-info"></i>
                 </span>
+                <?php    
+            }
+                ?>
+
+
                 <span style="cursor: pointer;"onclick="deleteitemModal({{ $data->suppliers_details[$i]['id'] }})">
                     <i class="fas fa-lg fa-times-circle text-danger"></i>
                 </span>

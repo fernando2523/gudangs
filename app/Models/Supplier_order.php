@@ -61,4 +61,9 @@ class Supplier_order extends Model
     {
         return $this->hasMany(variation::class, 'id_produk', 'id_produk')->selectRaw('*,sum(qty) as stock')->groupBy('id_produk');
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'id_produk', 'id_produk')->groupBy('id_produk');
+    }
 }

@@ -61,13 +61,13 @@ class PurchaseOrderController extends Controller
 
         if ($last_id == '0') {
             if ($querys == '') {
-                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation')
+                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
                     ->orderBy('idpo', 'DESC')
                     ->groupBy('idpo', 'tanggal', 'users')
                     ->limit(10)
                     ->get();
             } else {
-                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation')
+                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
                     ->where('idpo', $querys)
                     ->orwhere('produk', 'LIKE', '%' . $querys . '%')
                     ->orwhere('id_produk', 'LIKE', '%' . $querys . '%')
@@ -78,14 +78,14 @@ class PurchaseOrderController extends Controller
             }
         } else {
             if ($querys == '') {
-                $datapo = Supplier_order::groupBy('idpo', 'tanggal', 'users')
+                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
                     ->where('id', '<', $last_id)
                     ->orderBy('idpo', 'DESC')
                     ->groupBy('idpo', 'tanggal', 'users')
                     ->limit(10)
                     ->get();
             } else {
-                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation')
+                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
                     ->where([['id', '<', $last_id], ['idpo', $querys]])
                     ->orwhere([['id', '<', $last_id], ['produk', $querys]])
                     ->orwhere([['id', '<', $last_id], ['id_produk', 'LIKE', '%' . $querys . '%']])
