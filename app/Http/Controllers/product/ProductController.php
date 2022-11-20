@@ -425,13 +425,6 @@ class ProductController extends Controller
                 'brand' => $request->edit_id_brand,
             ]);
 
-        for ($i = 0; $i < Count($request->size); $i++) {
-            variation::where('id_produk', $request->id_produk)->where('id_ware', $request->id_ware)->where('size', $request->size[$i])
-                ->update([
-                    'qty' => $request->qty[$i],
-                ]);
-        }
-
         $getimg = Image_product::all()->where('id_produk', '=', $request->id_produk)->pluck('id');
         $getimg2 = $getimg->toArray();
         $getimg3 = implode(" ", $getimg2);
