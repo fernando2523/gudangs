@@ -206,7 +206,7 @@
             <!-- END -->
         </div>
 
-        {{-- @include('purchase.edit') --}}
+        @include('asset.detail')
 
         <link href="{{ URL::asset('/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"
             rel="stylesheet" />
@@ -238,12 +238,12 @@
                     columns: [{
                         data: 'DT_RowIndex',
                         name: 'id',
-                        class: 'text-center fw-bold',
+                        class: 'text-center fw-bold text-white',
                         searchable: false
                     }, {
                         data: 'produk',
                         name: 'produk',
-                        class: 'text-left',
+                        class: 'text-left text-white',
                         searchable: true,
                         "render": function(data, type, row) {
                             return '<span class="fw-bold">' + row.produk + '</span>';
@@ -251,12 +251,12 @@
                     }, {
                         data: 'id_produk',
                         name: 'id_produk',
-                        class: 'text-center fw-bold',
+                        class: 'text-center fw-bold text-white',
                         searchable: true,
                     }, {
                         data: 'supplier_order3',
                         name: 'supplier_order3',
-                        class: 'text-center fw-bold',
+                        class: 'text-center fw-bold text-white',
                         searchable: true,
                         "render": function(data, type, row) {
                             var release = 0;
@@ -274,7 +274,7 @@
                     }, {
                         data: 'supplier_order3',
                         name: 'supplier_order3',
-                        class: 'text-center fw-bold',
+                        class: 'text-center fw-bold text-white',
                         searchable: true,
                         "render": function(data, type, row) {
                             var repeat = 0;
@@ -292,13 +292,17 @@
                     }, {
                         data: 'sales',
                         name: 'sales',
-                        class: 'text-center fw-bold',
+                        class: 'text-center fw-bold text-yellow',
                         searchable: true,
                         "render": function(data, type, row) {
                             var sales = '';
 
-                            for (let index = 0; index < data.length; index++) {
-                                sales = sales + row.sales[index]['sold'];
+                            if (data.length === null) {
+                                for (let index = 0; index < data.length; index++) {
+                                    sales = sales + row.sales[index]['sold'];
+                                }
+                            } else {
+                                sales = "0";
                             }
 
                             return sales;
@@ -306,7 +310,7 @@
                     }, {
                         data: 'stock',
                         name: 'stock',
-                        class: 'text-center fw-bold',
+                        class: 'text-center fw-bold text-success',
                         searchable: true,
                         "render": function(data, type, row) {
                             var stock = 0;
@@ -320,7 +324,7 @@
                     }, {
                         data: 'stock',
                         name: 'assets',
-                        class: 'text-center fw-bold',
+                        class: 'text-center fw-bold text-lime',
                         searchable: true,
                         "render": function(data, type, row) {
                             var stock = 0;
@@ -346,7 +350,9 @@
                         name: 'action',
                         class: 'text-center fw-bold',
                         "render": function(data, type, row) {
-                            return '<span><a class="text-theme" style="cursor: pointer;" onclick="openmodaledit()"><i class="fas fa-xl bi bi-eye-fill"></i></a>';
+                            return '<span><a class="text-theme" style="cursor: pointer;" onclick="openmodaldetail(' +
+                                "'" + row.id_produk + "'" +
+                                ')"><i class="fas fa-xl bi bi-eye-fill"></i></a>';
                         },
                     }, ],
                     dom: 'tip',
@@ -366,5 +372,28 @@
                 });
             });
             // end
+        </script>
+
+        <script>
+            function openmodaldetail(id_produk) {
+                $('#modaldetail').modal('show');
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ URL::to('/load_detail_asset') }}",
+                    data: {
+                        id_produk: id_produk,
+                    },
+                    success: function(data) {
+                        $("#load_detail_asset").html(data);
+                    }
+                });
+            }
+
+            // function submitformedit() {
+            //     var value = document.getElementById('e_id').value;
+            //     document.getElementById('form_edit').action = "../asset/editact/" + value;
+            //     document.getElementById("form_edit").submit();
+            // }
         </script>
     @endsection

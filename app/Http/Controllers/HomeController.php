@@ -41,8 +41,14 @@ class HomeController extends Controller
         $getTop_product = DB::table('sales')->select(DB::raw('SUM(qty) as qtys'), DB::raw('produk'), DB::raw('id_brand'))->groupBy('id_produk')->limit(10)->get();
         $getTop_reseller = DB::table('sales')->select(DB::raw('SUM(qty) as qtys'), DB::raw('id_reseller'))->where('customer', '=', 'RESELLER')->groupBy('id_reseller')->limit(10)->get();
 
-        $payment = intval($get_payment[0]->cashs) + intval($get_payment[0]->bcas) + intval($get_payment[0]->qriss);
-        $getTotalpayment = $payment - $get_expense;
+        if (count($get_payment) > 0) {
+            $payment = intval($get_payment[0]->cashs) + intval($get_payment[0]->bcas) + intval($get_payment[0]->qriss);
+            $getTotalpayment = $payment - $get_expense;
+        } else {
+            $payment = 0;
+            $getTotalpayment = $payment - $get_expense;
+        }
+
         // dd($getTotalpayment);
 
         return view('dashboard.dashboards', compact(

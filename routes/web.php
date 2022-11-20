@@ -151,6 +151,8 @@ route::any('/edit_po', [PurchaseOrderController::class, 'edit_po']);
 
 route::get('/asset/assets', [AssetController::class, 'assets'])->middleware('auth');
 route::any('/tableassets', [AssetController::class, 'tableassets'])->middleware('auth');
+route::any('/load_detail_asset', [AssetController::class, 'load_detail_asset'])->middleware('auth');
+route::any('/table_detail_asset/{id_produk}', [AssetController::class, 'table_detail_asset'])->middleware('auth');
 
 route::get('/sale/sales', [SaleController::class, 'sale'])->middleware('auth');
 route::any('/tablesale', [SaleController::class, 'tablesale']);

@@ -121,8 +121,12 @@
                                         <span class="flex-grow-1">REVENUE</span>
                                     </div>
                                     <div class="row align-items-center mb-0">
-                                        @if ($getTotalpayment > 0)
-                                            <h3 class="mb-0 fs-14px">@currency($getTotalpayment)</h3>
+                                        @if (count($get_payment) > 0)
+                                            @if ($getTotalpayment > 0)
+                                                <h3 class="mb-0 fs-14px">@currency($getTotalpayment)</h3>
+                                            @else
+                                                <h3 class="mb-0 fs-14px">Rp 0</h3>
+                                            @endif
                                         @else
                                             <h3 class="mb-0 fs-14px">Rp 0</h3>
                                         @endif
@@ -161,8 +165,12 @@
                                 <!-- BEGIN stat-lg -->
                                 <div class="row align-items-center mb-2">
                                     <div class="col-12">
-                                        @if ($get_payment[0]->cashs > 0)
-                                            <h3 class="mb-0 fs-14px">@currency($get_payment[0]->cashs)</h3>
+                                        @if (count($get_payment) > 0)
+                                            @if ($get_payment[0]->cashs > 0)
+                                                <h3 class="mb-0 fs-14px">@currency($get_payment[0]->cashs)</h3>
+                                            @else
+                                                <h3 class="mb-0 fs-14px">Rp 0</h3>
+                                            @endif
                                         @else
                                             <h3 class="mb-0 fs-14px">Rp 0</h3>
                                         @endif
@@ -199,8 +207,12 @@
                                 <!-- BEGIN stat-lg -->
                                 <div class="row align-items-center mb-2">
                                     <div class="col-12">
-                                        @if ($get_payment[0]->bcas > 0)
-                                            <h3 class="mb-0 fs-14px">@currency($get_payment[0]->bcas)</h3>
+                                        @if (count($get_payment) > 0)
+                                            @if ($get_payment[0]->bcas > 0)
+                                                <h3 class="mb-0 fs-14px">@currency($get_payment[0]->bcas)</h3>
+                                            @else
+                                                <h3 class="mb-0 fs-14px">Rp 0</h3>
+                                            @endif
                                         @else
                                             <h3 class="mb-0 fs-14px">Rp 0</h3>
                                         @endif
@@ -237,8 +249,12 @@
                                 <!-- BEGIN stat-lg -->
                                 <div class="row align-items-center mb-2">
                                     <div class="col-12">
-                                        @if ($get_payment[0]->qriss > 0)
-                                            <h3 class="mb-0 fs-14px">@currency($get_payment[0]->qriss)</h3>
+                                        @if (count($get_payment) > 0)
+                                            @if ($get_payment[0]->qriss > 0)
+                                                <h3 class="mb-0 fs-14px">@currency($get_payment[0]->qriss)</h3>
+                                            @else
+                                                <h3 class="mb-0 fs-14px">Rp 0</h3>
+                                            @endif
                                         @else
                                             <h3 class="mb-0 fs-14px">Rp 0</h3>
                                         @endif
@@ -271,11 +287,15 @@
                                 </div>
                                 <div class="row align-items-center mb-2 mt-3">
                                     <div class="col-12">
-                                        @php
-                                            $totalpayment = intval($get_payment[0]->cashs) + intval($get_payment[0]->bcas) + intval($get_payment[0]->qriss);
-                                        @endphp
-                                        @if ($totalpayment > 0)
-                                            <h3 class="mb-0 fs-14px">@currency($totalpayment)</h3>
+                                        @if (count($get_payment) > 0)
+                                            @php
+                                                $totalpayment = intval($get_payment[0]->cashs) + intval($get_payment[0]->bcas) + intval($get_payment[0]->qriss);
+                                            @endphp
+                                            @if ($totalpayment > 0)
+                                                <h3 class="mb-0 fs-14px">@currency($totalpayment)</h3>
+                                            @else
+                                                <h3 class="mb-0 fs-14px">Rp 0</h3>
+                                            @endif
                                         @else
                                             <h3 class="mb-0 fs-14px">Rp 0</h3>
                                         @endif
