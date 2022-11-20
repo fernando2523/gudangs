@@ -28,6 +28,7 @@ use App\Http\Controllers\reportProduct\ReportProductController;
 use App\Http\Controllers\reportStore\ReportStoreController;
 use App\Http\Controllers\reportBrand\ReportBrandController;
 use App\Http\Controllers\reportQuality\ReportQualityController;
+use App\Http\Controllers\productTransfer\ProductTransferController;
 
 /*
 |--------------------------------------------------------------------------
@@ -215,3 +216,8 @@ route::any('/tablereportbrand', [ReportBrandController::class, 'tablereportbrand
 
 route::get('/reportQuality/quality', [ReportQualityController::class, 'quality'])->middleware('auth');
 route::any('/tablereportquality', [ReportQualityController::class, 'tablereportquality'])->middleware('auth');
+
+route::get('/productTransfer/productTransfers', [ProductTransferController::class, 'productTransfers'])->middleware('auth');
+route::any('/tableproducttransfer', [ProductTransferController::class, 'tableproducttransfer'])->middleware('auth');
+route::any('/load_product_transfer', [ProductTransferController::class, 'load_product_transfer'])->middleware('auth');
+route::any('/productTransfer/transfer/{id_produk}', [ProductTransferController::class, 'transfer'])->middleware('auth');

@@ -97,8 +97,8 @@
                             <span class="menu-text">Data Purchase Order</span>
                         </a>
                     </div>
-                    <div class="menu-item">
-                        <a href="email_inbox.html" class="menu-link">
+                    <div class="menu-item {{ Request::is('productTransfer/productTransfers') ? 'active' : '' }}">
+                        <a href="/productTransfer/productTransfers" class="menu-link">
                             <span class="menu-icon"><i class="bi bi-arrow-left-right text-theme"></i></span>
                             <span class="menu-text">Product Transfer</span>
                         </a>
