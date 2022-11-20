@@ -297,7 +297,7 @@
                         "render": function(data, type, row) {
                             var sales = '';
 
-                            if (data.length === null) {
+                            if (row.sales.length > 0) {
                                 for (let index = 0; index < data.length; index++) {
                                     sales = sales + row.sales[index]['sold'];
                                 }

@@ -191,14 +191,15 @@ class SaleController extends Controller
         $discnota = $request->rs_discnota;
         $subtotal = $request->r_subtotal;
         $grandtotal = $request->rs_payment;
-        $cash = $request->r_cash;
-        $bca = $request->r_bca;
-        $mandiri = $request->r_mandiri;
-        $banktf = $request->r_banktf;
         $ongkir = $request->rs_ongkir;
         $cashier = $request->cashier;
         $idbrand = $request->r_id_brand;
         $idproduk = $request->r_id_produk;
+
+        $cash = $request->r_cash;
+        $bca = $request->r_bca;
+        $mandiri = $request->r_mandiri;
+        $banktf = $request->r_banktf;
 
         if ($request->reseller_name === null) {
             $reseller_name = '-';
@@ -209,25 +210,25 @@ class SaleController extends Controller
         if ($cash === null) {
             $cash = '0';
         } else {
-            $cash = $request->r_cash;
+            $cash = preg_replace("/[^0-9]/", "", $request->r_cash);
         }
 
         if ($bca === null) {
             $bca = '0';
         } else {
-            $bca = $request->r_bca;
+            $bca = preg_replace("/[^0-9]/", "", $request->r_bca);
         }
 
         if ($mandiri === null) {
             $mandiri = '0';
         } else {
-            $mandiri = $request->r_mandiri;
+            $mandiri = preg_replace("/[^0-9]/", "", $request->r_mandiri);
         }
 
         if ($banktf === null) {
             $banktf = '0';
         } else {
-            $banktf = $request->r_banktf;
+            $banktf = preg_replace("/[^0-9]/", "", $request->r_banktf);
         }
 
 

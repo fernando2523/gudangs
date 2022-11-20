@@ -155,25 +155,6 @@
                             $("#search_barcode").addClass("border-theme");
                         });
 
-                        // $("#search_product").change(function() {
-                        //     console.log(this.value);
-                        // });
-
-                        // $("#search_product").bind("enterKey", function(e) {
-                        //     var search_data = document.getElementById('search_product').value;
-                        //     var area = $(this).find(':selected').data("area");
-                        //     document.getElementById('validate').value = 0;
-                        //     val_last = '';
-                        //     area = area;
-                        //     page = 1;
-                        //     loadData(page, area, search_data);
-                        // });
-
-                        // $('#search_product').keyup(function(e) {
-                        //     if (e.keyCode == 13) {
-                        //         $(this).trigger("enterKey");
-                        //     }
-                        // });
 
                         $('#search_product').change(function(e) {
                             var search_data = document.getElementById('search_product').value;
@@ -488,27 +469,25 @@
                             <div class="mb-4 mt-4">Payment Method</div>
                             <div class="row mb-3" align="center">
                                 <div class="col-3">
-                                    <img src="https://lokigudang.com/img/cash1.png" width="55%">
+                                    <img src="{{ URL::asset('/assets/img/cash1.png') }}" width="55%">
                                 </div>
                                 <div class="col-9">
                                     <input class="form-control" type="text" placeholder="Cash Amount" min="0"
-                                        id="r_cash" name="r_cash" value=""
-                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                        id="r_cash" name="r_cash" value="" type-currency="IDR">
                                 </div>
                             </div>
 
                             <div class="row mb-3" align="center">
                                 <div class="col-3">
-                                    <img src="https://lokigudang.com/img/bca1.png" width="55%">
+                                    <img src="{{ URL::asset('/assets/img/bca1.png') }}" width="55%">
                                 </div>
                                 <div class="col-9">
                                     <input class="form-control" type="text" placeholder="BCA Amount" id="r_bca"
-                                        name="r_bca" value=""
-                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                        name="r_bca" value="" type-currency="IDR">
                                 </div>
                             </div>
 
-                            <div class="row mb-3" align="center">
+                            {{-- <div class="row mb-3" align="center">
                                 <div class="col-3">
                                     <img src="https://lokigudang.com/img/mandiri1.png" width="55%">
                                 </div>
@@ -517,16 +496,18 @@
                                         id="r_mandiri" name="r_mandiri" value=""
                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
                                 </div>
-                            </div>
+                            </div> --}}
+
+                            <input class="form-control" type="hidden" placeholder="MANDIRI Amount" id="r_mandiri"
+                                name="r_mandiri" value="">
 
                             <div class="row mb-3" align="center">
                                 <div class="col-3">
-                                    <img src="https://lokigudang.com/img/banktransfer.png" width="55%">
+                                    <img src="{{ URL::asset('/assets/img/qris.jpeg') }}" width="55%">
                                 </div>
                                 <div class="col-9">
-                                    <input class="form-control" type="text" placeholder="Bank Transfer Amount"
-                                        id="r_banktf" name="r_banktf" value=""
-                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                    <input class="form-control" type="text" placeholder="Qris Amount" id="r_banktf"
+                                        name="r_banktf" value="" type-currency="IDR">
                                 </div>
                             </div>
 
@@ -1056,25 +1037,36 @@
                             </tr>
                             `;
 
-                            document.getElementById("rh_subtotal").innerHTML = parseInt(document.getElementById("rs_subtotal")
-                                .value) + (parseInt(mdl_selling_price) * parseInt(mdl_qty));
+                            let rupiah = Intl.NumberFormat('id-ID');
+
+                            document.getElementById("rh_subtotal").innerHTML = rupiah.format(parseInt(document.getElementById(
+                                    "rs_subtotal")
+                                .value) + (parseInt(mdl_selling_price) * parseInt(mdl_qty)));
+
                             document.getElementById("rs_subtotal").value = parseInt(document.getElementById("rs_subtotal")
                                 .value) + (parseInt(mdl_selling_price) * parseInt(mdl_qty));
                             /////////////////////////////
-                            document.getElementById("rh_discitems").innerHTML = parseInt(document.getElementById("rs_discitems")
-                                .value) + parseInt(mdl_diskon_item);
+                            document.getElementById("rh_discitems").innerHTML = rupiah.format(parseInt(document.getElementById(
+                                    "rs_discitems")
+                                .value) + parseInt(mdl_diskon_item));
+
                             document.getElementById("rs_discitems").value = parseInt(document.getElementById("rs_discitems")
                                 .value) + parseInt(mdl_diskon_item);
                             /////////////////////////////
-                            document.getElementById("rh_payment").innerHTML = parseInt(document.getElementById("rs_subtotal")
+                            document.getElementById("rh_payment").innerHTML = rupiah.format(parseInt(document.getElementById(
+                                    "rs_subtotal")
                                 .value) - (parseInt(document.getElementById("rs_discitems").value) + parseInt(document
-                                .getElementById("rs_discnota").value) + parseInt(document.getElementById("rs_ongkir")
-                                .value));
+                                .getElementById("rs_discnota").value) + parseInt(document.getElementById(
+                                    "rs_ongkir")
+                                .value)));
+
                             document.getElementById("rs_payment").value = parseInt(document.getElementById("rs_subtotal")
                                 .value) - (parseInt(document.getElementById("rs_discitems").value) + parseInt(document
                                 .getElementById("rs_discnota").value) + parseInt(document.getElementById("rs_ongkir")
                                 .value));
-                            document.getElementById("pay_ammount").innerHTML = document.getElementById("rs_payment").value;
+
+                            document.getElementById("pay_ammount").innerHTML = rupiah.format(document.getElementById(
+                                "rs_payment").value);
                             /////////////////////////////
                             document.getElementById("mdl_qty").value = 1;
                             document.getElementById("mdl_diskon_item").value = 0;
@@ -1101,23 +1093,32 @@
                 var qty = document.getElementsByName('r_qty[]')[r].value;
                 var discitem = document.getElementsByName('r_diskon_item[]')[r].value;
 
-                document.getElementById("rh_subtotal").innerHTML = parseInt(document.getElementById("rs_subtotal").value) - (
-                    parseInt(subtotal) * parseInt(qty));
+                let rupiah = Intl.NumberFormat('id-ID');
+
+                document.getElementById("rh_subtotal").innerHTML = rupiah.format(parseInt(document.getElementById("rs_subtotal")
+                    .value) - (
+                    parseInt(subtotal) * parseInt(qty)));
+
                 document.getElementById("rs_subtotal").value = parseInt(document.getElementById("rs_subtotal").value) - (
                     parseInt(subtotal) * parseInt(qty));
                 /////////////////////////////
-                document.getElementById("rh_discitems").innerHTML = parseInt(document.getElementById("rs_discitems").value) -
-                    parseInt(discitem);
+                document.getElementById("rh_discitems").innerHTML = rupiah.format(parseInt(document.getElementById(
+                        "rs_discitems").value) -
+                    parseInt(discitem));
+
                 document.getElementById("rs_discitems").value = parseInt(document.getElementById("rs_discitems").value) -
                     parseInt(discitem);
                 /////////////////////////////
-                document.getElementById("rh_payment").innerHTML = parseInt(document.getElementById("rs_subtotal").value) - (
+                document.getElementById("rh_payment").innerHTML = rupiah.format(parseInt(document.getElementById("rs_subtotal")
+                    .value) - (
                     parseInt(document.getElementById("rs_discitems").value) + parseInt(document.getElementById(
-                        "rs_discnota").value) + parseInt(document.getElementById("rs_ongkir").value));
+                        "rs_discnota").value) + parseInt(document.getElementById("rs_ongkir").value)));
+
                 document.getElementById("rs_payment").value = parseInt(document.getElementById("rs_subtotal").value) - (
                     parseInt(document.getElementById("rs_discitems").value) + parseInt(document.getElementById(
                         "rs_discnota").value) + parseInt(document.getElementById("rs_ongkir").value));
-                document.getElementById("pay_ammount").innerHTML = document.getElementById("rs_payment").value;
+
+                document.getElementById("pay_ammount").innerHTML = rupiah.format(document.getElementById("rs_payment").value);
 
                 document.getElementById("table").deleteRow(i);
 
@@ -1157,17 +1158,23 @@
             }
 
             function save_ongkir() {
+                let rupiah = Intl.NumberFormat('id-ID');
                 /////////////////////////////
-                document.getElementById("rh_ongkir").innerHTML = parseInt(document.getElementById("md_ongkir").value);
+                document.getElementById("rh_ongkir").innerHTML = rupiah.format(parseInt(document.getElementById("md_ongkir")
+                    .value));
+
                 document.getElementById("rs_ongkir").value = parseInt(document.getElementById("md_ongkir").value);
                 /////////////////////////////
-                document.getElementById("rh_payment").innerHTML = parseInt(document.getElementById("rs_subtotal").value) - (
+                document.getElementById("rh_payment").innerHTML = rupiah.format(parseInt(document.getElementById("rs_subtotal")
+                    .value) - (
                     parseInt(document.getElementById("rs_discitems").value) + parseInt(document.getElementById(
-                        "rs_discnota").value) + parseInt(document.getElementById("rs_ongkir").value));
+                        "rs_discnota").value) + parseInt(document.getElementById("rs_ongkir").value)));
+
                 document.getElementById("rs_payment").value = parseInt(document.getElementById("rs_subtotal").value) - (
                     parseInt(document.getElementById("rs_discitems").value) + parseInt(document.getElementById(
                         "rs_discnota").value) + parseInt(document.getElementById("rs_ongkir").value));
-                document.getElementById("pay_ammount").innerHTML = document.getElementById("rs_payment").value;
+
+                document.getElementById("pay_ammount").innerHTML = rupiah.format(document.getElementById("rs_payment").value);
                 /////////////////////////////
                 $('#ongkirModal').modal('hide');
             }
@@ -1187,17 +1194,23 @@
             }
 
             function save_discount() {
+                let rupiah = Intl.NumberFormat('id-ID');
                 /////////////////////////////
-                document.getElementById("rh_discnota").innerHTML = parseInt(document.getElementById("md_discountnota").value);
+                document.getElementById("rh_discnota").innerHTML = rupiah.format(parseInt(document.getElementById(
+                    "md_discountnota").value));
+
                 document.getElementById("rs_discnota").value = parseInt(document.getElementById("md_discountnota").value);
                 /////////////////////////////
-                document.getElementById("rh_payment").innerHTML = parseInt(document.getElementById("rs_subtotal").value) - (
+                document.getElementById("rh_payment").innerHTML = rupiah.format(parseInt(document.getElementById("rs_subtotal")
+                    .value) - (
                     parseInt(document.getElementById("rs_discitems").value) + parseInt(document.getElementById(
-                        "rs_discnota").value) + parseInt(document.getElementById("rs_ongkir").value));
+                        "rs_discnota").value) + parseInt(document.getElementById("rs_ongkir").value)));
+
                 document.getElementById("rs_payment").value = parseInt(document.getElementById("rs_subtotal").value) - (
                     parseInt(document.getElementById("rs_discitems").value) + parseInt(document.getElementById(
                         "rs_discnota").value) + parseInt(document.getElementById("rs_ongkir").value));
-                document.getElementById("pay_ammount").innerHTML = document.getElementById("rs_payment").value;
+
+                document.getElementById("pay_ammount").innerHTML = rupiah.format(document.getElementById("rs_payment").value);
                 /////////////////////////////
                 $('#discountModal').modal('hide');
             }
@@ -1225,9 +1238,13 @@
             }
 
             function paymentModal() {
+                let rupiah = Intl.NumberFormat('id-ID');
+
                 var amount = document.getElementById("rs_payment").value;
                 document.getElementById("r_grandtotal").value = amount;
-                document.getElementById("s_grandtotal").innerHTML = amount;
+                document.getElementById("s_grandtotal").innerHTML = rupiah.format(amount);
+
+
 
                 if (amount == '0') {
                     alert('Silahkan Masukan Pesanan Dahulu');
@@ -1242,11 +1259,14 @@
             }
 
             function save_payment() {
-                var cash = document.getElementById("r_cash").value === '' ? 0 : document.getElementById("r_cash").value;
-                var bca = document.getElementById("r_bca").value === '' ? 0 : document.getElementById("r_bca").value;
+                var cash = document.getElementById("r_cash").value === '' ? 0 : document.getElementById("r_cash").value.replace(
+                    /\D/g, '');
+                var bca = document.getElementById("r_bca").value === '' ? 0 : document.getElementById("r_bca").value.replace(
+                    /\D/g, '');
                 var mandiri = document.getElementById("r_mandiri").value === '' ? 0 : document.getElementById("r_mandiri")
-                    .value;
-                var banktf = document.getElementById("r_banktf").value === '' ? 0 : document.getElementById("r_banktf").value;
+                    .value.replace(/\D/g, '');
+                var banktf = document.getElementById("r_banktf").value === '' ? 0 : document.getElementById("r_banktf").value
+                    .replace(/\D/g, '');
 
                 var total_pay = parseInt(cash) + parseInt(bca) + parseInt(mandiri) + parseInt(banktf);
 
@@ -1263,6 +1283,28 @@
             function cek_kosong(e) {
                 // alert(e.value);
             }
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script>
+            document.querySelectorAll('input[type-currency="IDR"]').forEach((element) => {
+                element.addEventListener('keyup', function(e) {
+                    let cursorPostion = this.selectionStart;
+                    let value = parseInt(this.value.replace(/[^,\d]/g, ''));
+                    let originalLenght = this.value.length;
+                    if (isNaN(value)) {
+                        this.value = "";
+                    } else {
+                        this.value = value.toLocaleString('id-ID', {
+                            currency: 'IDR',
+                            style: 'currency',
+                            minimumFractionDigits: 0
+                        });
+                        cursorPostion = this.value.length - originalLenght + cursorPostion;
+                        this.setSelectionRange(cursorPostion, cursorPostion);
+                    }
+                });
+            });
         </script>
 
         {{-- @include('store.delete')
