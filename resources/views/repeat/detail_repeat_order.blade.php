@@ -239,6 +239,11 @@
                     // m_price: hasil_m_price,
                     brand: brand,
                 },
+                beforeSend: function() {
+                    $("#repeatorder").html(`<div class="text-center w-100">
+                            <div class="m-auto spinner-border"></div>
+                        </div>`);
+                },
                 success: function(data) {
                     $("#repeatorder").html(data);
                 }

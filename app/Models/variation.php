@@ -26,4 +26,9 @@ class variation extends Model
     {
         return $this->hasMany(Supplier_order::class, 'idpo', 'idpo');
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'id_produk', 'id_produk')->groupBy('id_produk');
+    }
 }

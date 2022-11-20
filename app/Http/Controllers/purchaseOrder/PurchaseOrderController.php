@@ -62,15 +62,17 @@ class PurchaseOrderController extends Controller
         if ($last_id == '0') {
             if ($querys == '') {
                 $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation')
-                    ->groupBy('idpo', 'tanggal', 'users')
                     ->orderBy('idpo', 'DESC')
+                    ->groupBy('idpo', 'tanggal', 'users')
                     ->limit(10)
                     ->get();
             } else {
                 $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation')
                     ->where('idpo', $querys)
-                    ->orwhere('produk', $querys)
+                    ->orwhere('produk', 'LIKE', '%' . $querys . '%')
+                    ->orwhere('id_produk', 'LIKE', '%' . $querys . '%')
                     ->orderBy('idpo', 'DESC')
+                    ->groupBy('idpo', 'tanggal', 'users')
                     ->limit(10)
                     ->get();
             }
@@ -79,13 +81,16 @@ class PurchaseOrderController extends Controller
                 $datapo = Supplier_order::groupBy('idpo', 'tanggal', 'users')
                     ->where('id', '<', $last_id)
                     ->orderBy('idpo', 'DESC')
+                    ->groupBy('idpo', 'tanggal', 'users')
                     ->limit(10)
                     ->get();
             } else {
                 $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation')
                     ->where([['id', '<', $last_id], ['idpo', $querys]])
                     ->orwhere([['id', '<', $last_id], ['produk', $querys]])
+                    ->orwhere([['id', '<', $last_id], ['id_produk', 'LIKE', '%' . $querys . '%']])
                     ->orderBy('idpo', 'DESC')
+                    ->groupBy('idpo', 'tanggal', 'users')
                     ->limit(10)
                     ->get();
             }
@@ -185,6 +190,13 @@ class PurchaseOrderController extends Controller
     public function deleteItem(Request $request)
     {
         $id = $request->d_id;
+
+        $get_po = Supplier_order::where('id', $id)->get();
+
+        variation::where('idpo', $get_po[0]['idpo'])
+            ->where('id_produk', $get_po[0]['id_produk'])
+            ->delete();
+
         Supplier_order::where('id', $id)->delete();
 
         return redirect('purchase/purchaseorder');
@@ -193,6 +205,8 @@ class PurchaseOrderController extends Controller
     public function deletePo(Request $request)
     {
         $idpo = $request->d_idpo;
+
+        variation::where('idpo', $idpo)->delete();
         Supplier_order::where('idpo', $idpo)->delete();
 
         return redirect('purchase/purchaseorder');

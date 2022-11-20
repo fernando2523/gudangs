@@ -103,8 +103,31 @@
                                     </tr>
                                 @endif
                             @endforeach
+                            {{-- {{ $value->products[0]['category'] }} --}}
                         @else
-                            @php
+                            @foreach ($variationss_default as $key => $values)
+                                @if ($values->id_produk === $id_produk)
+                                    <tr>
+                                        <td>
+                                            <input class="form-control text-center" type="text" name="size[]"
+                                                value="{{ $values->size }}" readonly style="width: 100%;height: 21px;">
+                                        </td>
+                                        <td>
+                                            <input class="form-control text-center fw-bold text-danger" type="number"
+                                                name="qty_old[]" value="0" readonly
+                                                style="width: 100%;height: 21px;">
+                                        </td>
+                                        <td>
+                                            <input class="form-control text-center" type="number" name="qty[]"
+                                                value="0" min="0" onkeypress="return isNumberKey(event)"
+                                                style="width: 100%;height: 21px;font-weight: bold;" autocomplete="off"
+                                                required>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+
+                            {{-- @php
                                 $i = 0;
                                 $sizes = 35;
                             @endphp
@@ -113,6 +136,7 @@
                                     <td>
                                         <input class="form-control text-center" type="text" name="size[]"
                                             value="{{ $sizes + $i }}" readonly style="width: 100%;height: 21px;">
+
                                     </td>
                                     <td>
                                         <input class="form-control text-center fw-bold text-danger" type="number"
@@ -125,7 +149,7 @@
                                     </td>
                                 </tr>
                                 @php $i++; @endphp
-                            @endwhile
+                            @endwhile --}}
                         @endif
                     </tbody>
                 </table>
@@ -259,15 +283,16 @@
                         length = data.length;
                         i = 0;
                         b = 1;
+                        v = '';
 
                         while (i < length) {
-                            if (row.id_ware === row.supplier_variation[i][
+                            if (row.id_ware === row.supplier_variation[
+                                    i][
                                     'id_ware'
-                                ] || row.id_produk === row.supplier_variation[i][
-                                    'id_produk'
-                                ]) {
+                                ] && row.id_produk === row.supplier_variation[i]['id_produk']) {
                                 if (row.supplier_variation[i]['qty'] === '0') {
-                                    size = size + '<span class="text-danger"> ' + '[<i>' +
+                                    size = size + '<span class="text-danger"> ' +
+                                        '[<i>' +
                                         row
                                         .supplier_variation[i]['size'] +
                                         '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
@@ -278,7 +303,8 @@
                                         '</span><span class="fw-bold text-danger">] </span>';
 
                                 } else {
-                                    size = size + '<span class="text-lime">' + '[<i>' + row
+                                    size = size + '<span class="text-lime">' + '[<i>' +
+                                        row
                                         .supplier_variation[i]['size'] +
                                         '</i><span class="text-lime"> = </span><span class="text-lime fw-bold">' +
                                         row.supplier_variation[
@@ -292,13 +318,15 @@
                                     b = 0;
                                 }
                                 b++;
-                            } else {
-                                size =
-                                    '<span class="fw-bold text-warning">STOK TIDAK TERSEDIA</span>';
+                                v = '1';
                             }
                             i++;
                         }
-                        return size;
+                        if (v === '1') {
+                            return size;
+                        } else {
+                            return '<span class="fw-bold text-warning">STOK TIDAK TERSEDIA</span>';
+                        }
                     },
                 },
             ],
