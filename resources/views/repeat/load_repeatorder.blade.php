@@ -19,7 +19,7 @@
                     </select>
                 </div>
                 <div class="position-relative text-center mb-3" style="display:none;" id="divlama">
-                    <select class="form-select form-select-sm text-theme text-center" name="id_po_lama">
+                    <select class="form-select form-select-sm text-theme text-center" name="id_po_lama" id="id_po_lama">
                         <option value="" disabled selected>Pilih DATA PO</option>
                         @foreach ($get_Supplier_Order as $orders)
                             @foreach ($getsupplier as $supps)
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="position-relative text-center" style="display:none;" id="divbaru">
-                    <select class="form-select form-select-sm text-theme text-center" name="id_sup">
+                    <select class="form-select form-select-sm text-theme text-center" name="id_sup" id="id_sup">
                         <option value="" disabled selected>Pilih Supplier</option>
                         @foreach ($getsupplier as $gets)
                             <option value="{{ $gets->id_sup }}">{{ $gets->supplier }}</option>

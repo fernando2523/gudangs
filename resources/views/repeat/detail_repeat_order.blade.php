@@ -257,6 +257,20 @@
                 return false;
             }
 
+            if (document.forms["form_edit"]["type_po"].value === "baru") {
+                if (document.forms["form_edit"]["id_sup"].value == "") {
+                    alert("SILAHKAN PILIH SUPPLIER, TERLEBI DAHULU.");
+                    document.forms["form_edit"]["id_sup"].focus();
+                    return false;
+                }
+            } else if (document.forms["form_edit"]["type_po"].value === "lama") {
+                if (document.forms["form_edit"]["id_po_lama"].value == "") {
+                    alert("SILAHKAN PILIH PO LANJUTAN, TERLEBIH DAHULU.");
+                    document.forms["form_edit"]["id_po_lama"].focus();
+                    return false;
+                }
+            }
+
             var value = document.getElementById('id').value;
             document.getElementById('form_edit').action = "../repeat/repeats/" + value;
             document.getElementById("form_edit").submit();

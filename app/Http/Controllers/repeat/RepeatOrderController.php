@@ -83,7 +83,7 @@ class RepeatOrderController extends Controller
             $variationss_default = variation::groupBy('size', 'id_produk')->get();
             // $variationss = Product::with('product_variation3')->get();
             $get_Supplier_Order = DB::table('supplier_orders')->select(DB::raw('idpo'), DB::raw('tanggal'), DB::raw('id_sup'),)->groupBy('idpo', 'tanggal', 'id_sup')->orderBy('idpo', 'desc')->limit(10)->get();
-            $get_m_price = DB::table('supplier_orders')->select(DB::raw('m_price'), DB::raw('id_produk'), DB::raw('idpo'))->groupBy('id_produk', 'idpo')->orderBy('idpo', 'desc')->first('m_price');
+            $get_m_price = DB::table('supplier_orders')->select(DB::raw('m_price'), DB::raw('id_produk'), DB::raw('idpo'))->where('id_produk', '=', $id_produk)->groupBy('id_produk', 'idpo')->orderBy('idpo', 'desc')->first('m_price');
 
             return View('repeat/load_repeatorder', compact(
                 'id',
@@ -209,7 +209,7 @@ class RepeatOrderController extends Controller
             $data3->produk = Str::headline($request->produk);
             $data3->qty = $qtys;
             $data3->m_price = preg_replace("/[^0-9]/", "", $request->m_price);
-            $data3->subtotal = preg_replace("/[^0-9]/", "", $request->m_price) * $qtys;
+            $data3->subtotal = intval(preg_replace("/[^0-9]/", "", $request->m_price)) * intval($qtys);
             $data3->tipe_order = "REPEAT";
             $data3->users = $getuser;
             $data3->save();
@@ -269,7 +269,7 @@ class RepeatOrderController extends Controller
             $data3->produk = Str::headline($request->produk);
             $data3->qty = $qtys;
             $data3->m_price = preg_replace("/[^0-9]/", "", $request->m_price);
-            $data3->subtotal = preg_replace("/[^0-9]/", "", $request->m_price) * $qtys;
+            $data3->subtotal = intval(preg_replace("/[^0-9]/", "", $request->m_price)) * intval($qtys);
             $data3->tipe_order = "REPEAT";
             $data3->users = $getuser;
             $data3->save();
