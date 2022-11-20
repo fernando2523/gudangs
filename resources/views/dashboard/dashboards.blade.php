@@ -13,6 +13,13 @@
                 </h1>
             </div>
             <div class="ms-auto">
+                <div class="mt-3">
+                    <select class="form-select fw-bold text-theme" id="" style="width: 250px;">
+                        <option value="">ALL STORE..</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ms-sm-3 mt-2">
                 <div id="reportrange" class="btn btn-outline-theme d-flex align-items-center mt-2">
                     <span class="text-truncate">&nbsp;tanggal sekarang &nbsp;</span>
                     <i class="fa fa-caret-down ms-auto"></i>

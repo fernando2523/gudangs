@@ -76,7 +76,7 @@
             </div>
 
             <div
-                class="menu-item has-sub {{ Request::is('repeat/repeatorders') ? 'active' : '' }}{{ Request::is('purchase/purchaseorder') ? 'active' : '' }}{{ Request::is('brand/brands') ? 'active' : '' }}{{ Request::is('category/categories') ? 'active' : '' }}{{ Request::is('barcode/barcodes') ? 'active' : '' }}">
+                class="menu-item has-sub {{ Request::is('repeat/repeatorders') ? 'active' : '' }}{{ Request::is('purchase/purchaseorder') ? 'active' : '' }}{{ Request::is('brand/brands') ? 'active' : '' }}{{ Request::is('category/categories') ? 'active' : '' }}{{ Request::is('barcode/barcodes') ? 'active' : '' }}{{ Request::is('productTransfer/productTransfers') ? 'active' : '' }}">
                 <a href="#" class="menu-link">
                     <span class="menu-icon">
                         <i class="bi bi-clipboard2-data-fill text-theme"></i>

@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Product;
 use App\Models\Image_product;
+use App\Models\warehouse;
 
 class ProductTransferController extends Controller
 {
@@ -18,15 +19,37 @@ class ProductTransferController extends Controller
     {
         $title = "Product Transfer";
 
+        $selectWarehouse = warehouse::all();
+
         return view('productTransfer/productTransfers', compact(
             'title',
+            'selectWarehouse'
         ));
     }
 
-    public function tableproducttransfer(Request $request)
+    public function detail_product_transfer(Request $request)
     {
         if ($request->ajax()) {
-            $product = Product::with('warehouse', 'image_product', 'product_variation2')->get();
+            $id_ware = $request->id_ware;
+
+            return view('productTransfer/detail_product_transfer', compact(
+                'id_ware',
+            ));
+        }
+    }
+
+    public function tableproducttransfer(Request $request, $id_ware)
+    {
+        if ($request->ajax()) {
+
+            if ($id_ware === "all_ware") {
+                $product = Product::with('warehouse', 'image_product', 'product_variation2')
+                    ->get();
+            } else {
+                $product = Product::with('warehouse', 'image_product', 'product_variation2')
+                    ->where('id_ware', '=', $id_ware)
+                    ->get();
+            }
 
             return DataTables::of($product)
                 ->addIndexColumn()

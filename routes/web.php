@@ -117,13 +117,14 @@ route::any('/editselectcategory', [CategoryController::class, 'editselectcategor
 
 route::get('/product/products', [ProductController::class, 'product'])->middleware('auth');
 route::get('/product/products_test', [ProductController::class, 'product_test'])->middleware('auth');
-route::any('/tableproduct', [ProductController::class, 'tableproduct'])->middleware('auth');
+route::any('/tableproduct/{id_ware}', [ProductController::class, 'tableproduct'])->middleware('auth');
 Route::any('/load_variation', [ProductController::class, 'load_variation']);
 route::any('/product/products/store', [ProductController::class, 'store'])->middleware('auth');
 route::any('/product/editact/{id}', [ProductController::class, 'editact'])->middleware('auth');
 route::any('/product/destroy/{id}', [ProductController::class, 'destroy'])->middleware('auth');
 route::any('/load_edit_variation', [ProductController::class, 'load_edit_variation']);
 route::any('/load_image', [ProductController::class, 'load_image']);
+route::any('/detail_product', [ProductController::class, 'detail_product'])->middleware('auth');
 
 route::get('/store_expense/store_expenses', [StoreEquipmentCostController::class, 'store_expense'])->middleware('auth');
 route::any('/tableexpenses', [StoreEquipmentCostController::class, 'tableexpenses'])->middleware('auth');
@@ -134,10 +135,11 @@ route::any('/expense_desc', [StoreEquipmentCostController::class, 'expense_desc'
 route::any('/store_expenses/destroy/{id}', [StoreEquipmentCostController::class, 'destroy'])->middleware('auth');
 
 route::get('/repeat/repeatorders', [RepeatOrderController::class, 'repeatorders'])->middleware('auth');
-route::any('/tablerepeatorder', [RepeatOrderController::class, 'tablerepeatorder'])->middleware('auth');
+route::any('/tablerepeatorder/{id_ware}', [RepeatOrderController::class, 'tablerepeatorder'])->middleware('auth');
 route::any('/load_repeatorder', [RepeatOrderController::class, 'load_repeatorder']);
 route::any('/table_detail_repeatorder/{id_ware}/{id_produk}', [RepeatOrderController::class, 'table_detail_repeatorder'])->middleware('auth');
 route::any('/repeat/repeats/{id}', [RepeatOrderController::class, 'repeats'])->middleware('auth');
+route::any('/detail_repeat_order', [RepeatOrderController::class, 'detail_repeat_order'])->middleware('auth');
 
 route::get('/purchase/purchaseorder', [PurchaseOrderController::class, 'purchaseorder'])->middleware('auth');
 route::any('/load_purchase_order', [PurchaseOrderController::class, 'load_purchase_order']);
@@ -222,9 +224,10 @@ route::get('/reportQuality/quality', [ReportQualityController::class, 'quality']
 route::any('/tablereportquality', [ReportQualityController::class, 'tablereportquality'])->middleware('auth');
 
 route::get('/productTransfer/productTransfers', [ProductTransferController::class, 'productTransfers'])->middleware('auth');
-route::any('/tableproducttransfer', [ProductTransferController::class, 'tableproducttransfer'])->middleware('auth');
+route::any('/tableproducttransfer/{id_ware}', [ProductTransferController::class, 'tableproducttransfer'])->middleware('auth');
 route::any('/load_product_transfer', [ProductTransferController::class, 'load_product_transfer'])->middleware('auth');
 route::any('/productTransfer/transfer/{id_produk}', [ProductTransferController::class, 'transfer'])->middleware('auth');
+route::any('/detail_product_transfer', [ProductTransferController::class, 'detail_product_transfer'])->middleware('auth');
 
 route::any('/setting/changepassword/{id}', [ChangePasswordController::class, 'changepassword'])->middleware('auth');
 route::any('/setting/editsetting/{id}', [ChangePasswordController::class, 'editsetting'])->middleware('auth');

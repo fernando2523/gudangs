@@ -28,19 +28,36 @@ class RepeatOrderController extends Controller
     public function repeatorders()
     {
         $title = "Repeat Order";
-
-        // $get_m_price = DB::table('supplier_orders')->select(DB::raw('m_price'), DB::raw('id_produk'), DB::raw('idpo'))->groupBy('id_produk', 'idpo')->orderBy('idpo', 'desc')->first('m_price');
-        // dd($get_m_price->id_produk);
+        $selectWarehouse = warehouse::all();
 
         return view('repeat/repeatorders', compact(
-            'title'
+            'title',
+            'selectWarehouse'
         ));
     }
 
-    public function tablerepeatorder(Request $request)
+    public function detail_repeat_order(Request $request)
     {
         if ($request->ajax()) {
-            $product = Product::with('warehouse', 'image_product', 'product_variation2')->get();
+            $id_ware = $request->id_ware;
+
+            return view('repeat/detail_repeat_order', compact(
+                'id_ware',
+            ));
+        }
+    }
+
+    public function tablerepeatorder(Request $request, $id_ware)
+    {
+        if ($request->ajax()) {
+            if ($id_ware === "all_ware") {
+                $product = Product::with('warehouse', 'image_product', 'product_variation2')->get();
+            } else {
+                $product = Product::with('warehouse', 'image_product', 'product_variation2')
+                    ->where('id_ware', '=', $id_ware)
+                    ->get();
+            }
+
 
             return DataTables::of($product)
                 ->addIndexColumn()
