@@ -414,10 +414,15 @@ class ProductController extends Controller
                 'brand' => $request->edit_id_brand,
                 'category' => $request->edit_category,
                 'quality' => $request->edit_quality,
-                // 'm_price' => preg_replace("/[^0-9]/", "", $request->edit_m_price),
                 'r_price' => preg_replace("/[^0-9]/", "", $request->edit_r_price),
                 'n_price' => preg_replace("/[^0-9]/", "", $request->edit_n_price),
                 'g_price' => preg_replace("/[^0-9]/", "", $request->edit_g_price),
+            ]);
+
+        Supplier_order::where('id_produk', $get_id_produk)
+            ->update([
+                'produk' => Str::headline($request->edit_produk),
+                'brand' => $request->edit_id_brand,
             ]);
 
         for ($i = 0; $i < Count($request->size); $i++) {
