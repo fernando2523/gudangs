@@ -479,12 +479,13 @@ class ProductController extends Controller
 
         $image = DB::table('image_products')->where('id_produk', $request->del_id_produk)->get();
         foreach ($image as $images) {
-            if ($images->id_produk === "" or $images->id_produk === null) {
+            if ($images->id_produk === "" or $images->id_produk === null or $images->img === null or $images->img === "") {
+                DB::table('image_products')->where('id_produk', $request->del_id_produk)->delete();
             } else {
                 unlink("product/" . $images->img);
+                DB::table('image_products')->where('id_produk', $request->del_id_produk)->delete();
             }
         }
-        DB::table('image_products')->where('id_produk', $request->del_id_produk)->delete();
 
         return redirect('product/products');
     }
