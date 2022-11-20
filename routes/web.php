@@ -29,6 +29,8 @@ use App\Http\Controllers\reportStore\ReportStoreController;
 use App\Http\Controllers\reportBrand\ReportBrandController;
 use App\Http\Controllers\reportQuality\ReportQualityController;
 use App\Http\Controllers\productTransfer\ProductTransferController;
+use App\Http\Controllers\Auth\ChangePasswordController;
+// use App\Http\Controllers\setting\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -221,3 +223,7 @@ route::get('/productTransfer/productTransfers', [ProductTransferController::clas
 route::any('/tableproducttransfer', [ProductTransferController::class, 'tableproducttransfer'])->middleware('auth');
 route::any('/load_product_transfer', [ProductTransferController::class, 'load_product_transfer'])->middleware('auth');
 route::any('/productTransfer/transfer/{id_produk}', [ProductTransferController::class, 'transfer'])->middleware('auth');
+
+route::any('/setting/changepassword/{id}', [ChangePasswordController::class, 'changepassword'])->middleware('auth');
+route::any('/setting/editsetting/{id}', [ChangePasswordController::class, 'editsetting'])->middleware('auth');
+route::get('/setting/setting', [ChangePasswordController::class, 'setting'])->middleware('auth');
