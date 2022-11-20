@@ -38,12 +38,14 @@
                                 required>
                                 <option value="" disabled selected>Pilih Store..</option>
                                 @foreach ($getstore as $stores)
-                                    <option data-area="{{ $stores->id_area }}" data-id_store="{{ $stores->id_store }}"
-                                        value="{{ $stores->store }}">{{ $stores->store }}</option>
+                                    <option data-upprice="{{ $stores->detailsarea[0]['up_price'] }}"
+                                        data-area="{{ $stores->id_area }}" data-id_store="{{ $stores->id_store }}"
+                                        value="{{ $stores->store }}">{{ $stores->store }} </option>
                                 @endforeach
                             </select>
                             <input type="hidden" name="r_area" id="r_area">
                             <input type="hidden" name="r_id_store" id="r_id_store">
+                            <input type="hidden" name="up_price" id="up_price">
                         </div>
 
                         <div class="col-6">
@@ -71,7 +73,7 @@
                                             style="z-index: 1020;">
                                             <i class="fa fa-search opacity-5"></i>
                                         </div>
-                                        <input type="text"
+                                        <input type="search"
                                             class="form-control text-theme fw-bold form-control-sm ps-35px"
                                             id="search_product" placeholder="Search products.." disabled />
                                     </div>
@@ -106,6 +108,7 @@
                                     Silahkan Pilih Store
                                 </div>
                             </div>
+                            <input type="hidden" id="validate" value="0">
                             {{-- Load Product --}}
                         </div>
                         <div class="card-arrow">
@@ -121,57 +124,103 @@
 
                     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
                     <script type="text/javascript">
-                        var page = 1;
                         var heigh = $('#product_catalog').height();
                         var area = '';
+                        var search_awal = '';
 
                         $("#select_store").change(function() {
-
+                            clear_cart();
                             $("#opening").css("display", "none");
+
                             var area = $(this).find(':selected').data("area");
                             var id_store = $(this).find(':selected').data("id_store");
+                            var upprice = $(this).find(':selected').data("upprice");
+
+                            document.getElementById('validate').value = 0;
+                            val_last = '';
                             area = area;
+                            page = 1;
                             id_store = id_store;
+
                             $('#r_area').val(area);
                             $('#r_id_store').val(id_store);
-                            loadData(page, area);
+                            $('#up_price').val(upprice);
+
+                            loadData(page, area, search_awal);
+
                             $("#search_product").prop("disabled", false);
                             $("#search_product").addClass("border-theme");
+
+                            $("#search_barcode").prop("disabled", false);
+                            $("#search_barcode").addClass("border-theme");
                         });
 
                         // $("#search_product").change(function() {
                         //     console.log(this.value);
                         // });
 
-                        $("#search_product").bind("enterKey", function(e) {
-                            console.log(this.value);
-                            loadData(page, area);
+                        // $("#search_product").bind("enterKey", function(e) {
+                        //     var search_data = document.getElementById('search_product').value;
+                        //     var area = $(this).find(':selected').data("area");
+                        //     document.getElementById('validate').value = 0;
+                        //     val_last = '';
+                        //     area = area;
+                        //     page = 1;
+                        //     loadData(page, area, search_data);
+                        // });
+
+                        // $('#search_product').keyup(function(e) {
+                        //     if (e.keyCode == 13) {
+                        //         $(this).trigger("enterKey");
+                        //     }
+                        // });
+
+                        $('#search_product').change(function(e) {
+                            var search_data = document.getElementById('search_product').value;
+                            var area = $('#r_area').val();
+                            document.getElementById('validate').value = 0;
+                            val_last = '';
+                            page = 1;
+                            loadData(page, area, search_data);
                         });
 
-                        $('#search_product').keyup(function(e) {
-                            if (e.keyCode == 13) {
-                                $(this).trigger("enterKey");
-                            }
-                        });
+                        var page = 1;
+                        var val_last = '';
 
                         $('#product_catalog').scroll(function() {
-                            if ($('#product_catalog').scrollTop() + 550 > heigh) {
-                                page++;
-                                loadMoreData(page, area);
-                                heigh = heigh + heigh;
-                                console.log('PAGE ' + page);
-                                console.log($('#product_catalog').scrollTop() + 150);
-                                console.log(heigh);
+                            var clientHeight = $('#product_catalog').prop('clientHeight') + 2;
+                            var scminst = $('#product_catalog').prop('scrollHeight') - $('#product_catalog').scrollTop();
+
+                            console.log(clientHeight);
+                            console.log(scminst);
+
+                            if (scminst <= clientHeight) {
+                                var validate = document.getElementById('validate').value;
+                                if (validate == '0' && val_last != 'last') {
+                                    document.getElementById('validate').value = 1;
+                                    index = parseInt(page) - 1;
+                                    page++;
+                                    var last_id = document.getElementsByName('last_id[]')[index].value;
+                                    val_last = last_id;
+                                    var query = $('#search').val();
+                                    if (val_last != 'last') {
+                                        console.log('page ' + page);
+                                        var search_data = document.getElementById('search_product').value;
+                                        var area = $('#r_area').val();
+                                        loadMoreData(page, area, search_data);
+                                    }
+                                }
                             }
 
                         });
 
-                        function loadData(page, area) {
+                        function loadData(page, area, querys) {
                             $.ajax({
                                     url: "/tablesale?page=" + page,
-                                    type: "POST",
+                                    type: "GET",
                                     data: {
                                         area: area,
+                                        querys: querys
                                     },
                                     beforeSend: function() {
                                         $("#loading_catalog").css("display", "flex");
@@ -186,16 +235,18 @@
                                 });
                         }
 
-                        function loadMoreData(page, area) {
+                        function loadMoreData(page, area, querys) {
                             $.ajax({
                                     url: "/tablesale?page=" + page,
-                                    type: "POST",
+                                    type: "GET",
                                     data: {
                                         area: area,
+                                        querys: querys
                                     },
                                     beforeSend: function() {}
                                 })
                                 .done(function(response) {
+                                    document.getElementById('validate').value = 0;
                                     $(".load_data").append(response);
                                 })
                                 .fail(function(jqXHR, ajaxOptions, thrownError) {
@@ -220,16 +271,7 @@
                                 <option value="GROSIR">GROSIR</option>
                             </select>
                         </div>
-                        <div class="col-2">
-                            <?php
-                            $datenow = Carbon\Carbon::now()->format('Y-m-d');
-                            ?>
-                            <input class="form-control  fw-bold  form-control-sm text-lime text-center" type="text"
-                                name="r_tanggal" value="{{ $datenow }}" readonly>
-                        </div>
                         <div class="col-3">
-                            {{-- <input class="form-control fw-bold form-control-sm text-lime text-center" type="text"
-                                name="r_idinvoice" value="#5465406460564" readonly> --}}
                             <select class="form-select fw-bold form-select-sm text-theme" id="reseller_name"
                                 name="reseller_name" disabled>
                                 <option value="" disabled selected>Name Reseller..</option>
@@ -237,6 +279,13 @@
                                     <option value="{{ $reseller->id_reseller }}">{{ $reseller->nama }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="col-2">
+                            <?php
+                            $datenow = Carbon\Carbon::now()->format('Y-m-d');
+                            ?>
+                            <input class="form-control  fw-bold  form-control-sm text-lime text-center" type="text"
+                                name="r_tanggal" value="{{ $datenow }}" readonly>
                         </div>
                     </div>
 
@@ -256,8 +305,8 @@
                                             <i class="fa fa-search opacity-5"></i>
                                         </div>
                                         <input type="text"
-                                            class="form-control border-theme text-theme fw-bold form-control-sm ps-35px"
-                                            id="" placeholder="Search barcode.." />
+                                            class="form-control text-theme fw-bold form-control-sm ps-35px"
+                                            id="search_barcode" placeholder="Search barcode.." disabled />
                                     </div>
                                 </div>
                             </div>
@@ -546,6 +595,7 @@
                                 <div class="modal-pos-product">
                                     <div class="modal-pos-product-img">
                                         <input type="hidden" id="mdl_produk" name="mdl_produk" value="">
+                                        <input type="hidden" id="c_size" name="c_size" value="">
                                         <input type="hidden" id="mdl_id_produk" name="mdl_id_produk" value="">
                                         <input type="hidden" id="mdl_id_brand" name="mdl_id_brand" value="">
                                         <input type="hidden" id="mdl_quality" name="mdl_quality" value="">
@@ -682,40 +732,177 @@
         </form>
 
         <script>
-            // $( document ).ready(function() {
-            //     $('#modalPosItem').modal('show');
-            // });
+            $(document).on("dblclick", "#search_barcode", function() {
+                var up_price = $('#up_price').val();
+                var id_area = $('#r_area').val();
+
+                var cashier = $('#cashier').find(":selected").val();
+                var customer = $('#customer').find(":selected").val();
+                var reseller_name = $('#reseller_name').find(":selected").val();
+
+                var querys = $('#search_barcode').val();
+                const split = querys.split(".");
+                var id_produk = split[0];
+                var size = split[1];
+
+                $('#c_size').val(size);
+
+                if (querys == '') {
+
+                } else {
+                    if ($('#select_store').find(":selected").val() == '') {
+                        alert('Silahkan Pilih Store');
+                    } else {
+                        if (cashier == '') {
+                            alert('Silahkan Pilih Kasir');
+                        } else {
+                            if (customer == '') {
+                                alert('Silahkan Pilih Tipe Customer');
+                            } else {
+                                if (customer == 'RESELLER' || customer == 'GROSIR') {
+                                    if (reseller_name == '') {
+                                        alert('Silahkan Pilih Nama Reseller');
+                                    } else {
+                                        $.ajax({
+                                            url: "/getbarcodeproduct",
+                                            type: "GET",
+                                            data: {
+                                                id_produk: id_produk
+                                            },
+                                            dataType: 'JSON',
+                                            beforeSend: function() {},
+                                            success: function(response) {
+                                                if (response['count'] > 0) {
+                                                    var md_nameproduct = response['produk'];
+                                                    var image_product = response['img_produk'];
+                                                    var id_brand = response['brand'];
+                                                    var quality = response['quality'];
+
+                                                    var n_price = parseInt(response['n_price']) + parseInt(
+                                                        up_price);
+                                                    var r_price = parseInt(response['r_price']) + parseInt(
+                                                        up_price);
+                                                    var g_price = parseInt(response['g_price']) + parseInt(
+                                                        up_price);
+
+                                                    open_modalPositem(md_nameproduct, image_product,
+                                                        id_produk,
+                                                        id_area,
+                                                        id_brand, quality,
+                                                        n_price,
+                                                        r_price, g_price)
+                                                } else {
+                                                    alert('Data tidak ditemukan');
+                                                }
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    $.ajax({
+                                        url: "/getbarcodeproduct",
+                                        type: "GET",
+                                        data: {
+                                            id_produk: id_produk
+                                        },
+                                        dataType: 'JSON',
+                                        beforeSend: function() {},
+                                        success: function(response) {
+                                            if (response['count'] > 0) {
+                                                var md_nameproduct = response['produk'];
+                                                var image_product = response['img_produk'];
+                                                var id_brand = response['brand'];
+                                                var quality = response['quality'];
+
+                                                var n_price = parseInt(response['n_price']) + parseInt(
+                                                    up_price);
+                                                var r_price = parseInt(response['r_price']) + parseInt(
+                                                    up_price);
+                                                var g_price = parseInt(response['g_price']) + parseInt(
+                                                    up_price);
+
+                                                open_modalPositem(md_nameproduct, image_product, id_produk,
+                                                    id_area,
+                                                    id_brand, quality,
+                                                    n_price,
+                                                    r_price, g_price)
+                                            } else {
+                                                alert('Data tidak ditemukan');
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+
+
+            });
 
             $(document).on("dblclick", ".open-modal", function() {
+                var up_price = $('#up_price').val();
+                var id_area = $('#r_area').val();
+                $('#c_size').val('allsize');
+
+                var md_nameproduct = $(this).data('md_nameproduct');
+                var image_product = $(this).data('image_product');
+                var id_produk = $(this).data('id_produk');
+                // var id_area = $(this).data('id_area');
+                var id_brand = $(this).data('id_brand');
+                var quality = $(this).data('quality');
+                // var m_price = $(this).data('m_price');
+                var n_price = parseInt($(this).data('n_price')) + parseInt(up_price);
+                var r_price = parseInt($(this).data('r_price')) + parseInt(up_price);
+                var g_price = parseInt($(this).data('g_price')) + parseInt(up_price);
+
+                var cashier = $('#cashier').find(":selected").val();
+                var customer = $('#customer').find(":selected").val();
+                var reseller_name = $('#reseller_name').find(":selected").val();
+
+                if (cashier == '') {
+                    alert('Silahkan Pilih Kasir');
+                } else {
+                    if (customer == '') {
+                        alert('Silahkan Pilih Tipe Customer');
+                    } else {
+                        if (customer == 'RESELLER' || customer == 'GROSIR') {
+                            if (reseller_name == '') {
+                                alert('Silahkan Pilih Nama Reseller');
+                            } else {
+                                open_modalPositem(md_nameproduct, image_product, id_produk, id_area, id_brand, quality,
+                                    n_price,
+                                    r_price, g_price)
+                            }
+                        } else {
+                            open_modalPositem(md_nameproduct, image_product, id_produk, id_area, id_brand, quality,
+                                n_price,
+                                r_price, g_price)
+                        }
+                    }
+                }
+
+            });
+
+            function open_modalPositem(md_nameproduct, image_product, id_produk, id_area, id_brand, quality, n_price,
+                r_price, g_price) {
 
                 $('#load_size').html('<center>Pilih Warehouse Dahulu</center>')
                 $('#load_ware').html(
                     '<select class="form-select fw-bold text-dark" disabled><option value="" selected>Loading Warehouse..</option></select>'
                 )
 
-                var cashier = $('#cashier').find(":selected").val();
-                var customer = $('#customer').find(":selected").val();
-                var reseller_name = $('#reseller_name').find(":selected").val();
-
-                var md_nameproduct = $(this).data('md_nameproduct');
-                var image_product = $(this).data('image_product');
-                var id_produk = $(this).data('id_produk');
-                var id_area = $(this).data('id_area');
-                var id_brand = $(this).data('id_brand');
-                var quality = $(this).data('quality');
-                // var m_price = $(this).data('m_price');
-
-                var n_price = $(this).data('n_price');
-                var r_price = $(this).data('r_price');
-                var g_price = $(this).data('g_price');
-
                 $('#mdl_produk').val(md_nameproduct);
                 $('#mdl_id_produk').val(id_produk);
                 $('#mdl_id_brand').val(id_brand);
                 $('#mdl_quality').val(quality);
-                // $('#mdl_m_price').val(m_price) ;
                 $("#md_nameproduct").html(md_nameproduct);
                 $('#image_product').attr('src', '/product/' + image_product);
+
+                var cashier = $('#cashier').find(":selected").val();
+                var customer = $('#customer').find(":selected").val();
+                var reseller_name = $('#reseller_name').find(":selected").val();
 
                 if (customer == 'RETAIL') {
                     $('#mdl_selling_price').val(n_price);
@@ -734,38 +921,18 @@
                     }).format(g_price));
                 }
 
-                if (cashier == '') {
-                    alert('Silahkan Pilih Kasir');
-                } else {
-                    if (customer == '') {
-                        alert('Silahkan Pilih Tipe Customer');
-                    } else {
-                        if (customer == 'RESELLER' || customer == 'GROSIR') {
-                            if (reseller_name == '') {
-                                alert('Silahkan Pilih Nama Reseller');
-                            } else {
-                                load_ware(id_area)
-                                // load_size(id_produk, id_area);
-                                $('#modalPosItem').modal('show');
-                            }
-                        } else {
-                            load_ware(id_area)
-                            // load_size(id_produk, id_area);
-                            $('#modalPosItem').modal('show');
-                        }
-                    }
-                }
+                load_ware(id_area);
+                $('#modalPosItem').modal('show');
+            }
 
-
-            });
-
-            function load_size(id_produk, id_ware) {
+            function load_size(id_produk, id_ware, size) {
                 $.ajax({
                         url: "/load_size",
                         type: "POST",
                         data: {
                             id_produk: id_produk,
-                            id_ware: id_ware
+                            id_ware: id_ware,
+                            size: size
                         },
                         beforeSend: function() {
                             $('#load_size').html('<center>Loading Size...</center>');
@@ -1051,6 +1218,8 @@
                 document.getElementById("rh_payment").innerHTML = 0;
                 document.getElementById("rs_payment").value = 0;
                 document.getElementById("pay_ammount").innerHTML = 0;
+
+                $('#search_barcode').val('');
 
                 $("#table > tbody").empty();
             }

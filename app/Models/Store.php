@@ -19,7 +19,11 @@ class Store extends Model
 
     public function sales()
     {
-
         return $this->hasMany(Sale::class, 'id_store', 'id_store')->groupBy('id_store');
+    }
+
+    public function detailsarea()
+    {
+        return $this->hasMany(City::class, 'id_area', 'id_area');
     }
 }

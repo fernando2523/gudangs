@@ -156,6 +156,7 @@ route::get('/sale/sales', [SaleController::class, 'sale'])->middleware('auth');
 route::any('/tablesale', [SaleController::class, 'tablesale']);
 route::any('/load_size', [SaleController::class, 'load_size']);
 route::any('/load_ware', [SaleController::class, 'load_ware']);
+route::any('/getbarcodeproduct', [SaleController::class, 'getbarcodeproduct']);
 route::any('/savesales', [SaleController::class, 'save_sales']);
 
 // nando baru 9 nov

@@ -32,7 +32,7 @@ class SaleController extends Controller
     {
         $title = "SALES";
 
-        $getstore = Store::all();
+        $getstore = Store::with('detailsarea')->get();
         $getkasir = Employee::all()->where('role', '!=', 'ADMIN');
         $getreseller = Reseller::all();
         // $getreseller = Reseller::all();
@@ -49,7 +49,22 @@ class SaleController extends Controller
     {
         if ($request->ajax()) {
             $id_area = $request->area;
-            $data = Product::with('warehouse', 'image_product', 'product_variation')->where('products.id_area', $id_area)->groupBy('products.id_produk')->get();
+            $querys = $request->querys;
+
+            if ($querys == '') {
+                $data = Product::with('warehouse', 'image_product', 'product_variation')
+                    ->where('products.id_area', $id_area)
+                    ->groupBy('products.id_produk')
+                    ->paginate(6);
+            } else {
+                $data = Product::with('warehouse', 'image_product', 'product_variation')
+                    ->where('products.id_area', $id_area)
+                    ->where('products.produk', 'LIKE', '%' . $querys . '%')
+                    ->orwhere('products.id_produk', 'LIKE', '%' . $querys . '%')
+                    ->groupBy('products.id_produk')
+                    ->paginate(6);
+            }
+
 
             return view('load.load_catalog', compact(
                 'data'
@@ -62,10 +77,26 @@ class SaleController extends Controller
         if ($request->ajax()) {
             $id_produk = $request->id_produk;
             $id_ware = $request->id_ware;
+            $size = $request->size;
 
-            $data = DB::table('variations')->selectRaw('SUM(qty) as qty,id,size')->where('id_produk', $id_produk)->where('id_ware', $id_ware)->groupBy('size')->get();
-
-            $count = count($data);
+            if ($size === 'allsize') {
+                $data = DB::table('variations')
+                    ->selectRaw('SUM(qty) as qty,id,size')
+                    ->where('id_produk', $id_produk)
+                    ->where('id_ware', $id_ware)
+                    ->groupBy('size')
+                    ->get();
+                $count = count($data);
+            } else {
+                $data = DB::table('variations')
+                    ->selectRaw('SUM(qty) as qty,id,size')
+                    ->where('id_produk', $id_produk)
+                    ->where('id_ware', $id_ware)
+                    ->where('size', $size)
+                    ->groupBy('size')
+                    ->get();
+                $count = count($data);
+            }
 
             return view('load.load_modal_catalog', compact(
                 'data',
@@ -74,10 +105,54 @@ class SaleController extends Controller
         }
     }
 
+    public function getbarcodeproduct(Request $request)
+    {
+        if ($request->ajax()) {
+            $id_produk = $request->id_produk;
+            $size = $request->size;
+
+            $get = Product::with('warehouse', 'image_product', 'product_variation')
+                ->where('products.id_produk', $id_produk)
+                ->groupBy('products.id_produk')
+                ->get();
+
+            $count = count($get);
+
+            if ($count > 0) {
+                if ($get[0]->image_product[0]['img'] == '') {
+                    $image_product = 'defaultimg.png';
+                } else {
+                    $image_product = $get[0]->image_product[0]['img'];
+                }
+
+                $data = array(
+                    "produk" => $get[0]['produk'],
+                    "id_produk" => $get[0]['id_produk'],
+                    "brand" => $get[0]['brand'],
+                    "quality" => $get[0]['quality'],
+                    "img_produk" => $image_product,
+                    "n_price" => $get[0]['n_price'],
+                    "r_price" => $get[0]['r_price'],
+                    "g_price" => $get[0]['g_price'],
+                    "count" => $count,
+                );
+
+                echo json_encode($data);
+            } else {
+                $data = array(
+                    "count" => $count,
+                );
+
+                echo json_encode($data);
+            }
+        }
+    }
+
     public function load_ware(Request $request)
     {
         if ($request->ajax()) {
             $id_area = $request->id_area;
+
             $data = DB::table('warehouses')->where('id_area', $id_area)->get();
 
             return view('load.load_warehouse', compact(
