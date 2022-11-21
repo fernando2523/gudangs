@@ -2,8 +2,8 @@
     action="/print/printtest">
     <input type="hidden" name="_method" value="PATCH">
     @csrf
-    <div class="modal fade" id="modalbarcode" data-bs-backdrop="static" style="padding-top:7%;">
-        <div class="modal-dialog modal-ml">
+    <div class="modal fade" id="modalbarcode" data-bs-backdrop="static">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-theme">PRINT BARCODE <i class="fa-xl bi bi-upc-scan ms-1"></i></h5>

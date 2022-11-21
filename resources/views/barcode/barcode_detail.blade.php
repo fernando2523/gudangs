@@ -12,14 +12,14 @@
     <div class="col-12" align="center">
         <div class="form-group mb-3">
             <div class="form-check form-check-inline">
-                <input class="form-check-input" name="default_radio" type="radio" id="check_custom" checked
+                <input class="form-check-input" name="tipe_print" type="radio" id="check_custom" checked
                     value="custom" / onclick="selectprint()">
-                <label class="form-check-label fw-bold" for="custom">CUSTOM PRINT</label>
+                <label class="form-check-label fw-bold" for="check_custom">CUSTOM PRINT</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" name="default_radio" type="radio" id="check_bypo" value="bypo" /
+                <input class="form-check-input" name="tipe_print" type="radio" id="check_bypo" value="bypo" /
                     onclick="selectprint()">
-                <label class="form-check-label fw-bold" for="bypo">PURCHASE ORDER</label>
+                <label class="form-check-label fw-bold" for="check_bypo">PURCHASE ORDER</label>
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
                 <div class="col-12" id="divsize">
                     <div class="row">
                         <div class="col-6">
-                            <select class="form-select form-select-sm fw-bold text-success" required name="size">
+                            <select class="form-select form-select-sm fw-bold text-success" name="size_custom">
                                 <option value="" disabled selected>SIZE</option>
                                 @foreach ($get_variation as $varias)
                                     <option value="{{ $varias->size }}">{{ $varias->size }}</option>
@@ -39,8 +39,8 @@
                             </select>
                         </div>
                         <div class="col-6">
-                            <select class="form-select form-select-sm fw-bold  text-success" required name="qty">
-                                <option value="" disabled selected>QTY</option>
+                            <select class="form-select form-select-sm fw-bold  text-success" name="qty">
+                                <option value="0" disabled selected>QTY</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -68,13 +68,15 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-6" id="select_size_po">
-
+                        <div class="col-6">
+                            <select class="form-select form-select-sm fw-bold text-success" required name="size"
+                                id="select_size_po">
+                            </select>
                         </div>
                     </div>
                 </div>
-                <input type="text" value="{{ $id_produk }}" id="v_id_produk">
-                <input type="text" value="{{ $id_ware }}" id="v_id_ware">
+                <input type="hidden" value="{{ $id_produk }}" id="v_id_produk" name="v_id_produk">
+                <input type="hidden" value="{{ $id_ware }}" id="v_id_ware" name="v_id_ware">
             </div>
         </div>
         <div class="card-arrow">
@@ -103,9 +105,11 @@
         }
     }
 
-    function selectpo(v_id_produk, v_id_ware) {
+    function selectpo() {
         var select = document.getElementById('idpo');
         var value = select.options[select.selectedIndex].value;
+        var v_id_produk = document.getElementById('v_id_produk').value;
+        var v_id_ware = document.getElementById('v_id_ware').value;
 
         $.ajax({
             type: 'POST',

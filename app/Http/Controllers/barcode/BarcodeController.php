@@ -77,8 +77,8 @@ class BarcodeController extends Controller
 
             $get_idpo_variation = DB::table('supplier_variations')
                 ->where('id_produk', $id_produk)
-                ->where('idpo', $idpo)
-                ->groupBy('size')->get();
+                ->groupBy('size')
+                ->get();
 
             return view('barcode/select_size_po', compact(
                 'idpo',
@@ -87,10 +87,36 @@ class BarcodeController extends Controller
         }
     }
 
-    public function printtest()
+    public function printtest(Request $request)
     {
+        $size = $request->size;
+        $qty = $request->qty;
+        $idpo = $request->idpo;
+        $tipe_print = $request->tipe_print;
+        $size_custom = $request->size_custom;
+        $v_id_produk = $request->v_id_produk;
+        $v_id_ware = $request->v_id_ware;
+
+        // print_r($size_custom);
+        // print_r('<br>');
+        // print_r($qty);
+        // print_r('<br>');
+        // print_r($tipe_print);
+        // print_r('<br>');
+        // print_r($idpo);
+        // print_r('<br>');
+        // print_r($size);
+        // print_r('<br>');
+        // print_r($v_id_produk);
+        // print_r('<br>');
+        // print_r($v_id_ware);
+        // print_r('<br>');
+
         $data = [
-            'foo' => 'bar'
+            'size' => $size,
+            'qty' => $qty,
+            'v_id_produk' => $v_id_produk,
+            'idpo' => $idpo,
         ];
         $pdf = MPDF::loadView(
             'print.printtest',
