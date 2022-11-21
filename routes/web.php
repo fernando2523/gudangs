@@ -239,3 +239,6 @@ route::any('/transfer', [ProductTransferController::class, 'transfer'])->middlew
 
 route::any('/print/printtest', [BarcodeController::class, 'printtest']);
 route::any('/select_size_po', [BarcodeController::class, 'select_size_po'])->middleware('auth');
+
+
+route::any('/load_dashboard', [App\Http\Controllers\HomeController::class, 'load_db'])->middleware('auth');

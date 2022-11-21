@@ -33,9 +33,29 @@ class HomeController extends Controller
     public function index()
     {
         $title = "Dashboard";
-        $get_sales = Sale::all()->groupBy('id_invoice')->count('id_invoice');
-        $get_qty = Sale::all()->sum('qty');
-        $get_expense = Store_equipment_cost::all()->sum('total_price');
+        $store = Store::all();
+
+        return view('dashboard.dashboards', compact(
+            'title',
+            'store'
+        ));
+    }
+
+    public function load_db(Request $request)
+    {
+        $store = $request->store;
+        $start = $request->start;
+        $end = $request->end;
+
+        if ($store === 'ALL') {
+            $get_sales = Sale::all()->whereBetween('tanggal', [$start, $end])->groupBy('id_invoice')->count('id_invoice');
+            $get_qty = Sale::all()->whereBetween('tanggal', [$start, $end])->sum('qty');
+            $get_expense = Store_equipment_cost::all()->whereBetween('tanggal', [$start, $end])->sum('total_price');
+        } else {
+            $get_sales = Sale::all()->where('id_store', $store)->whereBetween('tanggal', [$start, $end])->groupBy('id_invoice')->count('id_invoice');
+            $get_qty = Sale::all()->where('id_store', $store)->whereBetween('tanggal', [$start, $end])->sum('qty');
+            $get_expense = Store_equipment_cost::all()->where('store', $store)->whereBetween('tanggal', [$start, $end])->sum('total_price');
+        }
 
         $get_payment = DB::table('sales')->select(DB::raw('SUM(cash) as cashs'), DB::raw('SUM(bca) as bcas'), DB::raw('SUM(qris) as qriss'))->groupBy('id_invoice')->get();
         $getTop_product = DB::table('sales')->select(DB::raw('SUM(qty) as qtys'), DB::raw('produk'), DB::raw('id_brand'))->groupBy('id_produk')->limit(10)->get();
@@ -49,17 +69,17 @@ class HomeController extends Controller
             $getTotalpayment = $payment - $get_expense;
         }
 
-        // dd($getTotalpayment);
-
-        return view('dashboard.dashboards', compact(
-            'title',
+        return view('dashboard.load_dashboard', compact(
             'get_sales',
             'get_qty',
             'get_expense',
             'get_payment',
             'getTop_product',
             'getTop_reseller',
-            'getTotalpayment'
+            'getTotalpayment',
+            'store',
+            'start',
+            'end'
         ));
     }
 }
