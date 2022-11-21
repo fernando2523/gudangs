@@ -17,6 +17,8 @@ class CreateVariationsTable extends Migration
             $table->id();
             $table->string('tanggal');
             $table->string('id_produk');
+            $table->string('idpo');
+            $table->string('id_area');
             $table->string('id_ware');
             $table->string('size');
             $table->string('qty');

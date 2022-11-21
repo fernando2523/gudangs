@@ -27,7 +27,7 @@ class CreateProductsTable extends Migration
             $table->string('n_price')->nullable(true);
             $table->string('r_price')->nullable(true);
             $table->string('g_price')->nullable(true);
-            $table->string('m_price')->nullable(true);
+            // $table->string('m_price')->nullable(true);
             // $table->string('img')->nullable(true);
             $table->string('users');
             $table->timestamps();

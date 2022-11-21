@@ -18,6 +18,7 @@ class CreateSupplierVariationsTable extends Migration
             $table->string('idpo');
             $table->string('id_sup');
             $table->string('id_produk');
+            $table->string('id_area');
             $table->string('id_ware');
             $table->string('tanggal');
             $table->string('size');

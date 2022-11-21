@@ -14,7 +14,7 @@ class Store extends Model
     public function warehouses()
     {
 
-        return $this->hasMany(Warehouse::class, 'id_ware', 'id_ware');
+        return $this->hasMany(warehouse::class, 'id_ware', 'id_ware');
     }
 
     public function sales()

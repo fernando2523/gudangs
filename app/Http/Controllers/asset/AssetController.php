@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\brand;
 use App\Models\Sub_category;
-use App\Models\Warehouse;
+use App\Models\warehouse;
 use App\Models\Supplier;
 use App\Models\Supplier_order;
 use App\Models\Supplier_variation;
