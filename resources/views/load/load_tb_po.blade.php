@@ -55,7 +55,21 @@
             </td>
 
             <td class="text-center fw-bold" style="border-right-width: 1px;">
-                {{ $data->suppliers_detail[0]['supplier'] }}
+                <?php
+                if (count($data->suppliers_detail) > 0) {
+                    $supplier = $data->suppliers_detail[0]['supplier'];
+                    echo $supplier;
+                } else {
+                    $supplier = $data->id_sup;
+                    $result = explode('#', $supplier);
+                
+                    foreach ($warehouse as $key => $warehouses) {
+                        if ($warehouses->id_ware === $result[1]) {
+                            echo $warehouses->warehouse;
+                        }
+                    }
+                }
+                ?>
             </td>
             <td class="text-center fw-bold" style="border-right-width: 1px;">
                 {{ $data->suppliers_details[$i]['qty'] }}

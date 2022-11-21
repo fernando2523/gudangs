@@ -66,4 +66,9 @@ class Supplier_order extends Model
     {
         return $this->hasMany(Product::class, 'id_produk', 'id_produk')->groupBy('id_produk');
     }
+
+    public function warehouse()
+    {
+        return $this->hasMany(Warehouse::class);
+    }
 }

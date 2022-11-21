@@ -59,6 +59,8 @@ class PurchaseOrderController extends Controller
         $limit = 10;
         $current_page = ($pages * $limit) - ($limit - 1);
 
+        $warehouse = Warehouse::all();
+
         if ($last_id == '0') {
             if ($querys == '') {
                 $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
@@ -101,7 +103,8 @@ class PurchaseOrderController extends Controller
         return view('load.load_tb_po', compact(
             'datapo',
             'count',
-            'current_page'
+            'current_page',
+            'warehouse'
         ));
         // }
     }
