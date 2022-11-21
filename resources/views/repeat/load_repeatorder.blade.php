@@ -241,20 +241,38 @@
                     class: 'text-left fs-12px',
                     searchable: true,
                     "render": function(data, type, row, meta) {
-                        return 'TANGGAL <span style="padding-left: 18px;">:</span> <span class="fw-bold text-white">' +
-                            row.tanggal +
-                            '</span><br>ID PO <span style="padding-left: 41px;">:</span> <span class="fw-bold text-indigo">' +
-                            row.idpo +
-                            '</span><br>TIPE ORDER : <span class="fw-bold text-yellow">' +
-                            row
-                            .tipe_order +
-                            '</span><br>SUPPLIER <span style="padding-left: 12px;">:</span> <span class="fw-bold text-white">' +
-                            row
-                            .suppliers_detail[0]['supplier'] +
-                            '</span><br>QTY <span style="padding-left: 48px;">:</span> <span class="fw-bold text-white">' +
-                            row
-                            .qty +
-                            '</span>';
+                        if (row.suppliers_detail.length > 0) {
+                            return 'TANGGAL <span style="padding-left: 18px;">:</span> <span class="fw-bold text-white">' +
+                                row.tanggal +
+                                '</span><br>ID PO <span style="padding-left: 41px;">:</span> <span class="fw-bold text-indigo">' +
+                                row.idpo +
+                                '</span><br>TIPE ORDER : <span class="fw-bold text-yellow">' +
+                                row
+                                .tipe_order +
+                                '</span><br>SUPPLIER <span style="padding-left: 12px;">:</span> <span class="fw-bold text-white">' +
+                                row
+                                .suppliers_detail[0]['supplier'] +
+                                '</span><br>QTY <span style="padding-left: 48px;">:</span> <span class="fw-bold text-white">' +
+                                row
+                                .qty +
+                                '</span>';
+                        } else {
+                            return 'TANGGAL <span style="padding-left: 18px;">:</span> <span class="fw-bold text-white">' +
+                                row.tanggal +
+                                '</span><br>ID PO <span style="padding-left: 41px;">:</span> <span class="fw-bold text-indigo">' +
+                                row.idpo +
+                                '</span><br>TIPE ORDER : <span class="fw-bold text-yellow">' +
+                                row
+                                .tipe_order +
+                                '</span><br>SUPPLIER <span style="padding-left: 12px;">:</span> <span class="fw-bold text-white">' +
+                                row
+                                .id_sup +
+                                '</span><br>QTY <span style="padding-left: 48px;">:</span> <span class="fw-bold text-white">' +
+                                row
+                                .qty +
+                                '</span>';
+                        }
+
                     },
                 },
                 {

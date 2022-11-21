@@ -62,12 +62,7 @@
                 } else {
                     $supplier = $data->id_sup;
                     $result = explode('#', $supplier);
-                
-                    foreach ($warehouse as $key => $warehouses) {
-                        if ($warehouses->id_ware === $result[1]) {
-                            echo $warehouses->warehouse;
-                        }
-                    }
+                    echo $result[1];
                 }
                 ?>
             </td>
