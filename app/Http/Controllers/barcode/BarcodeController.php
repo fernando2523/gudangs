@@ -11,8 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Product;
 use App\Models\variation;
-use Illuminate\Support\Facades\Facade;
-use PDF;
+use Meneses\LaravelMpdf\Facades\LaravelMpdf as MPDF;
 
 class BarcodeController extends Controller
 {
@@ -93,7 +92,21 @@ class BarcodeController extends Controller
         $data = [
             'foo' => 'bar'
         ];
-        $pdf = PDF::loadView('print.printtest', $data);
+        $pdf = MPDF::loadView(
+            'print.printtest',
+            $data,
+            [],
+            [
+                'format' => 'A5',
+                'orientation' => 'L',
+                'margin_left' => 1,
+                'margin_right ' => 1,
+                'margin_top' => 0,
+                'margin_bottom' => 0,
+                'margin_header' => 0,
+                'margin_footer' => 0,
+            ]
+        );
         return $pdf->stream('document.pdf');
     }
 }
