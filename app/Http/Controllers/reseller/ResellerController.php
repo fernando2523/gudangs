@@ -44,13 +44,6 @@ class ResellerController extends Controller
         }
     }
 
-    public function printtest()
-    {
-        $dompdf = PDF::loadView('print.printtest');
-        $dompdf->setPaper('A4', 'landscape');
-        return $dompdf->stream("filename.pdf", array("Attachment" => false));
-    }
-
     /**
      * Show the form for creating a new resource.
      *

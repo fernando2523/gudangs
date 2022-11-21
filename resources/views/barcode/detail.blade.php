@@ -1,4 +1,4 @@
-<form id="form_barcode" class="was-validated" enctype="multipart/form-data" method="POST" action="/">
+<form id="form_barcode" class="was-validated" enctype="multipart/form-data" method="POST" action="/print/printtest">
     <input type="hidden" name="_method" value="PATCH">
     @csrf
     <div class="modal fade" id="modalbarcode" data-bs-backdrop="static" style="padding-top:7%;">
@@ -13,12 +13,10 @@
                     <div id="barcode_detail">
 
                     </div>
-
-
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-theme fw-bold" type="button" onclick="submitformbarcode()">PRINT <i
-                            class="fa-xl bi bi-upc-scan ms-1"></i></a>
+                    <button class="btn btn-theme fw-bold" type="submit">PRINT <i
+                            class="fa-xl bi bi-upc-scan ms-1"></i></button>
                 </div>
             </div>
         </div>

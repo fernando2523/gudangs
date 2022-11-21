@@ -237,4 +237,4 @@ route::get('/setting/setting', [ChangePasswordController::class, 'setting'])->mi
 
 route::any('/transfer', [ProductTransferController::class, 'transfer'])->middleware('auth');
 
-route::any('/print/printtest', [ResellerController::class, 'printtest']);
+route::any('/print/printtest', [BarcodeController::class, 'printtest']);
