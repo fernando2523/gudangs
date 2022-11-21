@@ -154,29 +154,26 @@
                                   style="z-index: 1020;">
                                   <i class="fa fa-search opacity-5"></i>
                               </div>
-                              <input type="text" class="form-control form-control-sm ps-35px" id="search_store"
-                                  placeholder="Search store.." />
+                              <input type="text" class="form-control form-control-sm ps-35px" id="search_brand"
+                                  placeholder="Search brand.." />
                           </div>
                       </div>
                   </div>
-                  <table class="table-sm table-bordered mb-0" style="width: 100%" id="tb_store">
+                  <table class="table-sm table-bordered mb-0" style="width: 100%" id="tb_brand">
                       <thead style="font-size: 11px;">
                           <tr>
                               <th class="text-center" width="2%" style="color: #a8b6bc !important;">NO
                               </th>
-                              <th class="text-left" width="30%" style="color: #a8b6bc !important;">STORE
+                              <th class="text-left" width="30%" style="color: #a8b6bc !important;">BRAND
                               </th>
                               </th>
                               <th class="text-center" width="5%" style="color: #a8b6bc !important;">QTY
                               </th>
-                              <th class="text-center" width="15%" style="color: #a8b6bc !important;">GROSS
-                                  SALE
+                              <th class="text-center" width="15%" style="color: #a8b6bc !important;">GROSS SALE
                               </th>
-                              <th class="text-center" width="10%" style="color: #a8b6bc !important;">DISC
-                                  ITEM
+                              <th class="text-center" width="10%" style="color: #a8b6bc !important;">DISC ITEM
                               </th>
-                              <th class="text-center" width="15%" style="color: #a8b6bc !important;">NET
-                                  SALE
+                              <th class="text-center" width="15%" style="color: #a8b6bc !important;">NET SALE
                               </th>
                               <th class="text-center" width="10%" style="color: #a8b6bc !important;">COST
                               </th>
@@ -200,7 +197,6 @@
       <!-- END -->
   </div>
 
-
   <link href="{{ URL::asset('/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"
       rel="stylesheet" />
   <link href="{{ URL::asset('/assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
@@ -222,20 +218,20 @@
 
   <script type="text/javascript">
       $(function() {
-          var table = $('#tb_store').DataTable({
+          var table = $('#tb_brand').DataTable({
               lengthMenu: [15],
               responsive: true,
               processing: false,
               serverSide: true,
-              ajax: "/tablereportstore/{{ $store }}/{{ $start }}/{{ $end }}",
+              ajax: "/tablereportbrand/{{ $store }}/{{ $start }}/{{ $end }}",
               columns: [{
                   data: 'DT_RowIndex',
                   name: 'id',
                   class: 'text-center fw-bold',
                   searchable: false
               }, {
-                  data: 'id_store',
-                  name: 'id_store',
+                  data: 'id_brand',
+                  name: 'id_brand',
                   class: 'text-left fw-bold text-white',
                   searchable: true,
               }, {
@@ -316,7 +312,7 @@
               ],
           });
 
-          $('#search_store').on('keyup', function() {
+          $('#search_brand').on('keyup', function() {
               table.search(this.value).draw();
           });
       });

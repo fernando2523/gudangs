@@ -220,10 +220,10 @@ route::any('/get_warehouse', [OrderController::class, 'get_warehouse']);
 route::any('/tablereportstore/{store}/{start}/{end}', [ReportStoreController::class, 'tablereportstore'])->middleware('auth');
 
 route::get('/reportBrand/brand', [ReportBrandController::class, 'brand'])->middleware('auth');
-route::any('/tablereportbrand', [ReportBrandController::class, 'tablereportbrand'])->middleware('auth');
+route::any('/tablereportbrand/{store}/{start}/{end}', [ReportBrandController::class, 'tablereportbrand'])->middleware('auth');
 
 route::get('/reportQuality/quality', [ReportQualityController::class, 'quality'])->middleware('auth');
-route::any('/tablereportquality', [ReportQualityController::class, 'tablereportquality'])->middleware('auth');
+route::any('/tablereportquality/{store}/{start}/{end}', [ReportQualityController::class, 'tablereportquality'])->middleware('auth');
 
 route::get('/productTransfer/productTransfers', [ProductTransferController::class, 'productTransfers'])->middleware('auth');
 route::any('/tableproducttransfer/{id_ware}', [ProductTransferController::class, 'tableproducttransfer'])->middleware('auth');
@@ -245,6 +245,8 @@ route::any('/load_dashboard', [App\Http\Controllers\HomeController::class, 'load
 
 route::any('/load_report_product', [ReportProductController::class, 'load_report_product'])->middleware('auth');
 route::any('/load_report_store', [ReportStoreController::class, 'load_report_store'])->middleware('auth');
+route::any('/load_report_brand', [ReportBrandController::class, 'load_report_brand'])->middleware('auth');
+route::any('/load_report_quality', [ReportQualityController::class, 'load_report_quality'])->middleware('auth');
 
 route::any('/reportsummary/load_header', [ReportSummaryController::class, 'load_header'])->middleware('auth');
 route::any('/order/load_header', [OrderController::class, 'load_header'])->middleware('auth');

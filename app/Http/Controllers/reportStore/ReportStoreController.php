@@ -61,14 +61,14 @@ class ReportStoreController extends Controller
         if ($request->ajax()) {
 
             if ($store === 'ALL') {
-                $product =  Sale::with('store_gross', 'store_disc_item', 'store_costs')
-                    ->selectRaw('*,SUM(qty) as qty')
+                $product =  Sale::latest()
+                    ->selectRaw('*,SUM(qty) as qty,SUM(selling_price*qty) as selling_price,SUM(diskon_item) as diskon_item,SUM(m_price*qty) as costs')
                     ->whereBetween('tanggal', [$start, $end])
                     ->groupBy('id_store')
                     ->get();
             } else {
-                $product =  Sale::with('store_gross', 'store_disc_item', 'store_costs')
-                    ->selectRaw('*,SUM(qty) as qty')
+                $product =  Sale::latest()
+                    ->selectRaw('*,SUM(qty) as qty,SUM(selling_price*qty) as selling_price,SUM(diskon_item) as diskon_item,SUM(m_price*qty) as costs')
                     ->where('id_store', $store)
                     ->whereBetween('tanggal', [$start, $end])
                     ->groupBy('id_store')
