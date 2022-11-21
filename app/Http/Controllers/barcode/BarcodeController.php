@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Product;
+use App\Models\variation;
+use Illuminate\Support\Facades\Facade;
+use PDF;
 
 class BarcodeController extends Controller
 {
@@ -20,10 +23,6 @@ class BarcodeController extends Controller
         return view('barcode.barcodes', compact(
             'title'
         ));
-    }
-
-    public function printtest()
-    {
     }
 
     public function tablebarcode(Request $request)
@@ -46,11 +45,55 @@ class BarcodeController extends Controller
             $id_ware = $request->id_ware;
             $id_area = $request->id_area;
 
+            $get_variation = DB::table('variations')
+                ->where('id_ware', $id_ware)
+                ->where('id_produk', $id_produk)
+                ->groupBy('size')->get();
+
+            $get_idpo = DB::table('supplier_orders')
+                ->where('id_ware', $id_ware)
+                ->where('id_produk', $id_produk)
+                ->groupBy('idpo')->get();
+
+            // $get_idpo_variation = DB::table('supplier_variations')
+            //     ->where('id_ware', $id_ware)
+            //     ->where('id_produk', $id_produk)
+            //     ->groupBy('size')->get();
+
             return view('barcode/barcode_detail', compact(
                 'id_produk',
                 'id_ware',
                 'id_area',
+                'get_variation',
+                'get_idpo'
             ));
         }
+    }
+    public function select_size_po(Request $request)
+    {
+        if ($request->ajax()) {
+            $idpo = $request->value;
+            $id_produk = $request->v_id_produk;
+            $id_ware = $request->v_id_ware;
+
+            $get_idpo_variation = DB::table('supplier_variations')
+                ->where('id_produk', $id_produk)
+                ->where('idpo', $idpo)
+                ->groupBy('size')->get();
+
+            return view('barcode/select_size_po', compact(
+                'idpo',
+                'get_idpo_variation'
+            ));
+        }
+    }
+
+    public function printtest()
+    {
+        $data = [
+            'foo' => 'bar'
+        ];
+        $pdf = PDF::loadView('print.printtest', $data);
+        return $pdf->stream('document.pdf');
     }
 }

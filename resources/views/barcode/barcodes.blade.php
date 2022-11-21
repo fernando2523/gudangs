@@ -13,6 +13,7 @@
                 </h1>
             </div>
             <div class="ms-auto">
+                <a href="/print/printtest">test</a>
             </div>
         </div>
         <style>
@@ -229,7 +230,7 @@
                     dom: 'tip',
                     // "ordering" : true,
                     order: [
-                        [5, 'desc']
+                        [2, 'desc']
                     ],
                     columnDefs: [{
                             orderable: false,
