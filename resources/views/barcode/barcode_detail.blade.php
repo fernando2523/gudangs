@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-3">
-        <span><img src="/product/defaultimg.png" alt="" width="100" height="100" class="rounded"></span>
+    <div class="col-12" align="center">
+        <span><img src="/product/defaultimg.png" alt="" width="300" height="300" class="rounded"></span>
     </div>
-    <div class="col-9" align="center">
+    <div class="col-12" align="center">
         <span>
             <label class="fw-bold" style="vertical-align: -25px;">SLIP ON CLASSICS BLACK WHITE</label><br>
             <label class="fw-bold text-theme">1535325235</label>

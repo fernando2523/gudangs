@@ -447,8 +447,85 @@
         </div> --}}
     </div>
 
-    {{-- <script src="{{ URL::asset('assets/plugins/jvectormap-next/jquery-jvectormap.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/jvectormap-content/world-mill.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/apexcharts/dist/apexcharts.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/demo/dashboard.demo.js') }}"></script> --}}
+    <script src="{{ URL::asset('assets/plugins/jquery/dist/jquery.js') }}"></script>
+    <link href="{{ URL::asset('assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}"
+        rel="stylesheet" />
+    <script src="{{ URL::asset('assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var start = moment().startOf('month');
+            var end = moment().endOf('month');
+
+            // document.getElementById('getbulan').value = start.format('YYYY-MMMM');
+            // var bulan = document.getElementById('getbulan').value;
+
+            function cb(start, end) {
+                $('#reportrange span').html(start.format('DD MMMM YYYY') + ' - ' + end.format('DD MMMM YYYY'));
+                load_data(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+                // load_data_barging(bulan.format('yyyy-MM'));
+            }
+
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                        'month').endOf('month')]
+                }
+            }, cb);
+
+            // $('#getbulan').datepicker({
+            //     format: "yyyy-MM",
+            //     startView: "year",
+            //     minViewMode: "months",
+            //     autoclose: true
+            // });
+
+            cb(start, end);
+            load_data_barging(bulan)
+
+            // $("#getbulan").change(function() {
+            //     load_data_barging(this.value)
+            // });
+
+        });
+
+        // function load_data(start, end){
+        //     $.ajax({
+        //         type:'POST',
+        //         url:"{{ URL::to('/load_data') }}",
+        //         data:{
+        //             start: start,
+        //             end: end,
+        //         },
+        //         success:function(data){
+        //             $('#data_load').html(data);
+        //         }
+        //     });
+        // }
+
+        // function load_data_barging(bulan){
+        //     $.ajax({
+        //         type:'POST',
+        //         url:"{{ URL::to('/load_data_barging') }}",
+        //         data:{
+        //             bulan: bulan,
+        //         },
+        //         success:function(data){
+        //             $('#data_load_barging').html(data);
+        //         }
+        //     });
+        // }
+    </script>
+
+
+    <script src="{{ URL::asset('assets/daterangepicker/moment.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/daterangepicker/daterangepicker.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/daterangepicker/daterangepicker.css') }}" />
 @endsection

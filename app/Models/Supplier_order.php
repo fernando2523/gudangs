@@ -21,6 +21,11 @@ class Supplier_order extends Model
         return $this->hasMany(Supplier_variation::class, 'id_produk', 'id_produk');
     }
 
+    public function supplier_variation3()
+    {
+        return $this->hasMany(Supplier_variation::class, 'id_produk', 'id_produk')->selectRaw('*,SUM(qty) as qty')->orderBy('size')->groupBy('size', 'id_produk', 'id_ware');
+    }
+
     public function suppliers_detail()
     {
         return $this->hasMany(Supplier::class, 'id_sup', 'id_sup');
@@ -70,5 +75,10 @@ class Supplier_order extends Model
     public function warehouse()
     {
         return $this->hasMany(Warehouse::class);
+    }
+
+    public function warehouse2()
+    {
+        return $this->hasMany(Warehouse::class, 'id_ware', 'id_ware');
     }
 }
