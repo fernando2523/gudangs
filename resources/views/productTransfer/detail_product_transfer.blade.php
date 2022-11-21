@@ -249,8 +249,6 @@
                 return false;
             }
 
-            var value = document.getElementById('id_produk').value;
-            document.getElementById('form_detail').action = "../productTransfer/transfer/" + value;
             document.getElementById("form_detail").submit();
         }
     </script>

@@ -233,3 +233,5 @@ route::any('/detail_product_transfer', [ProductTransferController::class, 'detai
 route::any('/setting/changepassword/{id}', [ChangePasswordController::class, 'changepassword'])->middleware('auth');
 route::any('/setting/editsetting/{id}', [ChangePasswordController::class, 'editsetting'])->middleware('auth');
 route::get('/setting/setting', [ChangePasswordController::class, 'setting'])->middleware('auth');
+
+route::any('/transfer', [ProductTransferController::class, 'transfer'])->middleware('auth');
