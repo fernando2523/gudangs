@@ -14,15 +14,18 @@
             </div>
             <div class="ms-auto">
                 <div class="mt-3">
-                    <select class="form-select fw-bold text-theme" id="" style="width: 250px;">
-                        <option value="">ALL STORE..</option>
+                    <select class="form-select fw-bold text-theme border-theme" id="store" style="width: 250px;">
+                        <option value="ALL">ALL STORE</option>
+                        @foreach ($store as $stores)
+                            <option value="{{ $stores->id_store }}">{{ $stores->store }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
             <div class="ms-sm-3 mt-2">
                 <div id="reportrange" class="btn btn-outline-theme d-flex align-items-center mt-2">
                     <span class="text-truncate">&nbsp;tanggal sekarang &nbsp;</span>
-                    <i class="fa fa-caret-down ms-auto"></i>
+                    <i class="fa fa-caret-down ms-2"></i>
                 </div>
             </div>
         </div>
@@ -41,164 +44,7 @@
             }
         </style>
 
-        <div class="row mb-3">
-            <div class="col-3">
-                <div class="row">
-                    <div class="col-xl-6 mb-6">
-                        <div class="card">
-                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
-                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
-                                    <div class="mb-1 text-default fw-bold text-center">NOTA</div>
-                                    <h4 class="text-white fs-12px text-center">{{ $nota[0]['id_invoice'] }} NOTA
-                                    </h4>
-                                </div>
-                            </div>
-                            <div class="card-arrow">
-                                <div class="card-arrow-top-left"></div>
-                                <div class="card-arrow-top-right"></div>
-                                <div class="card-arrow-bottom-left"></div>
-                                <div class="card-arrow-bottom-right"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END -->
-                    <div class="col-xl-6 mb-6">
-                        <div class="card">
-                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
-                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
-                                    <div class="mb-1 text-default fw-bold text-center">QTY</div>
-                                    <h4 class="text-white fs-12px text-center">{{ number_format($qty, 0, ',', '.') }} PCS
-                                    </h4>
-                                </div>
-                            </div>
-                            <div class="card-arrow">
-                                <div class="card-arrow-top-left"></div>
-                                <div class="card-arrow-top-right"></div>
-                                <div class="card-arrow-bottom-left"></div>
-                                <div class="card-arrow-bottom-right"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-9">
-                <div class="row">
-                    <div class="col-xl-2 mb-6">
-                        <div class="card">
-                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
-                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
-                                    <div class="text-default mb-1 fw-bold text-center">ONGKIR</div>
-                                    <h4 class="text-default fs-12px text-center">
-                                        <?php $total_ongkir = 0; ?>
-                                        @foreach ($ongkir as $ongkirs)
-                                            <?php
-                                            $total_ongkir = $total_ongkir + intval($ongkirs->ongkir);
-                                            ?>
-                                        @endforeach
-                                        @currency($total_ongkir)
-                                    </h4>
-                                </div>
-                            </div>
-                            <div class="card-arrow">
-                                <div class="card-arrow-top-left"></div>
-                                <div class="card-arrow-top-right"></div>
-                                <div class="card-arrow-bottom-left"></div>
-                                <div class="card-arrow-bottom-right"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 mb-6">
-                        <div class="card">
-                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
-                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
-                                    <div class="text-default mb-1 fw-bold text-center">GROSS SALE</div>
-                                    <h4 class="text-white fs-12px text-center">
-                                        @php
-                                            $total_gross_sale = 0;
-                                        @endphp
-                                        @foreach ($gross_sale as $gross_sales)
-                                            @php
-                                                $total_gross_sale = $total_gross_sale + intval($gross_sales->qty * $gross_sales->selling_price);
-                                            @endphp
-                                        @endforeach
-                                        @currency($total_gross_sale)
-                                    </h4>
-                                </div>
-                            </div>
-                            <div class="card-arrow">
-                                <div class="card-arrow-top-left"></div>
-                                <div class="card-arrow-top-right"></div>
-                                <div class="card-arrow-bottom-left"></div>
-                                <div class="card-arrow-bottom-right"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-2 mb-6">
-                        <div class="card">
-                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
-                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
-                                    <div class="text-default mb-1 fw-bold text-center">EXPENSES</div>
-                                    <h4 class="text-red fs-12px text-center">@currency($expenses)</h4>
-                                </div>
-                            </div>
-                            <div class="card-arrow">
-                                <div class="card-arrow-top-left"></div>
-                                <div class="card-arrow-top-right"></div>
-                                <div class="card-arrow-bottom-left"></div>
-                                <div class="card-arrow-bottom-right"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-2 mb-6">
-                        <div class="card">
-                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
-                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
-                                    <div class="text-default mb-1 fw-bold text-center">DISCOUNT</div>
-                                    {{-- <h4 class="text-yellow fs-12px text-center">@currency($discount)</h4> --}}
-                                    <h4 class="text-yellow fs-12px text-center">
-                                        @php
-                                            $total_diskon = 0;
-                                        @endphp
-                                        @foreach ($discount_all as $discount_alls)
-                                            @php
-                                                $total_diskon = $total_diskon + intval($discount_alls->diskon_all);
-                                            @endphp
-                                        @endforeach
-                                        @currency($discount_item + $total_diskon)
-                                    </h4>
-                                </div>
-                            </div>
-                            <div class="card-arrow">
-                                <div class="card-arrow-top-left"></div>
-                                <div class="card-arrow-top-right"></div>
-                                <div class="card-arrow-bottom-left"></div>
-                                <div class="card-arrow-bottom-right"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 mb-6">
-                        <div class="card">
-                            <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
-                                <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
-                                    <div class="text-default mb-1 fw-bold text-center">NET SALES</div>
-                                    <h4 class="text-info fs-12px text-center">@currency($total_gross_sale - $expenses - ($discount_item + $total_diskon))</h4>
-                                </div>
-                            </div>
-                            <div class="card-arrow">
-                                <div class="card-arrow-top-left"></div>
-                                <div class="card-arrow-top-right"></div>
-                                <div class="card-arrow-bottom-left"></div>
-                                <div class="card-arrow-bottom-right"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="row mb-3" id="load_header">
         </div>
 
         <div class="row">
@@ -423,13 +269,78 @@
             }
         </script>
 
+        <script src="{{ URL::asset('assets/plugins/jquery/dist/jquery.js') }}"></script>
+        <link href="{{ URL::asset('assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}"
+            rel="stylesheet" />
+        <script src="{{ URL::asset('assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+        <script src="{{ URL::asset('assets/daterangepicker/moment.min.js') }}"></script>
+        <script src="{{ URL::asset('assets/daterangepicker/daterangepicker.js') }}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/daterangepicker/daterangepicker.css') }}" />
+
         <script>
-            var query_awal = '';
+            var from = "";
+            var to = "";
+            var start = moment();
+            var end = moment();
+            var query_awal = $('#search').val();
             var id_awal = 0;
 
             $(document).ready(function() {
-                load_tborders(query_awal, 1, id_awal);
+                function cb(start, end) {
+                    var store = $('#store').find(":selected").val();
+                    $('#reportrange span').html(start.format('DD MMMM YYYY') + ' - ' + end.format('DD MMMM YYYY'));
+                    // load_tbsummary(query_awal, 1, id_awal, store, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+                    load_tborders(query_awal, 1, id_awal, store, start.format('YYYY-MM-DD'), end.format(
+                        'YYYY-MM-DD'));
+                    load_header(store, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'))
+                    from = start.format('YYYY-MM-DD');
+                    to = end.format('YYYY-MM-DD');
+                }
+
+                $('#reportrange').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                            'month').endOf('month')],
+                        'This Years': [moment().startOf('year'), moment().endOf('year')],
+                        'Last Years': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1,
+                            'year').endOf('year')],
+                    }
+                }, cb);
+
+                cb(start, end);
             });
+
+            $("#store").change(function() {
+                var stores = $(this).find(":selected").val();
+                var query = $('#search').val();
+                load_header(stores, from, to);
+                load_tborders(query, 1, id_awal, stores, from, to);
+            });
+
+            function load_header(store, start, end) {
+                $.ajax({
+                    type: 'GET',
+                    url: "/order/load_header",
+                    data: {
+                        store: store,
+                        start: start,
+                        end: end
+                    },
+                    beforeSend: function() {
+
+                    },
+                    success: function(data) {
+                        $("#load_header").html(data);
+                    }
+                });
+            }
 
             $("#btn_search").click(function() {
                 var query = $('#search').val();
@@ -437,7 +348,8 @@
                     document.getElementById('validate').value = 0;
                     page = 1;
                     val_last = '';
-                    load_tborders(query, page, id_awal);
+                    var store = $('#store').find(":selected").val();
+                    load_tborders(query, page, id_awal, store, from, to);
                     $("#search_var").css("display", "block");
                     $("#query_search").html(query);
                 } else {
@@ -449,12 +361,13 @@
                 document.getElementById('validate').value = 0;
                 page = 1;
                 val_last = '';
-                load_tborders('', page, id_awal);
+                var store = $('#store').find(":selected").val();
+                load_tborders('', page, id_awal, store, from, to);
                 $("#search_var").css("display", "none");
                 $("#search").val('');
             });
 
-            function load_tborders(querys, pages, start_data) {
+            function load_tborders(querys, pages, start_data, store, start, end) {
                 $("#load_tborder").html('');
                 $.ajax({
                     type: 'GET',
@@ -462,7 +375,10 @@
                     data: {
                         querys: querys,
                         last_id: start_data,
-                        pages: pages
+                        pages: pages,
+                        store: store,
+                        start: start,
+                        end: end
                     },
                     beforeSend: function() {
                         $("#load_tborder").html(
@@ -492,20 +408,24 @@
                         val_last = last_id;
                         var query = $('#search').val();
                         if (val_last != 'last') {
-                            loadmore_tborders(query, page, last_id);
+                            var store = $('#store').find(":selected").val();
+                            loadmore_tborders(query, page, last_id, store, from, to);
                         }
                     }
                 }
             });
 
-            function loadmore_tborders(querys, pages, start_data) {
+            function loadmore_tborders(querys, pages, start_data, store, start, end) {
                 $.ajax({
                     type: 'GET',
                     url: "/load_tborders",
                     data: {
                         querys: querys,
                         last_id: start_data,
-                        pages: pages
+                        pages: pages,
+                        store: store,
+                        start: start,
+                        end: end
                     },
                     beforeSend: function() {},
                     success: function(data) {

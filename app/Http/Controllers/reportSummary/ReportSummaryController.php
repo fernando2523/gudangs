@@ -46,7 +46,7 @@ class ReportSummaryController extends Controller
             $qty = Sale::whereBetween('tanggal', [$start, $end])->where('id_store', $store)->sum('qty');
             $ongkir = Sale::selectRaw('ongkir')->where('id_store', $store)->whereBetween('tanggal', [$start, $end])->groupBy('id_invoice')->get();
             $gross_sale = Sale::whereBetween('tanggal', [$start, $end])->where('id_store', $store)->get();
-            $expenses = Store_equipment_cost::whereBetween('tanggal', [$start, $end])->where('id_store', $store)->sum('total_price');
+            $expenses = Store_equipment_cost::whereBetween('tanggal', [$start, $end])->where('store', $store)->sum('total_price');
             $discount_item = Sale::whereBetween('tanggal', [$start, $end])->where('id_store', $store)->sum('diskon_item');
             $discount_all = Sale::selectRaw('diskon_all')->where('id_store', $store)->whereBetween('tanggal', [$start, $end])->groupBy('id_invoice')->get('diskon_all');
             $cost = Sale::whereBetween('tanggal', [$start, $end])->where('id_store', $store)->get();
