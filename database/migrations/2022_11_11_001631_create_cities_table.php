@@ -18,6 +18,7 @@ class CreateCitiesTable extends Migration
             $table->string('id_area');
             $table->string('provinsi');
             $table->string('kota');
+            $table->string('up_price');
             $table->timestamps();
         });
     }

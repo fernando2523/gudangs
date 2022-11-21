@@ -18,6 +18,8 @@ class CreateSalesTable extends Migration
             $table->string('tanggal');
             $table->string('id_invoice');
             $table->string('id_produk');
+            $table->string('idpo');
+            $table->string('id_area');
             $table->string('id_ware');
             $table->string('id_store');
             $table->string('id_brand');

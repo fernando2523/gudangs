@@ -10,7 +10,7 @@ use App\Models\Store;
 use App\Models\Employee;
 use App\Models\Product;
 use App\Models\Reseller;
-use App\Models\Warehouse;
+use App\Models\warehouse;
 use App\Models\variation;
 use App\Models\Supplier_order;
 use Illuminate\Support\Facades\DB;
