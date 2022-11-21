@@ -51,15 +51,21 @@ class HomeController extends Controller
             $get_sales = Sale::all()->whereBetween('tanggal', [$start, $end])->groupBy('id_invoice')->count('id_invoice');
             $get_qty = Sale::all()->whereBetween('tanggal', [$start, $end])->sum('qty');
             $get_expense = Store_equipment_cost::all()->whereBetween('tanggal', [$start, $end])->sum('total_price');
+
+            $get_payment = DB::table('sales')->select(DB::raw('SUM(cash) as cashs'), DB::raw('SUM(bca) as bcas'), DB::raw('SUM(qris) as qriss'))->whereBetween('tanggal', [$start, $end])->groupBy('id_invoice')->get();
+            $getTop_product = DB::table('sales')->select(DB::raw('SUM(qty) as qtys'), DB::raw('produk'), DB::raw('id_brand'))->whereBetween('tanggal', [$start, $end])->groupBy('id_produk')->limit(10)->get();
+            $getTop_reseller = DB::table('sales')->select(DB::raw('SUM(qty) as qtys'), DB::raw('id_reseller'))->where('customer', '=', 'RESELLER')->whereBetween('tanggal', [$start, $end])->groupBy('id_reseller')->limit(10)->get();
         } else {
             $get_sales = Sale::all()->where('id_store', $store)->whereBetween('tanggal', [$start, $end])->groupBy('id_invoice')->count('id_invoice');
             $get_qty = Sale::all()->where('id_store', $store)->whereBetween('tanggal', [$start, $end])->sum('qty');
             $get_expense = Store_equipment_cost::all()->where('store', $store)->whereBetween('tanggal', [$start, $end])->sum('total_price');
+
+            $get_payment = DB::table('sales')->select(DB::raw('SUM(cash) as cashs'), DB::raw('SUM(bca) as bcas'), DB::raw('SUM(qris) as qriss'))->where('id_store', $store)->whereBetween('tanggal', [$start, $end])->groupBy('id_invoice')->get();
+            $getTop_product = DB::table('sales')->select(DB::raw('SUM(qty) as qtys'), DB::raw('produk'), DB::raw('id_brand'))->where('id_store', $store)->whereBetween('tanggal', [$start, $end])->groupBy('id_produk')->limit(10)->get();
+            $getTop_reseller = DB::table('sales')->select(DB::raw('SUM(qty) as qtys'), DB::raw('id_reseller'))->where('customer', '=', 'RESELLER')->where('id_store', $store)->whereBetween('tanggal', [$start, $end])->groupBy('id_reseller')->limit(10)->get();
         }
 
-        $get_payment = DB::table('sales')->select(DB::raw('SUM(cash) as cashs'), DB::raw('SUM(bca) as bcas'), DB::raw('SUM(qris) as qriss'))->groupBy('id_invoice')->get();
-        $getTop_product = DB::table('sales')->select(DB::raw('SUM(qty) as qtys'), DB::raw('produk'), DB::raw('id_brand'))->groupBy('id_produk')->limit(10)->get();
-        $getTop_reseller = DB::table('sales')->select(DB::raw('SUM(qty) as qtys'), DB::raw('id_reseller'))->where('customer', '=', 'RESELLER')->groupBy('id_reseller')->limit(10)->get();
+
 
         if (count($get_payment) > 0) {
             $payment = intval($get_payment[0]->cashs) + intval($get_payment[0]->bcas) + intval($get_payment[0]->qriss);
