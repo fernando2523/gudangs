@@ -245,3 +245,5 @@ route::any('/load_dashboard', [App\Http\Controllers\HomeController::class, 'load
 
 route::any('/load_report_product', [ReportProductController::class, 'load_report_product'])->middleware('auth');
 route::any('/load_report_store', [ReportStoreController::class, 'load_report_store'])->middleware('auth');
+
+route::any('/reportsummary/load_header', [ReportSummaryController::class, 'load_header'])->middleware('auth');

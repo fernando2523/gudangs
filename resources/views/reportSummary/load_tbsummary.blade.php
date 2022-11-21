@@ -1,4 +1,3 @@
-{{-- {{ $store . ' ' . $start . ' ' . $end }} --}}
 @foreach ($data as $key => $datas)
     <tr>
         @if ($datas->customer === 'RETAIL')

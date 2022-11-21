@@ -48,7 +48,7 @@
             }
         </style>
 
-        <div class="row mb-3">
+        <div class="row mb-3" id="load_header">
             <div class="col-12">
                 <div class="row">
                     <div class="col-xl-4 mb-3">
@@ -56,7 +56,9 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="mb-1 text-default fw-bold text-center">NOTA</div>
-                                    <h4 class="text-white fs-12px text-center">{{ $nota[0]['id_invoice'] }}</h4>
+                                    <h4 class="text-white fs-12px text-center">
+                                        <div class="spinner-border"></div>
+                                    </h4>
                                 </div>
                             </div>
                             <div class="card-arrow">
@@ -73,7 +75,8 @@
                             <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-10">
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="mb-1 text-default fw-bold text-center">QTY</div>
-                                    <h4 class="text-white fs-12px text-center">{{ number_format($qty, 0, ',', '.') }} PCS
+                                    <h4 class="text-white fs-12px text-center">
+                                        <div class="spinner-border"></div>
                                     </h4>
                                 </div>
                             </div>
@@ -92,13 +95,7 @@
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">ONGKIR</div>
                                     <h4 class="text-default fs-12px text-center">
-                                        <?php $total_ongkir = 0; ?>
-                                        @foreach ($ongkir as $ongkirs)
-                                            <?php
-                                            $total_ongkir = $total_ongkir + intval($ongkirs->ongkir);
-                                            ?>
-                                        @endforeach
-                                        @currency($total_ongkir)
+                                        <div class="spinner-border"></div>
                                     </h4>
                                 </div>
                             </div>
@@ -121,15 +118,7 @@
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">GROSS SALE</div>
                                     <h4 class="text-white fs-12px text-center">
-                                        @php
-                                            $total_gross_sale = 0;
-                                        @endphp
-                                        @foreach ($gross_sale as $gross_sales)
-                                            @php
-                                                $total_gross_sale = $total_gross_sale + intval($gross_sales->qty * $gross_sales->selling_price);
-                                            @endphp
-                                        @endforeach
-                                        @currency($total_gross_sale)
+                                        <div class="spinner-border"></div>
                                     </h4>
                                 </div>
                             </div>
@@ -148,7 +137,7 @@
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">EXPENSES</div>
                                     <h4 class="text-red fs-12px text-center">
-                                        @currency($expenses)
+                                        <div class="spinner-border"></div>
                                     </h4>
                                 </div>
                             </div>
@@ -167,15 +156,7 @@
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">DISCOUNT</div>
                                     <h4 class="text-yellow fs-12px text-center">
-                                        @php
-                                            $total_diskon = 0;
-                                        @endphp
-                                        @foreach ($discount_all as $discount_alls)
-                                            @php
-                                                $total_diskon = $total_diskon + intval($discount_alls->diskon_all);
-                                            @endphp
-                                        @endforeach
-                                        @currency($discount_item + $total_diskon)
+                                        <div class="spinner-border"></div>
                                     </h4>
                                 </div>
                             </div>
@@ -194,7 +175,7 @@
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">NET SALES</div>
                                     <h4 class="text-info fs-12px text-center">
-                                        @currency($total_gross_sale - $expenses - ($discount_item + $total_diskon))
+                                        <div class="spinner-border"></div>
                                     </h4>
                                 </div>
                             </div>
@@ -213,15 +194,7 @@
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">COSTS</div>
                                     <h4 class="text-indigo fs-12px text-center">
-                                        @php
-                                            $total_cost = 0;
-                                        @endphp
-                                        @foreach ($cost as $costs)
-                                            @php
-                                                $total_cost = $total_cost + intval($costs->qty * $costs->m_price);
-                                            @endphp
-                                        @endforeach
-                                        @currency($total_cost)
+                                        <div class="spinner-border"></div>
                                     </h4>
                                 </div>
                             </div>
@@ -240,10 +213,7 @@
                                 <div class="flex-fill" style="margin-top: 0px;margin-bottom: -5px;">
                                     <div class="text-default mb-1 fw-bold text-center">PROFIT </div>
                                     <h4 class="text-lime fs-12px text-center">
-                                        @php
-                                            $net_sales = $total_gross_sale - $expenses - ($discount_item + $total_diskon);
-                                        @endphp
-                                        @currency($net_sales - $total_cost)
+                                        <div class="spinner-border"></div>
                                     </h4>
                                 </div>
                             </div>
@@ -257,8 +227,8 @@
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
 
         <div class="row">
             <!-- DATA ASSSET -->
@@ -364,18 +334,24 @@
         <link href="{{ URL::asset('assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}"
             rel="stylesheet" />
         <script src="{{ URL::asset('assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+        <script src="{{ URL::asset('assets/daterangepicker/moment.min.js') }}"></script>
+        <script src="{{ URL::asset('assets/daterangepicker/daterangepicker.js') }}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/daterangepicker/daterangepicker.css') }}" />
 
-        <script type="text/javascript">
+        <script>
+            var from = "";
+            var to = "";
+            var start = moment();
+            var end = moment();
+            var query_awal = $('#search').val();
+            var id_awal = 0;
+
             $(document).ready(function() {
-                var start = moment();
-                var end = moment();
-                var from = "";
-                var to = "";
-
                 function cb(start, end) {
                     var store = $('#store').find(":selected").val();
                     $('#reportrange span').html(start.format('DD MMMM YYYY') + ' - ' + end.format('DD MMMM YYYY'));
-                    load_data(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'), store);
+                    load_tbsummary(query_awal, 1, id_awal, store, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+                    load_header(store, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'))
                     from = start.format('YYYY-MM-DD');
                     to = end.format('YYYY-MM-DD');
                 }
@@ -398,46 +374,32 @@
                 }, cb);
 
                 cb(start, end);
-
-                $("#store").change(function() {
-                    var stores = $(this).find(":selected").val();
-                    // cb(start, end);
-                    load_data(from, to, stores);
-                });
-
             });
 
-            function load_data(start, end, store) {
+            $("#store").change(function() {
+                var stores = $(this).find(":selected").val();
+                var query = $('#search').val();
+                load_tbsummary(query, 1, 0, stores, from, to);
+                load_header(stores, from, to);
+            });
+
+            function load_header(store, start, end) {
                 $.ajax({
                     type: 'GET',
-                    url: "{{ URL::to('/load_tbsummary') }}",
+                    url: "/reportsummary/load_header",
                     data: {
+                        store: store,
                         start: start,
-                        end: end,
-                        store: store
+                        end: end
                     },
-                    beforeSend() {
-                        $("#load_tbsummary").html(`<div class="text-center w-100 align-middle">
-                                <div class="m-auto spinner-border"></div>
-                            </div>`);
+                    beforeSend: function() {
+
                     },
                     success: function(data) {
-                        $('#load_tbsummary').html(data);
+                        $("#load_header").html(data);
                     }
                 });
             }
-        </script>
-        <script src="{{ URL::asset('assets/daterangepicker/moment.min.js') }}"></script>
-        <script src="{{ URL::asset('assets/daterangepicker/daterangepicker.js') }}"></script>
-        <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/daterangepicker/daterangepicker.css') }}" />
-
-        <script>
-            var query_awal = '';
-            var id_awal = 0;
-
-            $(document).ready(function() {
-                load_tbsummary(query_awal, 1, id_awal);
-            });
 
             $("#btn_search").click(function() {
                 var query = $('#search').val();
@@ -445,7 +407,8 @@
                     document.getElementById('validate').value = 0;
                     page = 1;
                     val_last = '';
-                    load_tbsummary(query, page, id_awal);
+                    var store = $('#store').find(":selected").val();
+                    load_tbsummary(query, page, id_awal, store, from, to);
                     $("#search_var").css("display", "block");
                     $("#query_search").html(query);
                 } else {
@@ -457,12 +420,13 @@
                 document.getElementById('validate').value = 0;
                 page = 1;
                 val_last = '';
-                load_tbsummary('', page, id_awal);
+                var store = $('#store').find(":selected").val();
+                load_tbsummary('', page, id_awal, store, from, to);
                 $("#search_var").css("display", "none");
                 $("#search").val('');
             });
 
-            function load_tbsummary(querys, pages, start_data) {
+            function load_tbsummary(querys, pages, start_data, store, start, end) {
                 $("#load_tbsummary").html('');
                 $.ajax({
                     type: 'GET',
@@ -470,7 +434,10 @@
                     data: {
                         querys: querys,
                         last_id: start_data,
-                        pages: pages
+                        pages: pages,
+                        store: store,
+                        start: start,
+                        end: end
                     },
                     beforeSend: function() {
                         $("#load_tbsummary").html(
@@ -500,20 +467,24 @@
                         val_last = last_id;
                         var query = $('#search').val();
                         if (val_last != 'last') {
-                            loadmore_tbsummary(query, page, last_id);
+                            var store = $('#store').find(":selected").val();
+                            loadmore_tbsummary(query, page, last_id, store, from, to);
                         }
                     }
                 }
             });
 
-            function loadmore_tbsummary(querys, pages, start_data) {
+            function loadmore_tbsummary(querys, pages, start_data, store, start, end) {
                 $.ajax({
                     type: 'GET',
                     url: "/load_tbsummary",
                     data: {
                         querys: querys,
                         last_id: start_data,
-                        pages: pages
+                        pages: pages,
+                        store: store,
+                        start: start,
+                        end: end
                     },
                     beforeSend: function() {},
                     success: function(data) {
