@@ -10,6 +10,10 @@ use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Dompdf\Dompdf;
+use Milon\Barcode\DNS1D;
+use PDF;
+// use Barryvdh\DomPDF\Facade\Pdf;
 
 class ResellerController extends Controller
 {
@@ -38,6 +42,13 @@ class ResellerController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+    }
+
+    public function printtest()
+    {
+        $dompdf = PDF::loadView('print.printtest');
+        $dompdf->setPaper('A4', 'landscape');
+        return $dompdf->stream("filename.pdf", array("Attachment" => false));
     }
 
     /**
