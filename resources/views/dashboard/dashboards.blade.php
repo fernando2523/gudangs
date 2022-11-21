@@ -44,11 +44,15 @@
         $(document).ready(function() {
             var start = moment();
             var end = moment();
+            var from = "";
+            var to = "";
 
             function cb(start, end) {
                 var store = $('#store').find(":selected").val();
                 $('#reportrange span').html(start.format('DD MMMM YYYY') + ' - ' + end.format('DD MMMM YYYY'));
                 load_data(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'), store);
+                from = start.format('YYYY-MM-DD');
+                to = end.format('YYYY-MM-DD');
             }
 
             $('#reportrange').daterangepicker({
@@ -72,7 +76,8 @@
 
             $("#store").change(function() {
                 var stores = $(this).find(":selected").val();
-                cb(start, end);
+                // cb(start, end);
+                load_data(from, to, stores);
             });
 
         });
