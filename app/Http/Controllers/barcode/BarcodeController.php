@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Product;
-use Dompdf\Dompdf;
-use Milon\Barcode\DNS1D;
-use PDF;
 
 class BarcodeController extends Controller
 {
@@ -27,9 +24,6 @@ class BarcodeController extends Controller
 
     public function printtest()
     {
-        $dompdf = PDF::loadView('print.printtest');
-        $dompdf->setPaper('A4', 'landscape');
-        return $dompdf->stream("filename.pdf", array("Attachment" => false));
     }
 
     public function tablebarcode(Request $request)

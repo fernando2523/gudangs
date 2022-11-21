@@ -1,4 +1,5 @@
-<form id="form_barcode" class="was-validated" enctype="multipart/form-data" method="POST" action="/print/printtest">
+<form id="form_barcode" target="_blank" class="was-validated" enctype="multipart/form-data" method="POST"
+    action="/print/printtest">
     <input type="hidden" name="_method" value="PATCH">
     @csrf
     <div class="modal fade" id="modalbarcode" data-bs-backdrop="static" style="padding-top:7%;">
