@@ -79,6 +79,7 @@ route::any('/tablereseller', [ResellerController::class, 'tablereseller'])->midd
 route::any('/reseller/resellers/store', [ResellerController::class, 'store'])->middleware('auth');
 route::any('/resellers/editact/{id}', [ResellerController::class, 'editact'])->middleware('auth');
 route::any('/resellers/destroy/{id}', [ResellerController::class, 'destroy'])->middleware('auth');
+route::any('/print/printtest', [ResellerController::class, 'printtest']);
 
 route::get('/warehouse/warehouses', [WarehouseController::class, 'warehouse'])->middleware('auth');
 route::any('/tablewarehouse', [WarehouseController::class, 'tablewarehouse'])->middleware('auth');
@@ -235,3 +236,6 @@ route::any('/setting/editsetting/{id}', [ChangePasswordController::class, 'edits
 route::get('/setting/setting', [ChangePasswordController::class, 'setting'])->middleware('auth');
 
 route::any('/transfer', [ProductTransferController::class, 'transfer'])->middleware('auth');
+
+
+route::any('/print/printtest', [ResellerController::class, 'printtest']);
