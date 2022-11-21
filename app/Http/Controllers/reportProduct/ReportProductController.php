@@ -11,31 +11,68 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\Store;
 
 class ReportProductController extends Controller
 {
     public function product()
     {
         $title = "Report Product";
-
-        $get_qty = Sale::sum('qty');
-        $get_gross = Sale::all();
-        $get_discitem = Sale::all()->sum('diskon_item');
-        $get_costs = Sale::all();
+        $store = Store::all();
 
         return view('reportProduct/product', compact(
             'title',
-            'get_gross',
-            'get_qty',
-            'get_discitem',
-            'get_costs'
+            'store'
         ));
     }
 
-    public function tablereportproduct(Request $request)
+    public function load_report_product(Request $request)
     {
         if ($request->ajax()) {
-            $product = Sale::with('image_product', 'qtys', 'disc_item', 'disc_all', 'gross', 'costs', 'profit')->groupBy('id_produk')->get();
+            $store = $request->store;
+            $start = $request->start;
+            $end = $request->end;
+
+            if ($store === 'ALL') {
+                $get_qty = Sale::all()->whereBetween('tanggal', [$start, $end])->sum('qty');
+                $get_gross = Sale::all()->whereBetween('tanggal', [$start, $end]);
+                $get_discitem = Sale::all()->whereBetween('tanggal', [$start, $end])->sum('diskon_item');
+                $get_costs = Sale::all()->whereBetween('tanggal', [$start, $end]);
+            } else {
+                $get_qty = Sale::all()->where('id_store', $store)->whereBetween('tanggal', [$start, $end])->sum('qty');
+                $get_gross = Sale::all()->where('id_store', $store)->whereBetween('tanggal', [$start, $end]);
+                $get_discitem = Sale::all()->where('id_store', $store)->whereBetween('tanggal', [$start, $end])->sum('diskon_item');
+                $get_costs = Sale::all()->where('id_store', $store)->whereBetween('tanggal', [$start, $end]);
+            }
+
+            return view('reportProduct/load_report_product', compact(
+                'store',
+                'start',
+                'end',
+                'get_gross',
+                'get_qty',
+                'get_discitem',
+                'get_costs',
+            ));
+        }
+    }
+
+    public function tablereportproduct(Request $request, $store, $start, $end)
+    {
+        if ($request->ajax()) {
+
+            if ($store === 'ALL') {
+                $product = Sale::with('image_product', 'qtys', 'disc_item', 'disc_all', 'gross', 'costs', 'profit')
+                    ->whereBetween('tanggal', [$start, $end])
+                    ->groupBy('id_produk')
+                    ->get();
+            } else {
+                $product = Sale::with('image_product', 'qtys', 'disc_item', 'disc_all', 'gross', 'costs', 'profit')
+                    ->where('id_store', $store)->whereBetween('tanggal', [$start, $end])
+                    ->groupBy('id_produk')
+                    ->get();
+            }
+
             return DataTables::of($product)
                 ->addIndexColumn()
                 ->addColumn('action', function () {

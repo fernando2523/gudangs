@@ -70,10 +70,10 @@ class Sale extends Model
     //end report product
     ///////////////////////////////////////////////////////////////////////////
     // report store
-    public function store_qtys()
-    {
-        return $this->hasMany(Sale::class, 'id_store', 'id_store')->selectRaw('*,SUM(qty) as qty');
-    }
+    // public function store_qtys()
+    // {
+    //     return $this->hasMany(Sale::class, 'id_store', 'id_store')->selectRaw('*,SUM(qty) as qty')->groupBy('id_produk');
+    // }
 
     public function store_gross()
     {

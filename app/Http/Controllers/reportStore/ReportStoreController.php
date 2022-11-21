@@ -17,25 +17,64 @@ class ReportStoreController extends Controller
     public function store()
     {
         $title = "Report Store";
-
-        $get_qty = Sale::sum('qty');
-        $get_gross = Sale::all();
-        $get_discitem = Sale::all()->sum('diskon_item');
-        $get_costs = Sale::all();
+        $store = Store::all();
 
         return view('reportStore/store', compact(
             'title',
-            'get_qty',
-            'get_gross',
-            'get_discitem',
-            'get_costs',
+            'store',
         ));
     }
 
-    public function tablereportstore(Request $request)
+    public function load_report_store(Request $request)
     {
         if ($request->ajax()) {
-            $product =  Sale::with('store_qtys', 'store_gross', 'store_disc_item', 'store_costs')->groupBy('id_store')->get();
+            $store = $request->store;
+            $start = $request->start;
+            $end = $request->end;
+
+            if ($store === 'ALL') {
+                $get_qty = Sale::all()->whereBetween('tanggal', [$start, $end])->sum('qty');
+                $get_gross = Sale::all()->whereBetween('tanggal', [$start, $end]);
+                $get_discitem = Sale::all()->whereBetween('tanggal', [$start, $end])->sum('diskon_item');
+                $get_costs = Sale::all()->whereBetween('tanggal', [$start, $end]);
+            } else {
+                $get_qty = Sale::all()->where('id_store', $store)->whereBetween('tanggal', [$start, $end])->sum('qty');
+                $get_gross = Sale::all()->where('id_store', $store)->whereBetween('tanggal', [$start, $end]);
+                $get_discitem = Sale::all()->where('id_store', $store)->whereBetween('tanggal', [$start, $end])->sum('diskon_item');
+                $get_costs = Sale::all()->where('id_store', $store)->whereBetween('tanggal', [$start, $end]);
+            }
+
+            return view('reportStore/load_report_store', compact(
+                'store',
+                'start',
+                'end',
+                'get_gross',
+                'get_qty',
+                'get_discitem',
+                'get_costs',
+            ));
+        }
+    }
+
+    public function tablereportstore(Request $request, $store, $start, $end)
+    {
+        if ($request->ajax()) {
+
+            if ($store === 'ALL') {
+                $product =  Sale::with('store_gross', 'store_disc_item', 'store_costs')
+                    ->selectRaw('*,SUM(qty) as qty')
+                    ->whereBetween('tanggal', [$start, $end])
+                    ->groupBy('id_store')
+                    ->get();
+            } else {
+                $product =  Sale::with('store_gross', 'store_disc_item', 'store_costs')
+                    ->selectRaw('*,SUM(qty) as qty')
+                    ->where('id_store', $store)
+                    ->whereBetween('tanggal', [$start, $end])
+                    ->groupBy('id_store')
+                    ->get();
+            }
+
             return DataTables::of($product)
                 ->addIndexColumn()
                 ->addColumn('action', function () {

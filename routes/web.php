@@ -210,14 +210,14 @@ route::get('/reportSummary/summary', [ReportSummaryController::class, 'summary']
 route::any('/load_tbsummary', [ReportSummaryController::class, 'load_tbsummary'])->middleware('auth');
 
 route::get('/reportProduct/product', [ReportProductController::class, 'product'])->middleware('auth');
-route::any('/tablereportproduct', [ReportProductController::class, 'tablereportproduct'])->middleware('auth');
+route::any('/tablereportproduct/{store}/{start}/{end}', [ReportProductController::class, 'tablereportproduct'])->middleware('auth');
 
 route::get('/reportStore/store', [ReportStoreController::class, 'store'])->middleware('auth');
 
 // tian new
 route::any('/get_warehouse', [OrderController::class, 'get_warehouse']);
 // tian new
-route::any('/tablereportstore', [ReportStoreController::class, 'tablereportstore'])->middleware('auth');
+route::any('/tablereportstore/{store}/{start}/{end}', [ReportStoreController::class, 'tablereportstore'])->middleware('auth');
 
 route::get('/reportBrand/brand', [ReportBrandController::class, 'brand'])->middleware('auth');
 route::any('/tablereportbrand', [ReportBrandController::class, 'tablereportbrand'])->middleware('auth');
@@ -242,3 +242,6 @@ route::any('/select_size_po', [BarcodeController::class, 'select_size_po'])->mid
 
 
 route::any('/load_dashboard', [App\Http\Controllers\HomeController::class, 'load_db'])->middleware('auth');
+
+route::any('/load_report_product', [ReportProductController::class, 'load_report_product'])->middleware('auth');
+route::any('/load_report_store', [ReportStoreController::class, 'load_report_store'])->middleware('auth');
