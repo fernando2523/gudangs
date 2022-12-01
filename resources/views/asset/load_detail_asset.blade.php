@@ -108,10 +108,10 @@
                                         'idpo'
                                     ]) {
                                     if (row.supplier_variation2[i]['qty'] === '0') {
-                                        size = size + '<span class="text-danger"> ' + '[<i>' +
+                                        size = size + '<span class="text-danger"> ' + '[' +
                                             row
                                             .supplier_variation2[i]['size'] +
-                                            '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
+                                            '<span class="text-danger"> = </span><span class="text-danger fw-bold">' +
                                             row.supplier_variation2[
                                                 i][
                                                 'qty'
@@ -119,9 +119,9 @@
                                             '</span><span class="fw-bold text-danger">] </span>';
 
                                     } else {
-                                        size = size + '<span class="text-lime">' + '[<i>' + row
+                                        size = size + '<span class="text-lime">' + '[' + row
                                             .supplier_variation2[i]['size'] +
-                                            '</i><span class="text-lime"> = </span><span class="text-lime fw-bold">' +
+                                            '<span class="text-lime"> = </span><span class="text-lime fw-bold">' +
                                             row.supplier_variation2[
                                                 i][
                                                 'qty'

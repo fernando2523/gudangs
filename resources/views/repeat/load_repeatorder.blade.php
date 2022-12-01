@@ -310,10 +310,10 @@
                                 ] && row.id_produk === row.supplier_variation[i]['id_produk']) {
                                 if (row.supplier_variation[i]['qty'] === '0') {
                                     size = size + '<span class="text-danger"> ' +
-                                        '[<i>' +
+                                        '[' +
                                         row
                                         .supplier_variation[i]['size'] +
-                                        '</i><span class="text-danger"> = </span><span class="text-danger fw-bold">' +
+                                        '<span class="text-danger"> = </span><span class="text-danger fw-bold">' +
                                         row.supplier_variation[
                                             i][
                                             'qty'
@@ -321,10 +321,10 @@
                                         '</span><span class="fw-bold text-danger">] </span>';
 
                                 } else {
-                                    size = size + '<span class="text-lime">' + '[<i>' +
+                                    size = size + '<span class="text-lime">' + '[' +
                                         row
                                         .supplier_variation[i]['size'] +
-                                        '</i><span class="text-lime"> = </span><span class="text-lime fw-bold">' +
+                                        '<span class="text-lime"> = </span><span class="text-lime fw-bold">' +
                                         row.supplier_variation[
                                             i][
                                             'qty'
