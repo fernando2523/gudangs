@@ -14,12 +14,12 @@
             </div>
             <div class="ms-auto">
             </div>
-            <div class="ms-sm-3 mt-2">
+            {{-- <div class="ms-sm-3 mt-2">
                 <div id="reportrange" class="btn btn-outline-theme d-flex align-items-center mt-2">
                     <span class="text-truncate">&nbsp;tanggal sekarang &nbsp;</span>
                     <i class="fa fa-caret-down ms-auto"></i>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <style>
             .button-hover {

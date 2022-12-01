@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\reseller;
 
 use App\Http\Controllers\Controller;
-use App\models\Reseller;
+use App\Models\Reseller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
@@ -83,7 +83,7 @@ class ResellerController extends Controller
                 'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
             ]);
             $fileName = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('reseller'), $fileName);
+            $request->file->move(public_path('../../public_html/footbox/reseller'), $fileName);
             // end get files
             $data->img = $fileName;
         }
@@ -128,7 +128,7 @@ class ResellerController extends Controller
             }
 
             $fileName = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('reseller'), $fileName);
+            $request->file->move(public_path('../../public_html/footbox/reseller'), $fileName);
             // end get file
             $data->img = $fileName;
         }

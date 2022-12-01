@@ -11,8 +11,8 @@
 
                 <div class="modal-body">
                     <div>
-                        <input type="text" id="id">
-                        <input type="text" id="email" name="email">
+                        <input type="hidden" id="id">
+                        <input type="hidden" id="email" name="email">
                     </div>
 
                     <div class="row form-group">

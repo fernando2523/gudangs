@@ -14,8 +14,6 @@
             </div>
             <div class="ms-auto">
             </div>
-            <div class="ms-sm-3 mt-sm-0 mt-2"><a class="btn btn-outline-theme" href="/print/printtest"><i
-                        class="fa fa-plus-circle fa-fw me-1"></i> test</a></div>
             <div class="ms-sm-3 mt-sm-0 mt-2"><a class="btn btn-outline-theme" data-bs-toggle="modal"
                     data-bs-target="#modaladd"><i class="fa fa-plus-circle fa-fw me-1"></i> Add Reseller</a></div>
         </div>

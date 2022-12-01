@@ -93,7 +93,7 @@ class BrandController extends Controller
                 'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
             ]);
             $fileName = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('brand'), $fileName);
+            $request->file->move(public_path('../../public_html/footbox/brand'), $fileName);
             // end get files
             $data->img = $fileName;
         }
@@ -138,7 +138,7 @@ class BrandController extends Controller
             }
 
             $fileName = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('brand'), $fileName);
+            $request->file->move(public_path('../../public_html/footbox/brand'), $fileName);
             // end get file
             $data->img = $fileName;
         }

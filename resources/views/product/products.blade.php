@@ -15,9 +15,9 @@
             <div class="ms-auto">
             </div>
 
-            <div class="ms-sm-3 mt-sm-0 mt-2"><a class="btn btn-outline-lime" data-bs-toggle="modal"
+            {{-- <div class="ms-sm-3 mt-sm-0 mt-2"><a class="btn btn-outline-lime" data-bs-toggle="modal"
                     data-bs-target="#modaladd"><i class="bi bi-arrow-clockwise fa-fw me-1"></i> Stock Opname</a>
-            </div>
+            </div> --}}
             <div class="ms-sm-3 mt-sm-0"><a class="btn btn-outline-theme" data-bs-toggle="modal"
                     data-bs-target="#modaladd"><i class="fa fa-plus-circle fa-fw me-1"></i> Add Product</a>
             </div>
@@ -378,7 +378,7 @@
                                                                         <h6 class="mb-0">
                                                                             {{ $kedua->countidproduk }}
                                                                         </h6>
-                                                                        <h6 class="mb-0 fs-10px">PCS
+                                                                        <h6 class="mb-0 fs-10px">ARTIKEL
                                                                         </h6>
                                                                     </div>
                                                                     <div class="col-6">

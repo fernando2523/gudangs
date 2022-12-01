@@ -15,11 +15,11 @@
             @while ($i < 11)
                 <tr>
                     <td>
-                        <input class="form-control text-center" type="text" name="size[]" value="{{ $size + $i }}"
+                        <input class="form-control text-center text-white" type="text" name="size[]" value="{{ $size + $i }}"
                             readonly style="width: 100%;height: 15px;">
                     </td>
                     <td>
-                        <input class="form-control text-center" type="text" name="qty[]" value="0"
+                        <input class="form-control text-center text-white" type="text" name="qty[]" value="0"
                             onkeypress="return isNumberKey(event)" style="width: 100%;height: 15px;font-weight: bold;"
                             autocomplete="off">
                     </td>
@@ -60,9 +60,9 @@
             var qty = row.insertCell(1);
             var aksi = row.insertCell(2);
 
-            size.innerHTML = "<input class='form-control text-center' type='text' name='size[]' style='width: 100%'>";
+            size.innerHTML = "<input class='form-control text-center text-white' type='text' name='size[]' style='width: 100%'>";
             qty.innerHTML =
-                "<input class='form-control text-center' onkeypress='return isNumberKey(event)' type='text' name='qty[]' style='width: 100%'>";
+                "<input class='form-control text-center text-white' onkeypress='return isNumberKey(event)' type='text' name='qty[]' style='width: 100%'>";
             aksi.innerHTML =
                 '<td style="width: 11px;"><button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">X</button></td>';
         }

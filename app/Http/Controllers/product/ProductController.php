@@ -4,7 +4,7 @@ namespace App\Http\Controllers\product;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\brand;
+use App\Models\Brand;
 use App\Models\Sub_category;
 use App\Models\warehouse;
 use App\Models\Supplier;
@@ -205,7 +205,7 @@ class ProductController extends Controller
                 'file' => 'required|file|mimes:jpg,jpeg,bmp,png,doc,docx,csv,rtf,xlsx,xls,txt,pdf,zip',
             ]);
             $fileName = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('product'), $fileName);
+            $request->file->move(public_path('../../public_html/footbox/product'), $fileName);
             // end get files
             $data_image->img = $fileName;
         }
@@ -444,7 +444,7 @@ class ProductController extends Controller
             }
 
             $fileName = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('product'), $fileName);
+            $request->file->move(public_path('../../public_html/footbox/product'), $fileName);
             $data->img = $fileName;
         }
         $data->update();

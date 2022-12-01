@@ -39,7 +39,7 @@ class Product extends Model
 
     public function warehouse()
     {
-        return $this->hasMany(Warehouse::class, 'id_ware', 'id_ware');
+        return $this->hasMany(warehouse::class, 'id_ware', 'id_ware');
     }
 
     public function image_product()

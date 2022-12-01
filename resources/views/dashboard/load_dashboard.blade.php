@@ -332,7 +332,7 @@
                         </tbody>
                     </table>
                     <ul align="right" class="mt-3">
-                        <a type="button" href="/fuel/history" class="btn btn-outline-theme btn-sm">See
+                        <a type="button" href="#" class="btn btn-outline-theme btn-sm">See
                             All</a>
                     </ul>
                 </div>
@@ -378,7 +378,7 @@
                         </tbody>
                     </table>
                     <ul align="right" class="mt-3">
-                        <a type="button" href="/fuel/history" class="btn btn-outline-theme btn-sm">See All</a>
+                        <a type="button" href="#" class="btn btn-outline-theme btn-sm">See All</a>
                     </ul>
                 </div>
             </div>
