@@ -120,8 +120,9 @@ class BrandController extends Controller
      * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function editact(Request $request, $id)
+    public function editact(Request $request)
     {
+        $id = $request->e_id;
         $data = Brand::find($id);
         $data->brand = $request->e_brand;
         if (empty($_FILES['file']['name'][0])) {

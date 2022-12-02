@@ -353,6 +353,22 @@
         }
 
         function submitformedit() {
+            if (document.forms["form_edit"]["e_username"].value == "") {
+                alert("USERNAME TIDAK BOLEH KOSONG!");
+                document.forms["form_edit"]["e_username"].focus();
+                return false;
+            }
+            if (document.forms["form_edit"]["e_name"].value == "") {
+                alert("NAMA KARYAWAN TIDAK BOLEH KOSONG!");
+                document.forms["form_edit"]["e_name"].focus();
+                return false;
+            }
+            if (document.forms["form_edit"]["e_domisili"].value == "") {
+                alert("DOMISILI TIDAK BOLEH KOSONG!");
+                document.forms["form_edit"]["e_domisili"].focus();
+                return false;
+            }
+
             var value = document.getElementById('e_id').value;
             document.getElementById('form_edit').action = "../employees/editact/" + value;
             document.getElementById("form_edit").submit();

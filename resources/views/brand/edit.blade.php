@@ -1,4 +1,4 @@
-<form id="form_edit" class="was-validated" enctype="multipart/form-data" method="POST" action="/">
+<form id="form_edit" class="was-validated" enctype="multipart/form-data" method="POST" action="{{ url('/brand/editact') }}">
     <input type="hidden" name="_method" value="PATCH">
     @csrf
     <div class="modal fade" id="modaledit" data-bs-backdrop="static" style="padding-top:7%;">
@@ -11,7 +11,7 @@
 
                 <div class="modal-body">
                     <div>
-                        <input type="hidden" id="e_id">
+                        <input type="hidden" id="e_id" name="e_id">
                         <input type="hidden" id="e_id_brand" name="e_id_brand">
                     </div>
 
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="form-group mt-3" align="right">
-                        <button class="btn btn-theme" type="button" onclick="submitformedit()">Save</button>
+                        <button class="btn btn-theme" type="submit">Save</button>
                     </div>
 
                 </div>

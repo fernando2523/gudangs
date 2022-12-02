@@ -102,7 +102,7 @@ route::any('/edit_select_store', [StoreController::class, 'edit_select_store']);
 route::get('/brand/brands', [BrandController::class, 'brand'])->middleware('auth');
 route::any('/tablebrand', [BrandController::class, 'tablebrand'])->middleware('auth');
 route::any('/brand/brands/store', [BrandController::class, 'store'])->middleware('auth');
-route::any('/brand/editact/{id}', [BrandController::class, 'editact'])->middleware('auth');
+route::any('/brand/editact', [BrandController::class, 'editact'])->middleware('auth');
 route::any('/brand/destroy/{id}', [BrandController::class, 'destroy'])->middleware('auth');
 
 route::get('/category/categories', [CategoryController::class, 'category'])->middleware('auth');
@@ -166,7 +166,7 @@ route::any('/savesales', [SaleController::class, 'save_sales']);
 
 // nando baru 9 nov
 route::get('/barcode/barcodes', [BarcodeController::class, 'barcodes'])->middleware('auth');
-route::any('/tablebarcode', [BarcodeController::class, 'tablebarcode'])->middleware('auth');
+route::any('/tablebarcode/{id_ware}', [BarcodeController::class, 'tablebarcode'])->middleware('auth');
 route::any('/barcode_detail', [BarcodeController::class, 'barcode_detail'])->middleware('auth');
 
 route::get('/order/orders', [OrderController::class, 'orders'])->middleware('auth');
@@ -250,3 +250,5 @@ route::any('/load_report_quality', [ReportQualityController::class, 'load_report
 
 route::any('/reportsummary/load_header', [ReportSummaryController::class, 'load_header'])->middleware('auth');
 route::any('/order/load_header', [OrderController::class, 'load_header'])->middleware('auth');
+
+route::any('/load_barcode', [BarcodeController::class, 'load_barcode'])->middleware('auth');

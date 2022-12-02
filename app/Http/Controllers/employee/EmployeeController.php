@@ -31,7 +31,7 @@ class EmployeeController extends Controller
             ->orderby('role', 'desc')->paginate(6);
 
         $getuser = DB::table('users')->get();
-        $getstore = store::all();
+        $getstore = Store::all();
         $getrole = Role::all();
 
         return view('employee.employees', compact(
@@ -83,11 +83,14 @@ class EmployeeController extends Controller
     {
         $title = "Employee";
         $cari = $request->cari;
+        $getrole = Role::all();
+        $getstore = Store::all();
 
         // mengambil data dari table pegawai sesuai pencarian data
         $datauser = DB::table('employees')
             ->where('name', 'like', "%" . $cari . "%")
             ->orwhere('role', 'like', "%" . $cari . "%")
+            ->orwhere('username', 'like', "%" . $cari . "%")
             ->paginate(6);
 
         $getuser = DB::table('users')
@@ -96,7 +99,9 @@ class EmployeeController extends Controller
         return view('employee.employees', compact(
             'title',
             'datauser',
-            'getuser'
+            'getuser',
+            'getrole',
+            'getstore'
         ));
     }
     /**

@@ -246,11 +246,11 @@
                 }
             }
 
-            function submitformedit() {
-                var value = document.getElementById('e_id').value;
-                document.getElementById('form_edit').action = "../brand/editact/" + value;
-                document.getElementById("form_edit").submit();
-            }
+            // function submitformedit() {
+            //     var value = document.getElementById('e_id').value;
+            //     document.getElementById('form_edit').action = "../brand/editact/" + value;
+            //     document.getElementById("form_edit").submit();
+            // }
 
             // delete
             function openmodaldelete(id, img) {

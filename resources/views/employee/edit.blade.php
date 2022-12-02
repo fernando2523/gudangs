@@ -24,7 +24,7 @@
                                             e_img.src = URL.createObjectURL(event.target.files[0]);
                                         };
                                     </script>
-                                    <img class="mb-2" id="e_img" width="178px" src="/product/defaultimg.png">
+                                    <img class="mb-2" id="e_img" width="180px" src="/product/defaultimg.png">
                                     <input type="file" class="form-control" name="file"
                                         onchange="loadeditFile2(event)">
                                 </div>

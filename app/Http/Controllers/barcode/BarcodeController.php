@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Product;
+use App\Models\Store;
 use App\Models\variation;
+use App\Models\warehouse;
 use Meneses\LaravelMpdf\Facades\LaravelMpdf as MPDF;
 
 class BarcodeController extends Controller
@@ -19,15 +21,39 @@ class BarcodeController extends Controller
     {
         $title = "Barcode";
 
+        $selectWarehouse = warehouse::all();
+        $userware = DB::table('stores')->where('id_store', '=', Auth::user()->id_store)->get();
+
         return view('barcode.barcodes', compact(
-            'title'
+            'title',
+            'selectWarehouse',
+            'userware'
         ));
     }
 
-    public function tablebarcode(Request $request)
+    public function load_barcode(Request $request)
     {
         if ($request->ajax()) {
-            $product = Product::with('warehouse', 'image_product', 'product_variation', 'areas')->get();
+            $id_ware = $request->id_ware;
+
+            return view('barcode/load_barcode', compact(
+                'id_ware',
+            ));
+        }
+    }
+
+    public function tablebarcode(Request $request, $id_ware)
+    {
+        if ($request->ajax()) {
+            if ($id_ware === "all_ware") {
+                $product = Product::with('warehouse', 'image_product', 'product_variation', 'areas')
+                    ->get();
+            } else {
+                $product = Product::with('warehouse', 'image_product', 'product_variation', 'areas')
+                    ->where('id_ware', '=', $id_ware)
+                    ->get();
+            }
+
             return DataTables::of($product)
                 ->addIndexColumn()
                 ->addColumn('action', function () {

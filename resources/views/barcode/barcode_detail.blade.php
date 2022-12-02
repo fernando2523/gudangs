@@ -87,7 +87,7 @@
         </div>
     </div>
 </div>
-</div>
+
 <script>
     function selectprint() {
         var check_custom = document.getElementById("check_custom");
