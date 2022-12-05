@@ -50,7 +50,7 @@
                 </span>
             </td>
 
-            <td class="text-center fw-bold" style="border-right-width: 1px;">
+            <td class="text-center text-yellow fw-bold" style="border-right-width: 1px;">
                 {{ $data->suppliers_details[$i]['tipe_order'] }}
             </td>
 

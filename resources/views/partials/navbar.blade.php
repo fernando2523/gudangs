@@ -124,6 +124,24 @@
                 </div>
             </div>
 
+            {{-- <div class="menu-item has-sub {{ Request::is('purchase/purchaseorder') ? 'active' : '' }}">
+                <a href="#" class="menu-link">
+                    <span class="menu-icon">
+                        <i class="bi bi-clipboard2-data-fill text-theme"></i>
+                    </span>
+                    <span class="menu-text">Data Purchase Order</span>
+                    <span class="menu-caret"><b class="caret"></b></span>
+                </a>
+                <div class="menu-submenu">
+                    <div class="menu-item {{ Request::is('purchase/purchaseorder') ? 'active' : '' }}">
+                        <a href="/purchase/purchaseorder" class="menu-link">
+                            <span class="menu-icon"><i class="bi bi-arrow-left-right text-theme"></i></span>
+                            <span class="menu-text">Release Order</span>
+                        </a>
+                    </div>
+                </div>
+            </div> --}}
+
             <div class="menu-header">Assets</div>
             <div class="menu-item {{ Request::is('asset/assets') ? 'active' : '' }}">
                 <a href="/asset/assets" class="menu-link">

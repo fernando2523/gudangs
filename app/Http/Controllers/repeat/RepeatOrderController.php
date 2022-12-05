@@ -28,11 +28,24 @@ class RepeatOrderController extends Controller
     public function repeatorders()
     {
         $title = "Repeat Order";
+        $getbrand = brand::all();
+        $getcategory = Sub_category::all();
+        $getware = Warehouse::all();
+        $getsupplier = DB::table('suppliers')->orderBy('id_sup', 'desc')->get();
+        $get_Supplier_Order = DB::table('supplier_orders')->select(DB::raw('idpo'), DB::raw('tanggal'), DB::raw('id_sup'),)->groupBy('idpo', 'tanggal', 'id_sup')->orderBy('idpo', 'desc')->limit(10)->get();
+
         $selectWarehouse = warehouse::all();
+        $userware = DB::table('stores')->where('id_store', '=', Auth::user()->id_store)->get();
 
         return view('repeat/repeatorders', compact(
             'title',
-            'selectWarehouse'
+            'selectWarehouse',
+            'getbrand',
+            'getcategory',
+            'getware',
+            'getsupplier',
+            'get_Supplier_Order',
+            'userware'
         ));
     }
 
@@ -49,15 +62,19 @@ class RepeatOrderController extends Controller
 
     public function tablerepeatorder(Request $request, $id_ware)
     {
+        $userware = DB::table('stores')->where('id_store', '=', Auth::user()->id_store)->get();
         if ($request->ajax()) {
             if ($id_ware === "all_ware") {
                 $product = Product::with('warehouse', 'image_product', 'product_variation2')->get();
+            } elseif ($id_ware === "per_area") {
+                $product = Product::with('warehouse', 'image_product', 'product_variation2')
+                    ->where('id_area', '=', $userware[0]->id_area)
+                    ->get();
             } else {
                 $product = Product::with('warehouse', 'image_product', 'product_variation2')
                     ->where('id_ware', '=', $id_ware)
                     ->get();
             }
-
 
             return DataTables::of($product)
                 ->addIndexColumn()

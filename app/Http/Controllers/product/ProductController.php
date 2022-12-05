@@ -58,6 +58,7 @@ class ProductController extends Controller
         $get_Supplier_Order = DB::table('supplier_orders')->select(DB::raw('idpo'), DB::raw('tanggal'), DB::raw('id_sup'),)->groupBy('idpo', 'tanggal', 'id_sup')->orderBy('idpo', 'desc')->limit(10)->get();
 
         $selectWarehouse = warehouse::all();
+        $userware = DB::table('stores')->where('id_store', '=', Auth::user()->id_store)->get();
 
         return view('product.products', compact(
             'title',
@@ -71,7 +72,8 @@ class ProductController extends Controller
             'getsproduct',
             'get_Supplier_Order',
             'getnamewarehouse',
-            'selectWarehouse'
+            'selectWarehouse',
+            'userware'
         ));
     }
 
@@ -93,8 +95,14 @@ class ProductController extends Controller
     public function tableproduct(Request $request, $id_ware)
     {
         if ($request->ajax()) {
+            $userware = DB::table('stores')->where('id_store', '=', Auth::user()->id_store)->get();
+
             if ($id_ware === "all_ware") {
                 $product = Product::with('warehouse', 'image_product', 'product_variation', 'areas')->get();
+            } elseif ($id_ware === "per_area") {
+                $product = Product::with('warehouse', 'image_product', 'product_variation', 'areas')
+                    ->where('id_area', '=', $userware[0]->id_area)
+                    ->get();
             } else {
                 $product = Product::with('warehouse', 'image_product', 'product_variation', 'areas')
                     ->where('id_ware', '=', $id_ware)

@@ -24,10 +24,12 @@ class ProductTransferController extends Controller
         $title = "Product Transfer";
 
         $selectWarehouse = warehouse::all();
+        $userware = DB::table('stores')->where('id_store', '=', Auth::user()->id_store)->get();
 
         return view('productTransfer/productTransfers', compact(
             'title',
-            'selectWarehouse'
+            'selectWarehouse',
+            'userware'
         ));
     }
 
@@ -45,9 +47,13 @@ class ProductTransferController extends Controller
     public function tableproducttransfer(Request $request, $id_ware)
     {
         if ($request->ajax()) {
-
+            $userware = DB::table('stores')->where('id_store', '=', Auth::user()->id_store)->get();
             if ($id_ware === "all_ware") {
                 $product = Product::with('warehouse', 'image_product', 'product_variation2')
+                    ->get();
+            } elseif ($id_ware === "per_area") {
+                $product = Product::with('warehouse', 'image_product', 'product_variation2')
+                    ->where('id_area', '=', $userware[0]->id_area)
                     ->get();
             } else {
                 $product = Product::with('warehouse', 'image_product', 'product_variation2')

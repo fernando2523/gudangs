@@ -308,109 +308,113 @@
                 });
             });
         </script>
+
         @include('product.delete')
         @include('product.edit')
+
         <div class="row">
             <!-- DATA ASSSET -->
-            <div class="col-xl-3 mb-3">
-                <div class="card" style="margin-bottom: 15px;">
-                    <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
-                        <div class="flex-fill" style="padding-top: 5px;padding-bottom: 3px;">
-                            <div class="col-6 text-theme fw-bold">ARTIKEL</div>
-                            <h4>{{ $get_totalproduk }}</h4>
+            @if (Auth::user()->role === 'SUPER-ADMIN')
+                <div class="col-xl-3 mb-3">
+                    <div class="card" style="margin-bottom: 15px;">
+                        <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
+                            <div class="flex-fill" style="padding-top: 5px;padding-bottom: 3px;">
+                                <div class="col-6 text-theme fw-bold">ARTIKEL</div>
+                                <h4>{{ $get_totalproduk }}</h4>
+                            </div>
+
+                            <div class="opacity-5">
+                                <i class="bi bi-box-seam fa-3x"></i>
+                            </div>
                         </div>
 
-                        <div class="opacity-5">
-                            <i class="bi bi-box-seam fa-3x"></i>
+                        <!-- card-arrow -->
+                        <div class="card-arrow">
+                            <div class="card-arrow-top-left"></div>
+                            <div class="card-arrow-top-right"></div>
+                            <div class="card-arrow-bottom-left"></div>
+                            <div class="card-arrow-bottom-right"></div>
                         </div>
                     </div>
 
-                    <!-- card-arrow -->
-                    <div class="card-arrow">
-                        <div class="card-arrow-top-left"></div>
-                        <div class="card-arrow-top-right"></div>
-                        <div class="card-arrow-bottom-left"></div>
-                        <div class="card-arrow-bottom-right"></div>
+                    <div class="card">
+                        <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
+                            <div class="flex-fill" style="padding-top: 5px;padding-bottom: 3px;">
+                                <div class="col-6 text-theme fw-bold">QTY</div>
+                                <h4>{{ $get_totalqty }}</h4>
+                            </div>
+
+                            <div class="opacity-5">
+                                <i class="bi bi-boxes fa-3x"></i>
+                            </div>
+                        </div>
+
+                        <!-- card-arrow -->
+                        <div class="card-arrow">
+                            <div class="card-arrow-top-left"></div>
+                            <div class="card-arrow-top-right"></div>
+                            <div class="card-arrow-bottom-left"></div>
+                            <div class="card-arrow-bottom-right"></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
-                        <div class="flex-fill" style="padding-top: 5px;padding-bottom: 3px;">
-                            <div class="col-6 text-theme fw-bold">QTY</div>
-                            <h4>{{ $get_totalqty }}</h4>
-                        </div>
-
-                        <div class="opacity-5">
-                            <i class="bi bi-boxes fa-3x"></i>
-                        </div>
-                    </div>
-
-                    <!-- card-arrow -->
-                    <div class="card-arrow">
-                        <div class="card-arrow-top-left"></div>
-                        <div class="card-arrow-top-right"></div>
-                        <div class="card-arrow-bottom-left"></div>
-                        <div class="card-arrow-bottom-right"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-9 mb-3">
-                <div class="card">
-                    <div class="card-body p-3" style="height: 225px;">
-                        <div class="row" align="center">
-                            @foreach ($getsproduct as $key => $utama)
-                                @foreach ($getnamewarehouse as $wares)
-                                    @if ($utama->id_ware === $wares->id_ware)
-                                        @foreach ($get_perware as $keys => $kedua)
-                                            @if ($utama->id_ware === $kedua->id_ware)
-                                                <div class="col-4 mb-3">
-                                                    <div class="card">
-                                                        <div class="card-body p-3 bg-white bg-opacity-10">
-                                                            <div class="d-flex fw-bold small mb-2">
-                                                                <span
-                                                                    class="flex-grow-1 text-theme">{{ $wares->warehouse }}</span>
-                                                            </div>
-                                                            <div class="row align-items-center">
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <h6 class="mb-0">
-                                                                            {{ $kedua->countidproduk }}
-                                                                        </h6>
-                                                                        <h6 class="mb-0 fs-10px">ARTIKEL
-                                                                        </h6>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <h6 class="mb-0">{{ $kedua->totalQty }}</h6>
-                                                                        <h6 class="mb-0 fs-10px">QTY</h6>
+                <div class="col-xl-9 mb-3">
+                    <div class="card">
+                        <div class="card-body p-3" style="height: 225px;">
+                            <div class="row" align="center">
+                                @foreach ($getsproduct as $key => $utama)
+                                    @foreach ($getnamewarehouse as $wares)
+                                        @if ($utama->id_ware === $wares->id_ware)
+                                            @foreach ($get_perware as $keys => $kedua)
+                                                @if ($utama->id_ware === $kedua->id_ware)
+                                                    <div class="col-4 mb-3">
+                                                        <div class="card">
+                                                            <div class="card-body p-3 bg-white bg-opacity-10">
+                                                                <div class="d-flex fw-bold small mb-2">
+                                                                    <span
+                                                                        class="flex-grow-1 text-theme">{{ $wares->warehouse }}</span>
+                                                                </div>
+                                                                <div class="row align-items-center">
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <h6 class="mb-0">
+                                                                                {{ $kedua->countidproduk }}
+                                                                            </h6>
+                                                                            <h6 class="mb-0 fs-10px">ARTIKEL
+                                                                            </h6>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <h6 class="mb-0">{{ $kedua->totalQty }}</h6>
+                                                                            <h6 class="mb-0 fs-10px">QTY</h6>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="card-arrow">
-                                                            <div class="card-arrow-top-left"></div>
-                                                            <div class="card-arrow-top-right"></div>
-                                                            <div class="card-arrow-bottom-left"></div>
-                                                            <div class="card-arrow-bottom-right"></div>
+                                                            <div class="card-arrow">
+                                                                <div class="card-arrow-top-left"></div>
+                                                                <div class="card-arrow-top-right"></div>
+                                                                <div class="card-arrow-bottom-left"></div>
+                                                                <div class="card-arrow-bottom-right"></div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @endif
-                                        @endforeach
-                                    @endif
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    @endforeach
                                 @endforeach
-                            @endforeach
+                            </div>
+                        </div>
+                        <div class="card-arrow">
+                            <div class="card-arrow-top-left"></div>
+                            <div class="card-arrow-top-right"></div>
+                            <div class="card-arrow-bottom-left"></div>
+                            <div class="card-arrow-bottom-right"></div>
                         </div>
                     </div>
-                    <div class="card-arrow">
-                        <div class="card-arrow-top-left"></div>
-                        <div class="card-arrow-top-right"></div>
-                        <div class="card-arrow-bottom-left"></div>
-                        <div class="card-arrow-bottom-right"></div>
-                    </div>
                 </div>
-            </div>
+            @endif
 
             <div class="col-xl-12">
                 <div class="card">
@@ -421,13 +425,41 @@
                                 <span class="flex-grow-1">SEARCH PRODUCTS</span>
                             </div>
                             <div class="col-3">
-                                <select class="form-select form-select-sm text-theme fw-bold" id="select_ware"
-                                    onchange="select()">
-                                    <option value="all_ware">ALL WAREHOUSE..</option>
-                                    @foreach ($selectWarehouse as $select)
-                                        <option value="{{ $select->id_ware }}">{{ $select->warehouse }}</option>
-                                    @endforeach
-                                </select>
+                                @if (Auth::user()->role === 'SUPER-ADMIN')
+                                    <select class="form-select form-select-sm text-theme fw-bold" id="select_ware"
+                                        onchange="select()" style="width: 300px;">
+                                        <option value="all_ware" selected>ALL WAREHOUSE..</option>
+                                        @foreach ($selectWarehouse as $select)
+                                            <option value="{{ $select->id_ware }}">{{ $select->warehouse }}</option>
+                                        @endforeach
+                                    </select>
+                                @elseif (Auth::user()->role === 'HEAD-AREA')
+                                    <select class="form-select form-select-sm text-theme fw-bold" id="select_ware"
+                                        onchange="select()" style="width: 300px;">
+                                        <option value="per_area" selected>Warehouse Area {{ $userware[0]->area }}..
+                                        </option>
+                                        @foreach ($userware as $users)
+                                            @foreach ($selectWarehouse as $select)
+                                                @if ($select->id_area === $users->id_area)
+                                                    <option value="{{ $select->id_ware }}">{{ $select->warehouse }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    </select>
+                                @else
+                                    <select class="form-select form-select-sm text-theme fw-bold" id="select_ware"
+                                        onchange="select()" style="width: 300px;">
+                                        @foreach ($userware as $users)
+                                            @foreach ($selectWarehouse as $select)
+                                                @if ($select->id_ware === $users->id_ware)
+                                                    <option value="{{ $select->id_ware }}" selected>
+                                                        {{ $select->warehouse }}</option>
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    </select>
+                                @endif
                             </div>
                         </div>
 
@@ -445,6 +477,7 @@
             </div>
             <!-- END -->
         </div>
+
         <script>
             function select() {
                 var select = document.getElementById('select_ware');
