@@ -1,186 +1,42 @@
 <table class="table" style="margin-right: -20px;">
     <tbody>
-        @for ($i = 0; $i < $qty; $i++)
-            <tr>
-                <td align="center" style="padding-left: 23px;padding-bottom: 36px;">
-                    <div class="mpdf_toc">
-                        <span style="font-size: 12px;">OLD
-                            SKOOL CLASSICS
-                            BLACK WHITE
-                            ...</span>
-                        <span align="center">
-                            <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
-                        </span>
-                        <span class="text-center fw-bold"
-                            style="font-size: 14px;font-weight: bold;">#{{ $idpo }} | </span>
-                        <span>{{ $v_id_produk }}.{{ $size }}</span>
-                    </div>
-                </td>
-                <td align="center" style="padding-left: 23px;padding-bottom: 36px;">
-                    <div class="mpdf_toc">
-                        <span style="font-size: 12px;">OLD
-                            SKOOL CLASSICS
-                            BLACK WHITE
-                            ...</span>
-                        <span align="center">
-                            <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
-                        </span>
-                        <span class="text-center fw-bold"
-                            style="font-size: 14px;font-weight: bold;">#{{ $idpo }} | </span>
-                        <span>{{ $v_id_produk }}.{{ $size }}</span>
-                    </div>
-                </td>
-                <td align="center" style="padding-left: 23px;padding-bottom: 36px;">
-                    <div class="mpdf_toc">
-                        <span style="font-size: 12px;">OLD
-                            SKOOL CLASSICS
-                            BLACK WHITE
-                            ...</span>
-                        <span align="center">
-                            <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
-                        </span>
-                        <span class="text-center fw-bold"
-                            style="font-size: 14px;font-weight: bold;">#{{ $idpo }} | </span>
-                        <span>{{ $v_id_produk }}.{{ $size }}</span>
-                    </div>
-                </td>
-            </tr>
+        <?php
+        $page = intval($qty) / 12;
+        $row = intval($qty) / 3;
+        $column = intval($qty);
+        $a = 1;
+        ?>
 
+        @for ($b = 0; $b < ceil($row); $b++)
+            <?php
+            $hasil = $b + 1;
+            $hasil_old = $b;
+            $line = $hasil * 3;
+            
+            if ($line >= intval($qty)) {
+                $col = $column - $hasil_old * 3;
+            } else {
+                $col = 3;
+            }
+            
+            ?>
             <tr>
-                <td align="center" style="padding-left: 23px;padding-bottom: 36px;">
-                    <div class="mpdf_toc">
-                        <span style="font-size: 12px;">OLD
-                            SKOOL CLASSICS
-                            BLACK WHITE
-                            ...</span>
-                        <span align="center">
-                            <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
-                        </span>
-                        <span class="text-center fw-bold"
-                            style="font-size: 14px;font-weight: bold;">#{{ $idpo }} | </span>
-                        <span>{{ $v_id_produk }}.{{ $size }}</span>
-                    </div>
-                </td>
-                <td align="center" style="padding-left: 23px;padding-bottom: 36px;">
-                    <div class="mpdf_toc">
-                        <span style="font-size: 12px;">OLD
-                            SKOOL CLASSICS
-                            BLACK WHITE
-                            ...</span>
-                        <span align="center">
-                            <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
-                        </span>
-                        <span class="text-center fw-bold"
-                            style="font-size: 14px;font-weight: bold;">#{{ $idpo }} | </span>
-                        <span>{{ $v_id_produk }}.{{ $size }}</span>
-                    </div>
-                </td>
-                <td align="center" style="padding-left: 23px;padding-bottom: 36px;">
-                    <div class="mpdf_toc">
-                        <span style="font-size: 12px;">OLD
-                            SKOOL CLASSICS
-                            BLACK WHITE
-                            ...</span>
-                        <span align="center">
-                            <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
-                        </span>
-                        <span class="text-center fw-bold"
-                            style="font-size: 14px;font-weight: bold;">#{{ $idpo }} | </span>
-                        <span>{{ $v_id_produk }}.{{ $size }}</span>
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td align="center" style="padding-left: 23px;padding-bottom: 36px;">
-                    <div class="mpdf_toc">
-                        <span style="font-size: 12px;">OLD
-                            SKOOL CLASSICS
-                            BLACK WHITE
-                            ...</span>
-                        <span align="center">
-                            <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
-                        </span>
-                        <span class="text-center fw-bold"
-                            style="font-size: 14px;font-weight: bold;">#{{ $idpo }} | </span>
-                        <span>{{ $v_id_produk }}.{{ $size }}</span>
-                    </div>
-                </td>
-                <td align="center" style="padding-left: 23px;padding-bottom: 36px;">
-                    <div class="mpdf_toc">
-                        <span style="font-size: 12px;">OLD
-                            SKOOL CLASSICS
-                            BLACK WHITE
-                            ...</span>
-                        <span align="center">
-                            <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
-                        </span>
-                        <span class="text-center fw-bold"
-                            style="font-size: 14px;font-weight: bold;">#{{ $idpo }} | </span>
-                        <span>{{ $v_id_produk }}.{{ $size }}</span>
-                    </div>
-                </td>
-                <td align="center" style="padding-left: 23px;padding-bottom: 36px;">
-                    <div class="mpdf_toc">
-                        <span style="font-size: 12px;">OLD
-                            SKOOL CLASSICS
-                            BLACK WHITE
-                            ...</span>
-                        <span align="center">
-                            <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
-                        </span>
-                        <span class="text-center fw-bold"
-                            style="font-size: 14px;font-weight: bold;">#{{ $idpo }} | </span>
-                        <span>{{ $v_id_produk }}.{{ $size }}</span>
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td align="center" style="padding-left: 23px;padding-bottom: 36px;">
-                    <div class="mpdf_toc">
-                        <span style="font-size: 12px;">OLD
-                            SKOOL CLASSICS
-                            BLACK WHITE
-                            ...</span>
-                        <span align="center">
-                            <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
-                        </span>
-                        <span class="text-center fw-bold"
-                            style="font-size: 14px;font-weight: bold;">#{{ $idpo }} | </span>
-                        <span>{{ $v_id_produk }}.{{ $size }}</span>
-                    </div>
-                </td>
-                <td align="center" style="padding-left: 23px;padding-bottom: 36px;">
-                    <div class="mpdf_toc">
-                        <span style="font-size: 12px;">OLD
-                            SKOOL CLASSICS
-                            BLACK WHITE
-                            ...</span>
-                        <span align="center">
-                            <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
-                        </span>
-                        <span class="text-center fw-bold"
-                            style="font-size: 14px;font-weight: bold;">#{{ $idpo }} | </span>
-                        <span>{{ $v_id_produk }}.{{ $size }}</span>
-                    </div>
-                </td>
-                <td align="center" style="padding-left: 23px;padding-bottom: 36px;">
-                    <div class="mpdf_toc">
-                        <span style="font-size: 12px;">OLD
-                            SKOOL CLASSICS
-                            BLACK WHITE
-                            ...</span>
-                        <span align="center">
-                            <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
-                        </span>
-                        <span class="text-center fw-bold"
-                            style="font-size: 14px;font-weight: bold;">#{{ $idpo }} | </span>
-                        <span>{{ $v_id_produk }}.{{ $size }}</span>
-                    </div>
-                </td>
+                @for ($c = 0; $c < $col; $c++)
+                    <td align="center" style="padding-left: 23px;padding-bottom: 36px;width:100px;">
+                        <div class="mpdf_toc">
+                            <span style="font-size: 12px;">{{ $produk }}</span>
+                            <span align="center">
+                                <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
+                            </span>
+                            <span class="text-center fw-bold"
+                                style="font-size: 14px;font-weight: bold;">#{{ $idpo }} | </span>
+                            <span>{{ $v_id_produk }}.{{ $size }}</span>
+                        </div>
+                    </td>
+                @endfor
             </tr>
         @endfor
+
     </tbody>
 </table>
 <style>

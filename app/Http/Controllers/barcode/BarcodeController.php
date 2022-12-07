@@ -69,6 +69,7 @@ class BarcodeController extends Controller
             $id_produk = $request->id_produk;
             $id_ware = $request->id_ware;
             $id_area = $request->id_area;
+            $val = $request->val;
 
             $get_variation = DB::table('variations')
                 ->where('id_ware', $id_ware)
@@ -90,7 +91,8 @@ class BarcodeController extends Controller
                 'id_ware',
                 'id_area',
                 'get_variation',
-                'get_idpo'
+                'get_idpo',
+                'val'
             ));
         }
     }
@@ -118,31 +120,16 @@ class BarcodeController extends Controller
         $size = $request->size;
         $qty = $request->qty;
         $idpo = $request->idpo;
-        $tipe_print = $request->tipe_print;
-        $size_custom = $request->size_custom;
         $v_id_produk = $request->v_id_produk;
         $v_id_ware = $request->v_id_ware;
-
-        // print_r($size_custom);
-        // print_r('<br>');
-        // print_r($qty);
-        // print_r('<br>');
-        // print_r($tipe_print);
-        // print_r('<br>');
-        // print_r($idpo);
-        // print_r('<br>');
-        // print_r($size);
-        // print_r('<br>');
-        // print_r($v_id_produk);
-        // print_r('<br>');
-        // print_r($v_id_ware);
-        // print_r('<br>');
+        $produk = $request->v_produk;
 
         $data = [
             'size' => $size,
             'qty' => $qty,
             'v_id_produk' => $v_id_produk,
             'idpo' => $idpo,
+            'produk' => $produk,
         ];
         $pdf = MPDF::loadView(
             'print.printtest',

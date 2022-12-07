@@ -177,6 +177,7 @@
                          "'" + row.id_produk + "'" +
                          ',' + "'" + row.id_ware + "'" +
                          ',' + "'" + row.id_area + "'" +
+                         ',' + "'" + row.produk + "'" +
                          ')"><i class="fa-xl bi bi-upc-scan"> </i></a> </span><span><a class="text-default" style="font-weight: bold;"></a></span>';
                  },
              }, ],
@@ -202,8 +203,17 @@
 
  <script>
      // edit
-     function openmodalbarcode(id_produk, id_ware, id_area) {
-         $('#modalbarcode').modal('show');
+     function openmodalbarcode(id_produk, id_ware, id_area, produk) {
+         //  document.getElementById("check_custom").checked = false;
+         //  document.getElementById("check_bypo").checked = false;
+
+         document.getElementById('v_id_produk').value = id_produk;
+         document.getElementById('v_id_ware').value = id_ware;
+         document.getElementById('v_id_area').value = id_area;
+         document.getElementById('v_produk').value = produk;
+
+         document.getElementById('produk_name').innerHTML = produk;
+         document.getElementById('produk_id').innerHTML = id_produk;
 
          $.ajax({
              type: 'POST',
@@ -212,11 +222,14 @@
                  id_produk: id_produk,
                  id_ware: id_ware,
                  id_area: id_area,
+                 produk: produk,
              },
              success: function(data) {
                  $("#barcode_detail").html(data);
              }
          });
+
+         $('#modalbarcode').modal('show');
      }
 
      function submitformbarcode() {
