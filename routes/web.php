@@ -153,7 +153,7 @@ route::any('/deleted_po', [PurchaseOrderController::class, 'deletePo']);
 route::any('/edit_po', [PurchaseOrderController::class, 'edit_po']);
 
 route::get('/asset/assets', [AssetController::class, 'assets'])->middleware('auth');
-route::any('/tableassets', [AssetController::class, 'tableassets'])->middleware('auth');
+route::any('/tableassets/{ware}', [AssetController::class, 'tableassets'])->middleware('auth');
 route::any('/load_detail_asset', [AssetController::class, 'load_detail_asset'])->middleware('auth');
 route::any('/table_detail_asset/{id_produk}', [AssetController::class, 'table_detail_asset'])->middleware('auth');
 
@@ -252,3 +252,5 @@ route::any('/reportsummary/load_header', [ReportSummaryController::class, 'load_
 route::any('/order/load_header', [OrderController::class, 'load_header'])->middleware('auth');
 
 route::any('/load_barcode', [BarcodeController::class, 'load_barcode'])->middleware('auth');
+
+route::any('/load_tb_assets', [AssetController::class, 'load_tb_assets'])->middleware('auth');

@@ -32,22 +32,37 @@ class AssetController extends Controller
         $qtyasset = DB::table('variations')->select(DB::raw('SUM(qty) as totalqty'),)->get();
         $qtyrelease = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtyreleases'),)->where('tipe_order', '=', 'RELEASE')->get();
         $qtyrepeat = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtyrepeats'),)->where('tipe_order', '=', 'REPEAT')->get();
+        $qtytransfer = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtytransfers'),)->where('tipe_order', '=', 'TRANSFER')->get();
+
+        $selectWarehouse = warehouse::all();
+        $userware = DB::table('stores')->where('id_store', '=', Auth::user()->id_store)->get();
 
         return view('asset.assets', compact(
             'title',
             'assets_valuation',
             'qtyrelease',
             'qtyrepeat',
-            'qtyasset'
+            'qtyasset',
+            'qtytransfer',
+            'selectWarehouse',
+            'userware'
         ));
     }
 
-    public function tableassets(Request $request)
+    public function tableassets(Request $request, $ware)
     {
         if ($request->ajax()) {
-            $supplier = Supplier_order::with('supplier_order3', 'sales', 'stock', 'details_po', 'asset_value')
-                ->groupBy('id_produk')
-                ->get();
+            if ($ware === 'all_ware') {
+                $supplier = Supplier_order::with('supplier_order3', 'sales', 'stock', 'details_po', 'asset_value')
+                    ->groupBy('id_produk')
+                    ->get();
+            } else {
+                $supplier = Supplier_order::with('supplier_order3', 'sales', 'stock', 'details_po', 'asset_value')
+                    ->where('id_ware', $ware)
+                    ->groupBy('id_produk')
+                    ->get();
+            }
+
 
             return DataTables::of($supplier)
                 ->addIndexColumn()
@@ -80,6 +95,17 @@ class AssetController extends Controller
                 ->addColumn('action', function () {
                 })
                 ->make(true);
+        }
+    }
+
+    public function load_tb_assets(Request $request)
+    {
+        if ($request->ajax()) {
+            $id_ware = $request->id_ware;
+
+            return view('asset.load_tb_assets', compact(
+                'id_ware',
+            ));
         }
     }
 }
