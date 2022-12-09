@@ -37,6 +37,9 @@ class PurchaseOrderController extends Controller
         $totalmodal = Supplier_order::all('subtotal')->sum('subtotal');
         $datatotalqty = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as total_qty'), DB::raw('idpo'),)->groupBy('idpo')->get();
 
+        $selectWarehouse = warehouse::all();
+        $userware = DB::table('stores')->where('id_store', '=', Auth::user()->id_store)->get();
+
         return view('purchase/purchaseorder', compact(
             'title',
             'datapo',
@@ -46,7 +49,9 @@ class PurchaseOrderController extends Controller
             'supplier',
             'totalpo',
             'totalmodal',
-            'datatotalqty'
+            'datatotalqty',
+            'selectWarehouse',
+            'userware'
         ));
     }
 
