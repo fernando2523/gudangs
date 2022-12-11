@@ -246,12 +246,12 @@ class ProductController extends Controller
         $qtys = 0;
         //GET ID PO
         $thn_bln = $now->format('ym');
-        $ceks = Supplier_order::count();
+        $ceks = Supplier_order::sharedLock()->count();
         if ($ceks === 0) {
             $urut2 = 1;
             $get_idpo = $thn_bln . sprintf("%04s", ($urut2));
         } else {
-            $ambildatas = DB::table('supplier_orders')->select(DB::raw('idpo'),)->max('idpo');
+            $ambildatas = DB::sharedLock()->table('supplier_orders')->select(DB::raw('idpo'))->max('idpo');
             $ceks2 = (int)substr($ambildatas, 4) + 1;
             $get_idpo = $thn_bln . sprintf("%04s", + ($ceks2));
         }
