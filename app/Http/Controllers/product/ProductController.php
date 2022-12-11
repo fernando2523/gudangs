@@ -251,7 +251,7 @@ class ProductController extends Controller
             $urut2 = 1;
             $get_idpo = $thn_bln . sprintf("%04s", ($urut2));
         } else {
-            $ambildatas = DB::sharedLock()->table('supplier_orders')->select(DB::raw('idpo'))->max('idpo');
+            $ambildatas = DB::table('supplier_orders')->sharedLock()->select(DB::raw('idpo'))->max('idpo');
             $ceks2 = (int)substr($ambildatas, 4) + 1;
             $get_idpo = $thn_bln . sprintf("%04s", + ($ceks2));
         }
