@@ -259,12 +259,12 @@ class ProductController extends Controller
 
         //GET ID HISTORY
         $thn_bln_tgl = $now->format('ymd');
-        $hitung = Variation_history::count();
+        $hitung = Variation_history::sharedLock()->count();
         if ($hitung === 0) {
             $urut3 = 1;
             $get_idhistory = $thn_bln_tgl . sprintf("%04s", ($urut3));
         } else {
-            $ambildatas2 = Variation_history::all()->last();
+            $ambildatas2 = Variation_history::sharedLock()->get()->last();
             $hitung2 = (int)substr($ambildatas2->id_history, 6) + 1;
             $get_idhistory = $thn_bln_tgl . sprintf("%04s", + ($hitung2));
         }

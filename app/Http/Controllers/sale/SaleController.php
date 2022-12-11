@@ -175,12 +175,12 @@ class SaleController extends Controller
         $today = $now->format('Y-m-d');
 
         $thn_bln_tgl = $now->format('ymd');
-        $hitung = Sale::where('tanggal', $today)->groupBy('id_invoice')->get();
+        $hitung = Sale::sharedLock()->where('tanggal', $today)->groupBy('id_invoice')->get();
         if (count($hitung) === 0) {
             $urut3 = 1;
             $idinvoice = $thn_bln_tgl . sprintf("%04s", ($urut3));
         } else {
-            $ambildatas2 = Sale::all()->max('id_invoice');
+            $ambildatas2 = Sale::sharedLock()->get()->max('id_invoice');
             $hitung2 = (int)substr($ambildatas2, 6) + 1;
             $idinvoice = $thn_bln_tgl . sprintf("%04s", + ($hitung2));
         }
