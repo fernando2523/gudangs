@@ -195,12 +195,12 @@ class ProductController extends Controller
 
         $getuser = Auth::user()->name;
 
-        $cek = Product::count();
+        $cek = Product::sharedLock()->count();
         if ($cek === 0) {
             $urut = 1;
             $idproduk = '1' . $get_brand3 . $thn . sprintf("%05s", ($urut));
         } else {
-            $ambildata = Product::all()->last();
+            $ambildata = Product::sharedLock()->get()->last();
             $cek2 = (int)substr($ambildata->id_produk, 5) + 1;
             $idproduk = '1' . $get_brand3 . $thn . sprintf("%05s", + ($cek2));
         }
