@@ -26,24 +26,11 @@ class AssetController extends Controller
     public function assets()
     {
         $title = "Assets";
-
-        $assets_valuation = variation::with('supplier')->get();
-
-        $qtyasset = DB::table('variations')->select(DB::raw('SUM(qty) as totalqty'),)->get();
-        $qtyrelease = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtyreleases'),)->where('tipe_order', '=', 'RELEASE')->get();
-        $qtyrepeat = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtyrepeats'),)->where('tipe_order', '=', 'REPEAT')->get();
-        $qtytransfer = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtytransfers'),)->where('tipe_order', '=', 'TRANSFER')->get();
-
         $selectWarehouse = warehouse::all();
         $userware = DB::table('stores')->where('id_store', '=', Auth::user()->id_store)->get();
 
         return view('asset.assets', compact(
             'title',
-            'assets_valuation',
-            'qtyrelease',
-            'qtyrepeat',
-            'qtyasset',
-            'qtytransfer',
             'selectWarehouse',
             'userware'
         ));
@@ -107,5 +94,38 @@ class AssetController extends Controller
                 'id_ware',
             ));
         }
+    }
+
+    public function load_header_assets(Request $request)
+    {
+        $id_ware = $request->id_ware;
+
+        if ($id_ware === 'all_ware') {
+            $assets_valuation = variation::with('supplier')->get();
+            $qtyasset = DB::table('variations')->select(DB::raw('SUM(qty) as totalqty'))->get();
+            $qtyrelease = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtyreleases'))->where('tipe_order', '=', 'RELEASE')->get();
+            $qtyrepeat = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtyrepeats'))->where('tipe_order', '=', 'REPEAT')->get();
+            $qtytransfer = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtytransfers'))->where('tipe_order', '=', 'TRANSFER')->get();
+        } else {
+            $assets_valuation = variation::with('supplier')->where('id_ware', $id_ware)->get();
+            $qtyasset = DB::table('variations')->select(DB::raw('SUM(qty) as totalqty'))->where('id_ware', $id_ware)->get();
+            $qtyrelease = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtyreleases'))->where('tipe_order', '=', 'RELEASE')->where('id_ware', $id_ware)->get();
+            $qtyrepeat = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtyrepeats'))->where('tipe_order', '=', 'REPEAT')->where('id_ware', $id_ware)->get();
+            $qtytransfer = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtytransfers'))->where('tipe_order', '=', 'TRANSFER')->where('id_ware', $id_ware)->get();
+        }
+
+
+
+
+
+
+
+        return view('asset.load_header', compact(
+            'assets_valuation',
+            'qtyrelease',
+            'qtyrepeat',
+            'qtyasset',
+            'qtytransfer'
+        ));
     }
 }

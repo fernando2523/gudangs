@@ -14,8 +14,7 @@
             </div>
             <div class="ms-auto">
                 <div class="mt-3">
-                    <select class="form-select form-select-sm text-theme fw-bold" id="select_type" onchange="select()"
-                        style="width: 200px;">
+                    <select class="form-select form-select-sm text-theme fw-bold" id="select_type" style="width: 200px;">
                         <option value="all_type" selected>ALL TYPE..</option>
                         <option value="RELEASE">RELEASE ORDER</option>
                         <option value="REPEAT">REPEAT ORDER</option>
@@ -68,51 +67,8 @@
             </div>
         </div>
 
-        <div class="row mb-3">
-            <!-- TOTAL STOCK -->
-            <div class="col-xl-6 mb-6">
-                <div class="card">
-                    <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
-                        <div class="flex-fill" style="padding-top: 5px;padding-bottom: 0px;">
-                            <div class="mb-1 fw-bold">TOTAL PURCHASE ORDER</div>
-                            <h4 class="text-theme">{{ $totalpo }}</h4>
-                        </div>
-                        <div class="opacity-5">
-                            <i class="bi bi-tags-fill fa-3x"></i>
-                        </div>
-                    </div>
+        <div class="row mb-3" id="load_header">
 
-                    <!-- card-arrow -->
-                    <div class="card-arrow">
-                        <div class="card-arrow-top-left"></div>
-                        <div class="card-arrow-top-right"></div>
-                        <div class="card-arrow-bottom-left"></div>
-                        <div class="card-arrow-bottom-right"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- END -->
-            <div class="col-xl-6 mb-6">
-                <div class="card">
-                    <div class="card-body d-flex align-items-center text-white m-5px bg-white bg-opacity-15">
-                        <div class="flex-fill" style="padding-top: 5px;padding-bottom: 0px;">
-                            <div class="mb-1 fw-bold">CAPITAL AMOUNT</div>
-                            <h4 class="text-theme">@currency($totalmodal)</h4>
-                        </div>
-                        <div class="opacity-5">
-                            <i class="bi bi-cash-stack fa-3x"></i>
-                        </div>
-                    </div>
-
-                    <!-- card-arrow -->
-                    <div class="card-arrow">
-                        <div class="card-arrow-top-left"></div>
-                        <div class="card-arrow-top-right"></div>
-                        <div class="card-arrow-bottom-left"></div>
-                        <div class="card-arrow-bottom-right"></div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="row">
@@ -416,22 +372,6 @@
                 document.getElementById('form_delete').action = "../purchase/destroy/" + value;
                 document.getElementById("form_delete").submit();
             }
-
-            // Load Table PO
-            // function load_po() {
-            //     $.ajax({
-            //         type: 'POST',
-            //         url: "{{ URL::to('/load_edit_variation') }}",
-            //         data: {
-            //             id_area: id_area,
-            //             id_produk: id_produk
-            //         },
-            //         success: function(data) {
-            //             $("#edit_variation").html(data);
-            //         }
-            //     });
-            // }
-            // Load Table PO
         </script>
 
         {{-- Tb Load PO --}}
@@ -439,9 +379,11 @@
         <script>
             var query_awal = '';
             var id_awal = 0;
+            var type = $('#select_type').find(":selected").val();
 
             $(document).ready(function() {
-                load_tb_po(query_awal, 1, id_awal);
+                load_tb_po(query_awal, 1, id_awal, type);
+                load_header_po(type);
             });
 
             $('#btn_search').click(function() {
@@ -450,7 +392,7 @@
                     document.getElementById('validate').value = 0;
                     page = 1;
                     val_last = '';
-                    load_tb_po(query, page, id_awal);
+                    load_tb_po(query, page, id_awal, type);
                     $("#search_var").css("display", "block");
                     $("#query_search").html(query);
                 } else {
@@ -462,12 +404,36 @@
                 document.getElementById('validate').value = 0;
                 page = 1;
                 val_last = '';
-                load_tb_po('', page, id_awal);
+                load_tb_po('', page, id_awal, type);
                 $("#search_var").css("display", "none");
                 $("#search").val('');
             });
 
-            function load_tb_po(querys, pages, start_data) {
+            $("#select_type").change(function() {
+                document.getElementById('validate').value = 0;
+                page = 1;
+                val_last = '';
+                load_tb_po('', page, id_awal, $(this).val());
+                load_header_po($(this).val());
+                $("#search_var").css("display", "none");
+                $("#search").val('');
+            });
+
+            function load_header_po(types) {
+                $("#tb_po").html('');
+                $.ajax({
+                    type: 'GET',
+                    url: "/load_header_po",
+                    data: {
+                        type: types
+                    },
+                    success: function(data) {
+                        $("#load_header").html(data);
+                    }
+                });
+            }
+
+            function load_tb_po(querys, pages, start_data, types) {
                 $("#tb_po").html('');
                 $.ajax({
                     type: 'GET',
@@ -475,7 +441,8 @@
                     data: {
                         querys: querys,
                         last_id: start_data,
-                        pages: pages
+                        pages: pages,
+                        type: types
                     },
                     beforeSend: function() {
                         $("#tb_po").html(
@@ -505,20 +472,21 @@
                         val_last = last_id;
                         var query = $('#search').val();
                         if (val_last != 'last') {
-                            loadmore_tb_po(query, page, last_id);
+                            loadmore_tb_po(query, page, last_id, type);
                         }
                     }
                 }
             });
 
-            function loadmore_tb_po(querys, pages, start_data) {
+            function loadmore_tb_po(querys, pages, start_data, type) {
                 $.ajax({
                         url: "/load_tb_po",
                         type: "GET",
                         data: {
                             querys: querys,
                             last_id: start_data,
-                            pages: pages
+                            pages: pages,
+                            type: type
                         },
                         beforeSend: function() {
                             $('.auto-load').show();

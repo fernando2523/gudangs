@@ -1,5 +1,4 @@
 <div class="row">
-    {{ $id_ware }}
     <!-- DATA ASSSET -->
     <div class="col-xl-12">
         <div class="card">

@@ -260,3 +260,6 @@ route::any('/load_displays', [ProductController::class, 'load_display'])->middle
 route::any('/tabledisplay/{id_store}', [ProductController::class, 'tabledisplay'])->middleware('auth');
 route::any('/add_display', [ProductController::class, 'add_display']);
 route::any('/remove_display', [ProductController::class, 'remove_display']);
+
+route::any('/load_header_assets', [AssetController::class, 'load_header_assets']);
+route::any('/load_header_po', [PurchaseOrderController::class, 'load_header_po']);

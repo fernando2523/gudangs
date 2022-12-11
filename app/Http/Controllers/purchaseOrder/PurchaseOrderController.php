@@ -33,8 +33,6 @@ class PurchaseOrderController extends Controller
         $datamodal = DB::table('supplier_orders')->select(DB::raw('SUM(m_price) as modals'), DB::raw('idpo'),)->groupBy('idpo')->get();
         $datasubtotal = DB::table('supplier_orders')->select(DB::raw('SUM(subtotal) as subtotals'), DB::raw('idpo'),)->groupBy('idpo')->get();
         $supplier = Supplier::all();
-        $totalpo = Supplier_order::all('idpo')->groupBy('idpo')->count('idpo');
-        $totalmodal = Supplier_order::all('subtotal')->sum('subtotal');
         $datatotalqty = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as total_qty'), DB::raw('idpo'),)->groupBy('idpo')->get();
 
         $selectWarehouse = warehouse::all();
@@ -47,8 +45,6 @@ class PurchaseOrderController extends Controller
             'datamodal',
             'datasubtotal',
             'supplier',
-            'totalpo',
-            'totalmodal',
             'datatotalqty',
             'selectWarehouse',
             'userware'
@@ -61,47 +57,93 @@ class PurchaseOrderController extends Controller
         $querys = $request->querys;
         $last_id = $request->last_id;
         $pages = $request->pages;
+        $type = $request->type;
+
         $limit = 10;
         $current_page = ($pages * $limit) - ($limit - 1);
 
         $warehouse = Warehouse::all();
 
-        if ($last_id == '0') {
-            if ($querys == '') {
-                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
-                    ->orderBy('idpo', 'DESC')
-                    ->groupBy('idpo', 'tanggal', 'users')
-                    ->limit(10)
-                    ->get();
+        if ($type === 'all_type') {
+            if ($last_id == '0') {
+                if ($querys == '') {
+                    $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
+                        ->orderBy('idpo', 'DESC')
+                        ->groupBy('idpo', 'tanggal', 'users')
+                        ->limit(10)
+                        ->get();
+                } else {
+                    $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
+                        ->where('idpo', $querys)
+                        ->orwhere('produk', 'LIKE', '%' . $querys . '%')
+                        ->orwhere('id_produk', 'LIKE', '%' . $querys . '%')
+                        ->orderBy('idpo', 'DESC')
+                        ->groupBy('idpo', 'tanggal', 'users')
+                        ->limit(10)
+                        ->get();
+                }
             } else {
-                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
-                    ->where('idpo', $querys)
-                    ->orwhere('produk', 'LIKE', '%' . $querys . '%')
-                    ->orwhere('id_produk', 'LIKE', '%' . $querys . '%')
-                    ->orderBy('idpo', 'DESC')
-                    ->groupBy('idpo', 'tanggal', 'users')
-                    ->limit(10)
-                    ->get();
+                if ($querys == '') {
+                    $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
+                        ->where('id', '<', $last_id)
+                        ->orderBy('idpo', 'DESC')
+                        ->groupBy('idpo', 'tanggal', 'users')
+                        ->limit(10)
+                        ->get();
+                } else {
+                    $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
+                        ->where([['id', '<', $last_id], ['idpo', $querys]])
+                        ->orwhere([['id', '<', $last_id], ['produk', $querys]])
+                        ->orwhere([['id', '<', $last_id], ['id_produk', 'LIKE', '%' . $querys . '%']])
+                        ->orderBy('idpo', 'DESC')
+                        ->groupBy('idpo', 'tanggal', 'users')
+                        ->limit(10)
+                        ->get();
+                }
             }
         } else {
-            if ($querys == '') {
-                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
-                    ->where('id', '<', $last_id)
-                    ->orderBy('idpo', 'DESC')
-                    ->groupBy('idpo', 'tanggal', 'users')
-                    ->limit(10)
-                    ->get();
+            if ($last_id == '0') {
+                if ($querys == '') {
+                    $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
+                        ->where('tipe_order', $type)
+                        ->orderBy('idpo', 'DESC')
+                        ->groupBy('idpo', 'tanggal', 'users')
+                        ->limit(10)
+                        ->get();
+                } else {
+                    $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
+                        ->where('idpo', $querys)
+                        ->where('tipe_order', $type)
+                        ->orwhere('produk', 'LIKE', '%' . $querys . '%')
+                        ->orwhere('id_produk', 'LIKE', '%' . $querys . '%')
+                        ->orderBy('idpo', 'DESC')
+                        ->groupBy('idpo', 'tanggal', 'users')
+                        ->limit(10)
+                        ->get();
+                }
             } else {
-                $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
-                    ->where([['id', '<', $last_id], ['idpo', $querys]])
-                    ->orwhere([['id', '<', $last_id], ['produk', $querys]])
-                    ->orwhere([['id', '<', $last_id], ['id_produk', 'LIKE', '%' . $querys . '%']])
-                    ->orderBy('idpo', 'DESC')
-                    ->groupBy('idpo', 'tanggal', 'users')
-                    ->limit(10)
-                    ->get();
+                if ($querys == '') {
+                    $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
+                        ->where('id', '<', $last_id)
+                        ->where('tipe_order', $type)
+                        ->orderBy('idpo', 'DESC')
+                        ->groupBy('idpo', 'tanggal', 'users')
+                        ->limit(10)
+                        ->get();
+                } else {
+                    $datapo = Supplier_order::with('suppliers_details', 'suppliers_detail', 'supplier_variation', 'products')
+                        ->where([['id', '<', $last_id], ['idpo', $querys]])
+                        ->where('tipe_order', $type)
+                        ->orwhere([['id', '<', $last_id], ['produk', $querys]])
+                        ->orwhere([['id', '<', $last_id], ['id_produk', 'LIKE', '%' . $querys . '%']])
+                        ->orderBy('idpo', 'DESC')
+                        ->groupBy('idpo', 'tanggal', 'users')
+                        ->limit(10)
+                        ->get();
+                }
             }
         }
+
 
         $count = count($datapo);
 
@@ -129,6 +171,26 @@ class PurchaseOrderController extends Controller
                 'id_ware',
                 'produk',
                 'get_variation'
+            ));
+        }
+    }
+
+    public function load_header_po(Request $request)
+    {
+        if ($request->ajax()) {
+            $type = $request->type;
+
+            if ($type === 'all_type') {
+                $totalpo = Supplier_order::all('idpo')->groupBy('idpo')->count('idpo');
+                $totalmodal = Supplier_order::all('subtotal')->sum('subtotal');
+            } else {
+                $totalpo = Supplier_order::where('tipe_order', $type)->groupBy('idpo')->count('idpo');
+                $totalmodal = Supplier_order::where('tipe_order', $type)->sum('subtotal');
+            }
+
+            return view('purchase.load_header', compact(
+                'totalpo',
+                'totalmodal'
             ));
         }
     }
