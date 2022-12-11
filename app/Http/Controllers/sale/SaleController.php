@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\sale;
 
 use App\Http\Controllers\Controller;
+use App\Models\Displays;
 use Illuminate\Http\Request;
 use App\Models\Sale;
 use App\Models\Image_product;
@@ -78,6 +79,12 @@ class SaleController extends Controller
             $id_produk = $request->id_produk;
             $id_ware = $request->id_ware;
             $size = $request->size;
+            $store = $request->store;
+
+            $display = Displays::where('id_store', $store)
+                ->where('id_produk', $id_produk)
+                ->where('id_ware', $id_ware)
+                ->get();
 
             if ($size === 'allsize') {
                 $data = DB::table('variations')
@@ -100,7 +107,8 @@ class SaleController extends Controller
 
             return view('load.load_modal_catalog', compact(
                 'data',
-                'count'
+                'count',
+                'display'
             ));
         }
     }
@@ -231,12 +239,22 @@ class SaleController extends Controller
             $banktf = preg_replace("/[^0-9]/", "", $request->r_banktf);
         }
 
+        $display = $request->r_display;
+
 
         $count = $request->count;
 
 
         for ($i = 0; $i < $count; $i++) {
             DB::beginTransaction();
+
+            if ($display[$i] === 'display') {
+                Displays::where('id_store', $store)
+                    ->where('id_ware', $warehouse[$i])
+                    ->where('id_produk', $idproduk[$i])
+                    ->delete();
+            }
+
             // cek stock Variasi Aktif
             $get_var = variation::where('id_produk', $idproduk[$i])
                 ->where('id_area', $id_area)

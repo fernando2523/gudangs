@@ -5,6 +5,7 @@ namespace App\Http\Controllers\product;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Brand;
+use App\Models\Displays;
 use App\Models\Sub_category;
 use App\Models\warehouse;
 use App\Models\Supplier;
@@ -13,6 +14,7 @@ use App\Models\Supplier_variation;
 use App\Models\variation;
 use App\Models\Variation_history;
 use App\Models\Image_product;
+use App\Models\Store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
@@ -494,5 +496,79 @@ class ProductController extends Controller
         }
 
         return redirect('product/products');
+    }
+
+    public function displays()
+    {
+        $selectStore = Store::all();
+        $userware = DB::table('stores')->where('id_store', '=', Auth::user()->id_store)->get();
+        $title = 'Displays Product';
+        $warehouse = warehouse::all();
+
+        return view('displays.displays', compact(
+            'selectStore',
+            'userware',
+            'title',
+            'warehouse'
+        ));
+    }
+
+    public function load_display(Request $request)
+    {
+        // if ($request->ajax()) {
+        $id_store = $request->store;
+        $id_ware = $request->id_ware;
+        $getbrand = brand::all();
+        $getcategory = Sub_category::all();
+
+        return view('displays.load_displays', compact(
+            'id_store',
+            'id_ware',
+            'getbrand',
+            'getcategory'
+        ));
+        // }
+    }
+
+    public function tabledisplay(Request $request, $id_ware)
+    {
+        if ($request->ajax()) {
+            $product = Product::with('store', 'image_product', 'display')->where('id_ware', $id_ware)->get();
+
+            return DataTables::of($product)
+                ->addIndexColumn()
+                ->addColumn('action', function () {
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    }
+
+    public function add_display(Request $request)
+    {
+        $now = Carbon::now('Asia/Bangkok');
+        $tanggalskrg = Date('Y-m-d');
+
+        $data = new Displays();
+        $data->tanggal = $tanggalskrg;
+        $data->id_produk = $request->id_produk;
+        $data->id_area = $request->id_area;
+        $data->id_ware = $request->id_ware;
+        $data->id_store = $request->id_store;
+        $data->brand = $request->brand;
+        $data->produk = $request->produk;
+        $data->size = $request->size;
+        $data->qty = $request->qty;
+        $data->users = Auth::user()->name;
+        $data->save();
+
+        return redirect('/displays_product');
+    }
+
+    public function remove_display(Request $request)
+    {
+        Displays::where('id', $request->id_display)->delete();
+
+        return redirect('/displays_product');
     }
 }

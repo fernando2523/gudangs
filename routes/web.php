@@ -254,3 +254,9 @@ route::any('/order/load_header', [OrderController::class, 'load_header'])->middl
 route::any('/load_barcode', [BarcodeController::class, 'load_barcode'])->middleware('auth');
 
 route::any('/load_tb_assets', [AssetController::class, 'load_tb_assets'])->middleware('auth');
+
+route::any('/displays_product', [ProductController::class, 'displays'])->middleware('auth');
+route::any('/load_displays', [ProductController::class, 'load_display'])->middleware('auth');
+route::any('/tabledisplay/{id_store}', [ProductController::class, 'tabledisplay'])->middleware('auth');
+route::any('/add_display', [ProductController::class, 'add_display']);
+route::any('/remove_display', [ProductController::class, 'remove_display']);

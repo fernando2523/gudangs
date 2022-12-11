@@ -137,8 +137,10 @@
                             i = 0;
                             b = 1;
                             v = '';
+                            total = 0;
 
                             while (i < length) {
+                                total = total + row.product_variation2[i]['qty'];
                                 if (row.warehouse[0]['id_ware'] === row.product_variation2[
                                         i][
                                         'id_ware'
@@ -176,6 +178,10 @@
                                 i++;
                             }
                             if (v === '1') {
+                                size = size +
+                                    '<br><br><span class="fw-bold text-theme">Total QTY = ' +
+                                    total + '</span>';
+
                                 return size;
                             } else {
                                 return '<span class="fw-bold text-warning">STOK TIDAK TERSEDIA</span>';

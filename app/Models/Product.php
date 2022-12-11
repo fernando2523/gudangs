@@ -71,4 +71,14 @@ class Product extends Model
     {
         return $this->hasMany(City::class, 'id_area', 'id_area');
     }
+
+    public function store()
+    {
+        return $this->hasMany(Store::class, 'id_ware', 'id_ware');
+    }
+
+    public function display()
+    {
+        return $this->hasMany(Displays::class, 'id_produk', 'id_produk');
+    }
 }

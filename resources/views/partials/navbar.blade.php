@@ -158,6 +158,13 @@
                 </a>
             </div>
 
+            <div class="menu-item {{ Request::is('displays_product') ? 'active' : '' }}">
+                <a href="/displays_product" class="menu-link">
+                    <span class="menu-icon"><i class="bi bi-shop-window text-theme"></i></span>
+                    <span class="menu-text">Displays Products</span>
+                </a>
+            </div>
+
 
             <div class="menu-header">Sales</div>
             <div class="menu-item {{ Request::is('sale/sale') ? 'active' : '' }}">
