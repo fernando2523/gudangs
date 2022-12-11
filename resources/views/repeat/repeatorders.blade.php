@@ -228,16 +228,16 @@
                                             <label class="form-label">Supplier</label>
                                             <div class="position-relative text-center mb-3">
                                                 <select class="form-select form-select-sm text-theme text-center"
-                                                    name="type_po" id="type_po" required onchange="typepo()">
+                                                    name="type_po" id="type_po_add" required onchange="type_po_add()">
                                                     <option value="" disabled selected>Tipe PO</option>
                                                     <option value="baru">PO Baru</option>
                                                     <option value="lama">PO Lanjutan</option>
                                                 </select>
                                             </div>
                                             <div class="position-relative text-center mb-3" style="display:none;"
-                                                id="divlama">
+                                                id="divlama_add">
                                                 <select class="form-select form-select-sm text-theme text-center"
-                                                    name="id_po_lama">
+                                                    name="id_po_lama" id="id_po_lama_add">
                                                     <option value="" disabled selected>Pilih DATA PO</option>
                                                     @foreach ($get_Supplier_Order as $orders)
                                                         @foreach ($getsupplier as $supps)
@@ -254,9 +254,9 @@
                                             </div>
 
                                             <div class="position-relative text-center" style="display:none;"
-                                                id="divbaru">
+                                                id="divbaru_add">
                                                 <select class="form-select form-select-sm text-theme text-center"
-                                                    name="id_sup" id="id_sup">
+                                                    name="id_sup" id="id_sup_add">
                                                     <option value="" disabled selected>Pilih Supplier</option>
                                                     @foreach ($getsupplier as $gets)
                                                         <option value="{{ $gets->id_sup }}">{{ $gets->supplier }}
@@ -266,16 +266,16 @@
                                             </div>
 
                                             <script>
-                                                function typepo() {
-                                                    var select = document.getElementById('type_po');
+                                                function type_po_add() {
+                                                    var select = document.getElementById('type_po_add');
                                                     var value = select.options[select.selectedIndex].value;
 
                                                     if (value == 'baru') {
-                                                        document.getElementById("divbaru").style.display = 'block';
-                                                        document.getElementById("divlama").style.display = 'none';
+                                                        document.getElementById("divbaru_add").style.display = 'block';
+                                                        document.getElementById("divlama_add").style.display = 'none';
                                                     } else if (value == 'lama') {
-                                                        document.getElementById("divbaru").style.display = 'none';
-                                                        document.getElementById("divlama").style.display = 'block';
+                                                        document.getElementById("divbaru_add").style.display = 'none';
+                                                        document.getElementById("divlama_add").style.display = 'block';
                                                     }
                                                 }
                                             </script>
@@ -322,7 +322,7 @@
                                 </div>
                             </div>
                             <div class="form-group mt-1" align="right">
-                                <button class="btn btn-theme" type="submit" onclick="submitadd()">Save</button>
+                                <button class="btn btn-theme" type="button" onclick="submitadd()">Save</button>
                             </div>
 
                         </div>
@@ -415,5 +415,51 @@
                     }
                 });
             }
+
+            function submitadd() {
+                if (document.forms["formadd"]["type_po_add"].value == "") {
+                    alert("SILAHKAN PILIH TIPE PO, TERLEBIH DAHULU.");
+                    document.forms["formadd"]["type_po_add"].focus();
+                    return false;
+                }
+
+                if (document.forms["formadd"]["type_po_add"].value === "baru") {
+                    if (document.forms["formadd"]["id_sup_add"].value == "") {
+                        alert("SILAHKAN PILIH SUPPLIER, TERLEBI DAHULU.");
+                        document.forms["formadd"]["id_sup_add"].focus();
+                        return false;
+                    }
+                } else if (document.forms["formadd"]["type_po_add"].value === "lama") {
+                    if (document.forms["formadd"]["id_po_lama_add"].value == "") {
+                        alert("SILAHKAN PILIH PO LANJUTAN, TERLEBIH DAHULU.");
+                        document.forms["formadd"]["id_po_lama_add"].focus();
+                        return false;
+                    }
+                }
+
+                document.getElementById("formadd").submit();
+            }
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script>
+            document.querySelectorAll('input[type-currency="IDR"]').forEach((element) => {
+                element.addEventListener('keyup', function(e) {
+                    let cursorPostion = this.selectionStart;
+                    let value = parseInt(this.value.replace(/[^,\d]/g, ''));
+                    let originalLenght = this.value.length;
+                    if (isNaN(value)) {
+                        this.value = "";
+                    } else {
+                        this.value = value.toLocaleString('id-ID', {
+                            currency: 'IDR',
+                            style: 'currency',
+                            minimumFractionDigits: 0
+                        });
+                        cursorPostion = this.value.length - originalLenght + cursorPostion;
+                        this.setSelectionRange(cursorPostion, cursorPostion);
+                    }
+                });
+            });
         </script>
     @endsection

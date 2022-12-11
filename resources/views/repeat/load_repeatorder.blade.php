@@ -11,7 +11,8 @@
                 </div>
 
                 <div class="position-relative text-center mb-3">
-                    <select class="form-select form-select-sm text-theme text-center" name="type_po" id="type_po" required onchange="typepo()">
+                    <select class="form-select form-select-sm text-theme text-center" name="type_po" id="type_po"
+                        required onchange="typepo()">
                         <option value="" disabled selected>Tipe PO</option>
                         <option value="baru">PO Baru</option>
                         <option value="lama">PO Lanjutan</option>
@@ -21,13 +22,13 @@
                     <select class="form-select form-select-sm text-theme text-center" name="id_po_lama" id="id_po_lama">
                         <option value="" disabled selected>Pilih DATA PO</option>
                         @foreach ($get_Supplier_Order as $orders)
-                        @foreach ($getsupplier as $supps)
-                        @if ($supps->id_sup === $orders->id_sup)
-                        <option value="{{ $orders->idpo }}">{{ $orders->tanggal }} -
-                            {{ $supps->supplier }} - {{ $orders->idpo }}
-                        </option>
-                        @endif
-                        @endforeach
+                            @foreach ($getsupplier as $supps)
+                                @if ($supps->id_sup === $orders->id_sup)
+                                    <option value="{{ $orders->idpo }}">{{ $orders->tanggal }} -
+                                        {{ $supps->supplier }} - {{ $orders->idpo }}
+                                    </option>
+                                @endif
+                            @endforeach
                         @endforeach
 
                     </select>
@@ -37,7 +38,7 @@
                     <select class="form-select form-select-sm text-theme text-center" name="id_sup" id="id_sup">
                         <option value="" disabled selected>Pilih Supplier</option>
                         @foreach ($getsupplier as $gets)
-                        <option value="{{ $gets->id_sup }}">{{ $gets->supplier }}</option>
+                            <option value="{{ $gets->id_sup }}">{{ $gets->supplier }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -63,7 +64,9 @@
                     </div>
                     <div class="col-8">
                         @if ($get_m_price->id_produk === $id_produk)
-                        <input class="form-control form-control-sm text-theme is-invalid" type="text" name="m_price" required placeholder="Silahkan masukan nama produk" value="@currency($get_m_price->m_price)" autocomplete="OFF" type-currency="IDR">
+                            <input class="form-control form-control-sm text-theme is-invalid" type="text"
+                                name="m_price" required placeholder="Silahkan masukan nama produk"
+                                value="@currency($get_m_price->m_price)" autocomplete="OFF" type-currency="IDR">
                         @endif
                     </div>
                 </div>
@@ -78,40 +81,54 @@
                     </thead>
                     <tbody>
                         @if (count($variationss) > 0)
-                        @foreach ($variationss as $key => $value)
-                        @if ($value->id_produk === $id_produk)
-                        <tr>
-                            <td>
-                                <input class="form-control text-center" type="text" name="size[]" value="{{ $value->size }}" readonly style="width: 100%;height: 21px;">
-                            </td>
-                            <td>
-                                <input class="form-control text-center fw-bold text-success" type="number" name="qty_old[]" value="{{ $value->qty }}" readonly style="width: 100%;height: 21px;">
-                            </td>
-                            <td>
-                                <input class="form-control text-center text-theme is-invalid" type="text" name="qty[]" value="0" min="0" onkeydown="return isNumberKey(event)" onkeyup="return valids(this)" style="width: 100%;height: 21px;font-weight: bold;" autocomplete="off" required>
-                            </td>
-                        </tr>
-                        @endif
-                        @endforeach
-                        {{-- {{ $value->products[0]['category'] }} --}}
+                            @foreach ($variationss as $key => $value)
+                                @if ($value->id_produk === $id_produk)
+                                    <tr>
+                                        <td>
+                                            <input class="form-control text-center" type="text" name="size[]"
+                                                value="{{ $value->size }}" readonly style="width: 100%;height: 21px;">
+                                        </td>
+                                        <td>
+                                            <input class="form-control text-center fw-bold text-success" type="number"
+                                                name="qty_old[]" value="{{ $value->qty }}" readonly
+                                                style="width: 100%;height: 21px;">
+                                        </td>
+                                        <td>
+                                            <input class="form-control text-center text-theme is-invalid" type="text"
+                                                name="qty[]" value="0" min="0"
+                                                onkeydown="return isNumberKey(event)" onkeyup="return valids(this)"
+                                                style="width: 100%;height: 21px;font-weight: bold;" autocomplete="off"
+                                                required>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                            {{-- {{ $value->products[0]['category'] }} --}}
                         @else
-                        @foreach ($variationss_default as $key => $values)
-                        @if ($values->id_produk === $id_produk)
-                        <tr>
-                            <td>
-                                <input class="form-control text-center" type="text" name="size[]" value="{{ $values->size }}" readonly style="width: 100%;height: 21px;">
-                            </td>
-                            <td>
-                                <input class="form-control text-center fw-bold text-danger" type="number" name="qty_old[]" value="0" readonly style="width: 100%;height: 21px;">
-                            </td>
-                            <td>
-                                <input class="form-control text-center" type="text" name="qty[]" value="0" min="0" onkeydown="return isNumberKey(event)" onkeyup="return valids(this)" style="width: 100%;height: 21px;font-weight: bold;" autocomplete="off" required>
-                            </td>
-                        </tr>
-                        @endif
-                        @endforeach
+                            @foreach ($variationss_default as $key => $values)
+                                @if ($values->id_produk === $id_produk)
+                                    <tr>
+                                        <td>
+                                            <input class="form-control text-center" type="text" name="size[]"
+                                                value="{{ $values->size }}" readonly style="width: 100%;height: 21px;">
+                                        </td>
+                                        <td>
+                                            <input class="form-control text-center fw-bold text-danger" type="number"
+                                                name="qty_old[]" value="0" readonly
+                                                style="width: 100%;height: 21px;">
+                                        </td>
+                                        <td>
+                                            <input class="form-control text-center" type="text" name="qty[]"
+                                                value="0" min="0" onkeydown="return isNumberKey(event)"
+                                                onkeyup="return valids(this)"
+                                                style="width: 100%;height: 21px;font-weight: bold;" autocomplete="off"
+                                                required>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
 
-                        {{-- @php
+                            {{-- @php
                                 $i = 0;
                                 $sizes = 35;
                             @endphp
@@ -153,10 +170,12 @@
                 <div class="input-group mb-4">
                     <div class="flex-fill position-relative">
                         <div class="input-group">
-                            <div class="input-group-text position-absolute top-0 bottom-0 bg-none border-0 pe-0" style="z-index: 1020;">
+                            <div class="input-group-text position-absolute top-0 bottom-0 bg-none border-0 pe-0"
+                                style="z-index: 1020;">
                                 <i class="fa fa-search opacity-5"></i>
                             </div>
-                            <input type="text" class="form-control ps-35px" id="search_tb_repeat" placeholder="Search products.." />
+                            <input type="text" class="form-control ps-35px" id="search_tb_repeat"
+                                placeholder="Search products.." />
                         </div>
                     </div>
                 </div>
@@ -187,9 +206,12 @@
 </div>
 
 
-<link href="{{ URL::asset('/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
-<link href="{{ URL::asset('/assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet" />
-<link href="{{ URL::asset('/assets/plugins/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" rel="stylesheet" />
+<link href="{{ URL::asset('/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"
+    rel="stylesheet" />
+<link href="{{ URL::asset('/assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
+    rel="stylesheet" />
+<link href="{{ URL::asset('/assets/plugins/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}"
+    rel="stylesheet" />
 
 <script src="{{ URL::asset('/assets/plugins/datatables.net/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('/assets/plugins/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>

@@ -18,9 +18,9 @@
             {{-- <div class="ms-sm-3 mt-sm-0 mt-2"><a class="btn btn-outline-lime" data-bs-toggle="modal"
                     data-bs-target="#modaladd"><i class="bi bi-arrow-clockwise fa-fw me-1"></i> Stock Opname</a>
             </div> --}}
-            <div class="ms-sm-3 mt-sm-0"><a class="btn btn-outline-theme" data-bs-toggle="modal"
+            {{-- <div class="ms-sm-3 mt-sm-0"><a class="btn btn-outline-theme" data-bs-toggle="modal"
                     data-bs-target="#modaladd"><i class="fa fa-plus-circle fa-fw me-1"></i> Add Product</a>
-            </div>
+            </div> --}}
         </div>
         <style>
             .button-hover {
@@ -37,7 +37,7 @@
             }
         </style>
 
-        <div class="modal fade" id="modaladd" data-bs-backdrop="static">
+        {{-- <div class="modal fade" id="modaladd" data-bs-backdrop="static">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -268,7 +268,7 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <script type="text/javascript">
             $('#file').change(function() {
