@@ -23,8 +23,8 @@ class CreateDisplaysTable extends Migration
             $table->string('id_store');
             $table->string('brand');
             $table->string('produk');
-            $table->string('size');
-            $table->string('qty');
+            $table->string('size')->nullable(true);
+            $table->string('qty')->nullable(true);
             $table->string('users');
             $table->timestamps();
         });
