@@ -161,11 +161,11 @@
                             total = 0;
 
                             while (i < length) {
-                                total = total + row.product_variation[i]['qty'];
                                 if (row.warehouse[0]['id_ware'] === row.product_variation[
                                         i][
                                         'id_ware'
                                     ]) {
+                                    total = total + row.product_variation[i]['qty'];
                                     if (row.product_variation[i]['qty'] === 0) {
                                         size = size + '<span class="text-danger"> ' +
                                             '[' +
@@ -200,7 +200,7 @@
                             }
                             if (v === '1') {
                                 size = size +
-                                    '<br><br><span class="fw-bold text-theme">Total QTY = ' +
+                                    '<br><br><span class="fw-bold text-lime">Total QTY = ' +
                                     total + '</span>';
 
                                 return size;
