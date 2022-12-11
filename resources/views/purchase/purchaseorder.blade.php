@@ -13,13 +13,16 @@
                 </h1>
             </div>
             <div class="ms-auto">
-            </div>
-            {{-- <div class="ms-sm-3 mt-2">
-                <div id="reportrange" class="btn btn-outline-theme d-flex align-items-center mt-2">
-                    <span class="text-truncate">&nbsp;tanggal sekarang &nbsp;</span>
-                    <i class="fa fa-caret-down ms-auto"></i>
+                <div class="mt-3">
+                    <select class="form-select form-select-sm text-theme fw-bold" id="select_type" onchange="select()"
+                        style="width: 200px;">
+                        <option value="all_type" selected>ALL TYPE..</option>
+                        <option value="RELEASE">RELEASE ORDER</option>
+                        <option value="REPEAT">REPEAT ORDER</option>
+                        <option value="TRANSFER">TRANSFER ORDER</option>
+                    </select>
                 </div>
-            </div> --}}
+            </div>
         </div>
         <style>
             .button-hover {
@@ -530,5 +533,6 @@
                     });
             }
         </script>
+
         {{-- Tb Load PO --}}
     @endsection
