@@ -9,19 +9,25 @@
                 <li class="breadcrumb-item active">DISPLAY</li>
             </ul>
 
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col-6">
                     <h1 class="page-header">
                         Display Product
                     </h1>
                 </div>
-                <div align="right" class="col-6">
-                    <div class="mb-4">
+                <div align="right" class="col-4">
+                    <button type="button" class="btn btn-lime btn-sm fw-bold" onclick="print_so()"><i
+                            class="fas fa-lg fa-fw me-2 fa-print"></i>Print
+                        SO Displays</button>
+                </div>
+                <div align="right" class="col-2">
+                    <div>
                         @if (Auth::user()->role === 'SUPER-ADMIN')
                             <select class="form-select form-select-sm text-theme fw-bold" id="select_store"
                                 style="width: 250px;">
                                 @foreach ($selectStore as $select)
-                                    <option data-store="{{ $select->id_store }}" value="{{ $select->id_ware }}">
+                                    <option data-toko="{{ $select->store }}" data-store="{{ $select->id_store }}"
+                                        value="{{ $select->id_ware }}">
                                         {{ $select->store }}</option>
                                 @endforeach
                             </select>
@@ -31,8 +37,8 @@
                                 @foreach ($userware as $users)
                                     @foreach ($selectStore as $select)
                                         @if ($select->id_store === $users->id_store)
-                                            <option data-store="{{ $select->id_store }}" value="{{ $select->id_ware }}"
-                                                selected>{{ $select->store }}
+                                            <option data-toko="{{ $select->store }}" data-store="{{ $select->id_store }}"
+                                                value="{{ $select->id_ware }}" selected>{{ $select->store }}
                                             </option>
                                         @endif
                                     @endforeach
@@ -132,6 +138,11 @@
                 $('#id_display').val(id);
 
                 $('#remove_display').modal('show');
+            }
+
+            function print_so() {
+                var store = $('#select_store').find(':selected').data("toko");
+                window.open("/print_so?store=" + store);
             }
         </script>
 

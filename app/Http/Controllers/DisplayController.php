@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDisplayRequest;
 use App\Http\Requests\UpdateDisplayRequest;
 use App\Models\Display;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Meneses\LaravelMpdf\Facades\LaravelMpdf as MPDF;
 
 class DisplayController extends Controller
 {
@@ -82,5 +85,30 @@ class DisplayController extends Controller
     public function destroy(Display $display)
     {
         //
+    }
+
+    public function print_so(Request $request)
+    {
+        $product = Product::with('store', 'image_product', 'display')->groupBy('id_produk')->get();
+
+        $data = [
+            'product' => $product,
+        ];
+        $pdf = MPDF::loadView(
+            'displays.print_sodisplay',
+            $data,
+            [],
+            [
+                'format' => 'A4',
+                'orientation' => 'P',
+                'margin_left' => 10,
+                'margin_top' => 10,
+                'margin_bottom' => 10,
+                'margin_header' => 0,
+                'margin_footer' => 0,
+            ]
+        );
+
+        return $pdf->stream('document.pdf');
     }
 }

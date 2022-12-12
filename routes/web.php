@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\employee\EmployeeController;
+use App\Http\Controllers\DisplayController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\supplier\SupplierController;
 use App\Http\Controllers\reseller\ResellerController;
@@ -263,3 +264,5 @@ route::any('/remove_display', [ProductController::class, 'remove_display']);
 
 route::any('/load_header_assets', [AssetController::class, 'load_header_assets']);
 route::any('/load_header_po', [PurchaseOrderController::class, 'load_header_po']);
+
+route::any('/print_so', [DisplayController::class, 'print_so']);
