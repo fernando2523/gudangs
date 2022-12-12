@@ -24,7 +24,7 @@
                 @for ($c = 0; $c < $col; $c++)
                     <td align="center" style="padding-left: 23px;padding-bottom: 36px;width:100px;">
                         <div class="mpdf_toc">
-                            <span style="font-size: 12px;">{{ $produk }}</span>
+                            <span style="font-size: 12px;">{{ Str::limit($produk, 25) }}</span>
                             <span align="center">
                                 <barcode code="1122200012.41" type="C39" height="2.7" size="0.7" />
                             </span>

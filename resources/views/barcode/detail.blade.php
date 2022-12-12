@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-theme fw-bold" type="submit">
+                    <button class="btn btn-theme fw-bold" type="BUTTON" onclick="submitformbarcode()">
                         PRINT
                         <i class="fa-xl bi bi-upc-scan ms-1"></i>
                     </button>
