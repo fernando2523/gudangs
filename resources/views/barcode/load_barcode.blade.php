@@ -204,9 +204,6 @@
  <script>
      // edit
      function openmodalbarcode(id_produk, id_ware, id_area, produk) {
-         //  document.getElementById("check_custom").checked = false;
-         //  document.getElementById("check_bypo").checked = false;
-
          document.getElementById('v_id_produk').value = id_produk;
          document.getElementById('v_id_ware').value = id_ware;
          document.getElementById('v_id_area').value = id_area;
@@ -233,8 +230,12 @@
      }
 
      function submitformbarcode() {
-         var value = document.getElementById('id_produk').value;
-         document.getElementById('form_barcode').action = "../barcode/barcodeact/" + value;
-         document.getElementById("form_barcode").submit();
+         if (document.forms["form_barcode"]["qty_po"].value == "0") {
+             alert("QTY TIDAK BOLEH KOSONG.");
+             document.forms["form_barcode"]["qty_po"].focus();
+             return false;
+         } else {
+             document.getElementById("form_barcode").submit();
+         }
      }
  </script>
