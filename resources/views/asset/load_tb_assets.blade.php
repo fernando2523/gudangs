@@ -112,10 +112,24 @@
                     var release = 0;
 
                     for (let index = 0; index < data.length; index++) {
-                        if (row.supplier_order3[index]['tipe_order'] == "RELEASE") {
-                            release = release + parseInt(row.supplier_order3[index]['qty']);
+                        if ('{{ $id_ware }}' === 'all_ware') {
+                            if (row.supplier_order3[index]['tipe_order'] == "RELEASE") {
+                                release = release + parseInt(row.supplier_order3[index][
+                                    'qty'
+                                ]);
+                            } else {
+                                release = release + 0;
+                            }
                         } else {
-                            release = release + 0;
+                            if (row.supplier_order3[index]['tipe_order'] == "RELEASE" && row
+                                .supplier_order3[index]['id_ware'] == '{{ $id_ware }}'
+                            ) {
+                                release = release + parseInt(row.supplier_order3[index][
+                                    'qty'
+                                ]);
+                            } else {
+                                release = release + 0;
+                            }
                         }
                     }
 
@@ -130,11 +144,27 @@
                     var repeat = 0;
 
                     for (let index = 0; index < data.length; index++) {
-                        if (row.supplier_order3[index]['tipe_order'] == "REPEAT") {
-                            repeat = repeat + parseInt(row.supplier_order3[index]['qty']);
+                        if ('{{ $id_ware }}' === 'all_ware') {
+                            if (row.supplier_order3[index]['tipe_order'] == "REPEAT") {
+                                repeat = repeat + parseInt(row.supplier_order3[index][
+                                    'qty'
+                                ]);
+                            } else {
+                                repeat = repeat + 0;
+                            }
                         } else {
-                            repeat = repeat + 0;
+                            if (row.supplier_order3[index]['tipe_order'] == "REPEAT" && row
+                                .supplier_order3[index]['id_ware'] == '{{ $id_ware }}'
+                            ) {
+                                repeat = repeat + parseInt(row.supplier_order3[index][
+                                    'qty'
+                                ]);
+                            } else {
+                                repeat = repeat + 0;
+                            }
                         }
+
+
                     }
 
                     return repeat;
@@ -148,10 +178,27 @@
                     var repeat = 0;
 
                     for (let index = 0; index < data.length; index++) {
-                        if (row.supplier_order3[index]['tipe_order'] == "TRANSFER") {
-                            repeat = repeat + parseInt(row.supplier_order3[index]['qty']);
+                        if ('{{ $id_ware }}' === 'all_ware') {
+                            if (row.supplier_order3[index]['tipe_order'] == "TRANSFER") {
+                                repeat = repeat + parseInt(row.supplier_order3[index][
+                                    'qty'
+                                ]);
+                            } else {
+                                repeat = repeat + 0;
+                            }
+
                         } else {
-                            repeat = repeat + 0;
+                            if (row.supplier_order3[index]['tipe_order'] == "TRANSFER" &&
+                                row
+                                .supplier_order3[index]['id_ware'] == '{{ $id_ware }}'
+                            ) {
+                                repeat = repeat + parseInt(row.supplier_order3[index][
+                                    'qty'
+                                ]);
+                            } else {
+                                repeat = repeat + 0;
+                            }
+
                         }
                     }
 
@@ -184,7 +231,14 @@
                     var stock = 0;
 
                     for (let index = 0; index < data.length; index++) {
-                        stock = stock + row.stock[index]['stock'];
+                        if ('{{ $id_ware }}' === 'all_ware') {
+                            stock = stock + row.stock[index]['stock'];
+                        } else {
+                            if (row.stock[index]['id_ware'] == '{{ $id_ware }}') {
+                                stock = stock + row.stock[index]['stock'];
+                            }
+                        }
+
                     }
 
                     return stock;
@@ -199,12 +253,23 @@
 
                     for (let index = 0; index < data.length; index++) {
                         for (let i = 0; i < row.details_po.length; i++) {
-                            if (row.stock[index]['idpo'] === row.details_po[i]['idpo']) {
-                                stock = stock + parseInt(row.stock[index]['stock']) *
-                                    parseInt(row
-                                        .details_po[i]['m_price']);
+                            if ('{{ $id_ware }}' === 'all_ware') {
+                                if (row.stock[index]['idpo'] === row.details_po[i][
+                                        'idpo'
+                                    ]) {
+                                    stock = stock + parseInt(row.stock[index]['stock']) *
+                                        parseInt(row
+                                            .details_po[i]['m_price']);
+                                }
                             } else {
-
+                                if (row.stock[index]['idpo'] === row.details_po[i][
+                                        'idpo'
+                                    ] &&
+                                    row.stock[index]['id_ware'] == '{{ $id_ware }}') {
+                                    stock = stock + parseInt(row.stock[index]['stock']) *
+                                        parseInt(row
+                                            .details_po[i]['m_price']);
+                                }
                             }
                         }
                     }

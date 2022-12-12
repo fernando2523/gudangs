@@ -50,7 +50,6 @@ class AssetController extends Controller
                     ->get();
             }
 
-
             return DataTables::of($supplier)
                 ->addIndexColumn()
                 ->addColumn('action', function () {
@@ -113,12 +112,6 @@ class AssetController extends Controller
             $qtyrepeat = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtyrepeats'))->where('tipe_order', '=', 'REPEAT')->where('id_ware', $id_ware)->get();
             $qtytransfer = DB::table('supplier_orders')->select(DB::raw('SUM(qty) as qtytransfers'))->where('tipe_order', '=', 'TRANSFER')->where('id_ware', $id_ware)->get();
         }
-
-
-
-
-
-
 
         return view('asset.load_header', compact(
             'assets_valuation',

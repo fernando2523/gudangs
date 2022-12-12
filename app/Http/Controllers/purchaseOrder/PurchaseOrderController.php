@@ -181,10 +181,10 @@ class PurchaseOrderController extends Controller
             $type = $request->type;
 
             if ($type === 'all_type') {
-                $totalpo = Supplier_order::all('idpo')->groupBy('idpo')->count('idpo');
+                $totalpo = Supplier_order::all('idpo')->count('idpo');
                 $totalmodal = Supplier_order::all('subtotal')->sum('subtotal');
             } else {
-                $totalpo = Supplier_order::where('tipe_order', $type)->groupBy('idpo')->count('idpo');
+                $totalpo = Supplier_order::where('tipe_order', $type)->count('idpo');
                 $totalmodal = Supplier_order::where('tipe_order', $type)->sum('subtotal');
             }
 

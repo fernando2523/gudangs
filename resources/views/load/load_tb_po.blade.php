@@ -51,7 +51,23 @@
             </td>
 
             <td class="text-center text-yellow fw-bold" style="border-right-width: 1px;">
-                {{ $data->suppliers_details[$i]['tipe_order'] }}
+                <?php
+                if ($data->suppliers_details[$i]['tipe_order'] === 'RELEASE') {
+                    ?>
+                <span class="text-lime">{{ $data->suppliers_details[$i]['tipe_order'] }}</span>
+                <?php
+                } else if ($data->suppliers_details[$i]['tipe_order'] === 'TRANSFER') {
+                    ?>
+                <span class="text-info">{{ $data->suppliers_details[$i]['tipe_order'] }}</span>
+                <?php
+                }else if ($data->suppliers_details[$i]['tipe_order'] === 'REPEAT') {
+                    ?>
+                <span class="text-warning">{{ $data->suppliers_details[$i]['tipe_order'] }}</span>
+                <?php
+                }
+                
+                ?>
+
             </td>
 
             <td class="text-center fw-bold" style="border-right-width: 1px;">
