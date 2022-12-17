@@ -31,6 +31,8 @@ use App\Http\Controllers\reportBrand\ReportBrandController;
 use App\Http\Controllers\reportQuality\ReportQualityController;
 use App\Http\Controllers\productTransfer\ProductTransferController;
 use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Models\Product;
+
 // use App\Http\Controllers\setting\SettingController;
 
 /*
@@ -266,3 +268,4 @@ route::any('/load_header_assets', [AssetController::class, 'load_header_assets']
 route::any('/load_header_po', [PurchaseOrderController::class, 'load_header_po']);
 
 route::any('/print_so', [DisplayController::class, 'print_so']);
+route::any('/print_stockopname', [ProductController::class, 'print_stockopname']);

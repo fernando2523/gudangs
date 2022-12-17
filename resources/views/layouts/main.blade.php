@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Gudang | {{ $title }}</title>
+    <title>FOOTBOX | {{ $title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
@@ -52,9 +52,9 @@
             <div class="brand">
                 <a href="/" class="brand-logo">
                     <span class="brand-img">
-                        <span class="brand-img-text text-theme">G</span>
+                        <span class="brand-img-text text-theme">F</span>
                     </span>
-                    <span class="brand-text">GUDANG Apps</span>
+                    <span class="brand-text">FOOTBOX Apps</span>
                 </a>
             </div>
             <!-- END brand -->

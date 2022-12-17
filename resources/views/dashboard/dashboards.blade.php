@@ -15,10 +15,29 @@
             <div class="ms-auto">
                 <div class="mt-3">
                     <select class="form-select fw-bold text-theme border-theme" id="store" style="width: 250px;">
-                        <option value="ALL">ALL STORE</option>
-                        @foreach ($store as $stores)
-                            <option value="{{ $stores->id_store }}">{{ $stores->store }}</option>
-                        @endforeach
+                        @if (Auth::user()->role === 'SUPER-ADMIN')
+                            <option value="ALL">ALL STORE</option>
+                            @foreach ($store as $stores)
+                                <option value="{{ $stores->id_store }}">{{ $stores->store }}</option>
+                            @endforeach
+                        @elseif (Auth::user()->role === 'HEAD-AREA')
+                            <option value="per_area" selected>Pilih Store..</option>
+                            @foreach ($userware as $users)
+                                @foreach ($store as $stores)
+                                    @if ($users->id_area === $stores->id_area)
+                                        <option value="{{ $stores->id_store }}">{{ $stores->store }}</option>
+                                    @endif
+                                @endforeach
+                            @endforeach
+                        @else
+                            @foreach ($userware as $users)
+                                @foreach ($store as $stores)
+                                    @if ($users->id_ware === $stores->id_ware)
+                                        <option value="{{ $stores->id_store }}" selected>{{ $stores->store }}</option>
+                                    @endif
+                                @endforeach
+                            @endforeach
+                        @endif
                     </select>
                 </div>
             </div>

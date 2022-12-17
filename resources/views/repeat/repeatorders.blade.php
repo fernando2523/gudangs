@@ -228,7 +228,7 @@
                                             <label class="form-label">Supplier</label>
                                             <div class="position-relative text-center mb-3">
                                                 <select class="form-select form-select-sm text-theme text-center"
-                                                    name="type_po" id="type_po_add" required onchange="type_po_add()">
+                                                    name="type_po" id="type_po_add" required onchange="typepo_add()">
                                                     <option value="" disabled selected>Tipe PO</option>
                                                     <option value="baru">PO Baru</option>
                                                     <option value="lama">PO Lanjutan</option>
@@ -266,7 +266,7 @@
                                             </div>
 
                                             <script>
-                                                function type_po_add() {
+                                                function typepo_add() {
                                                     var select = document.getElementById('type_po_add');
                                                     var value = select.options[select.selectedIndex].value;
 

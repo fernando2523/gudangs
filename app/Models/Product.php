@@ -79,4 +79,9 @@ class Product extends Model
     {
         return $this->hasMany(Displays::class, 'id_produk', 'id_produk');
     }
+
+    public function print_variation()
+    {
+        return $this->hasMany(variation::class, 'id_produk', 'id_produk')->selectRaw('id_produk,id_ware,COUNT(size) as c_size')->groupBy('id_ware', 'id_produk');
+    }
 }

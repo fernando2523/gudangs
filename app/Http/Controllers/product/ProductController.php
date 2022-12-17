@@ -24,6 +24,7 @@ use GuzzleHttp\Psr7\Request as Psr7Request;
 use PHPUnit\Framework\Constraint\Count;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
+use Meneses\LaravelMpdf\Facades\LaravelMpdf as MPDF;
 
 class ProductController extends Controller
 {
@@ -75,7 +76,7 @@ class ProductController extends Controller
             'get_Supplier_Order',
             'getnamewarehouse',
             'selectWarehouse',
-            'userware'
+            'userware',
         ));
     }
 
@@ -159,6 +160,39 @@ class ProductController extends Controller
                 'dataimg'
             ));
         }
+    }
+
+    public function print_stockopname(Request $request)
+    {
+        $id_ware = $request->ware_so;
+        $product = Product::with('warehouse', 'image_product', 'print_variation', 'areas')
+            ->where('id_ware', $id_ware)
+            ->get();
+
+        $variations = DB::table('variations')
+            ->where('id_ware', $id_ware)
+            ->get();
+
+        $data = [
+            'product' => $product,
+            'variations' => $variations,
+        ];
+        $pdf = MPDF::loadView(
+            'product.print_stockopname',
+            $data,
+            [],
+            [
+                'format' => 'A4',
+                'orientation' => 'L',
+                'margin_left' => 10,
+                'margin_top' => 10,
+                'margin_bottom' => 10,
+                'margin_header' => 0,
+                'margin_footer' => 0,
+            ]
+        );
+
+        return $pdf->stream('stockopname.pdf');
     }
 
     /**
